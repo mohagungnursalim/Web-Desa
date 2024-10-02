@@ -1,25 +1,43 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Livewire\Dashboard\Products\ProductEdit;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// ------------Dashboard-------------
 
+// Route untuk menampilkan daftar produk
+Route::get('/dashboard/produk', function () {
+    return view('dashboard.products.index');
+})->middleware('auth')->name('dashboard.produk');
+
+// Route untuk menampilkan form tambah produk
+Route::get('/dashboard/produk/tambah-produk', function () {
+    return view('dashboard.products.create-product');
+})->middleware('auth')->name('dashboard.produk.tambah');
+
+// Route untuk mengedit produk 
+Route::get('/dashboard/produk/{id}/edit', [ProductController::class, 'edit'])->middleware('auth')->name('dashboard.produk.edit');
+
+// Route untuk dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return view('dashboard.dashboard');
+})->middleware('auth')->name('dashboard');
 
+// Route terkait profil
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/dashboard/produk', function (){
+// -------------Frontend-------------
 
-    return view('products');
-})->middleware('auth');
+// Route untuk halaman depan
+Route::get('/', function () {
+    return view('welcome');
+});
 
+// Mengimpor route dari auth.php
 require __DIR__.'/auth.php';

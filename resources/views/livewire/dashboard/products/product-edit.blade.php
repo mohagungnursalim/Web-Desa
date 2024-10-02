@@ -1,0 +1,204 @@
+<div class="py-4">
+    @push('styles')
+    {{-- <link href="https://cdn.jsdelivr.net/npm/slim-select@latest/dist/slimselect.css" rel="stylesheet"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+        integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- CSS Summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.css" rel="stylesheet">
+    <style>
+        /* Ubah warna background dan teks untuk item yang dipilih */
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #1a1818;
+            /* Ganti dengan warna yang Anda inginkan */
+            color: #ffffff;
+            /* Ganti dengan warna teks yang Anda inginkan */
+            border: none;
+        }
+
+        /* Ubah warna saat hover pada item yang dipilih */
+        .select2-container--default .select2-selection--multiple .select2-selection__choice:hover {
+            background-color: #6d7a89;
+            /* Ganti dengan warna hover yang Anda inginkan */
+            color: #ffffff;
+        }
+
+    </style>
+    @endpush
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h4><a href="/dashboard/produk" class="btn btn-secondary">👈Kembali</a></h4>
+                <form wire:submit.prevent="update">
+                    <div class="form-group">
+                        <label for="title">Nama Produk</label>
+                        <input type="text" id="title" class="form-control" wire:model="title"
+                            placeholder="Masukkan nama produk">
+                        @error('title') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Gambar Produk</label>
+
+
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Gambar</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="image" class="custom-file-input" wire:model="image">
+                                <label class="custom-file-label" for="image">
+                                    @if ($image && !is_string($image))
+                                    <!-- Cek apakah $image adalah file upload -->
+                                    {{ $image->getClientOriginalName() }}
+                                    @elseif ($product && $product->image)
+                                    {{ $product->image }}
+                                    @else
+                                    Pilih gambar
+                                    @endif
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Menampilkan error jika ada -->
+                        @error('image') <span class="text-danger">{{ $message }}</span> @enderror
+
+                        <!-- Menampilkan preview gambar baru jika ada file di-upload -->
+                        @if ($image && !is_string($image))
+                        <!-- Pastikan ini adalah file upload -->
+                        <img src="{{ $image->temporaryUrl() }}" alt="Preview" class="img-fluid mt-2" width="65px">
+                        @elseif($product && $product->image)
+                        <!-- Menampilkan gambar dari database jika ada -->
+                        <img src="{{ Storage::url($product->image) }}" alt="Current Image" class="img-fluid mt-2"
+                            width="65px">
+                        @endif
+
+                        <!-- Menampilkan progress bar saat mengunggah -->
+                        <div wire:loading wire:target="image" class="mt-2 col" style="width: 400px">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                    role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100"
+                                    aria-valuemax="100">
+                                    Mengunggah...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div wire:ignore class="form-group">
+                        <label for="product_category">Kategori Produk</label>
+                        <select id="product_category" class="form-control" multiple wire:model="selectedId">
+                            @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ in_array($category->id, $selectedId) ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('selectedId') <span class="text-danger">{{ $message }}</span> @enderror
+
+                    <div class="form-group">
+                        <label for="wa_number">Nomor WhatsApp</label>
+                        <input type="number" id="wa_number" class="form-control" wire:model="wa_number"
+                            placeholder="Masukkan nomor WhatsApp">
+                        @error('wa_number') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Harga Produk</label>
+                        <input type="number" id="price" class="form-control" wire:model="price"
+                            placeholder="Masukkan harga produk">
+                        @error('price') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div wire:ignore class="form-group">
+                        <label for="description">Deskripsi Produk</label>
+                        <textarea wire:model.defer="description" id="description" class="form-control" rows="3"
+                            placeholder="Masukkan deskripsi"></textarea>
+                        @error('description') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" wire:loading.remove wire:target="update">
+                            Simpan
+                        </button>
+                        <button class="btn btn-primary" type="button" disabled wire:loading wire:target="update">
+                            Memperbarui <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+        integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Bootstrap JS (Dibutuhkan oleh Summernote) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
+
+    <script>
+        // summernote
+        $(document).ready(function () {
+
+            let debounceTimer;
+
+            $('#description').summernote({
+                height: 300,
+                toolbar: [
+                    // tambahkan toolbar sesuai dengan kebutuhan
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['ul', 'ol']],
+                    ['insert', ['link']],
+                    ['view', ['codeview', 'help']]
+                ],
+                callbacks: {
+                    onChange: function (contents, $editable) {
+                        // Reset debounceTimer setiap kali ada perubahan
+                        clearTimeout(debounceTimer);
+
+                        debounceTimer = setTimeout(function () {
+                            @this.set('description', contents); // Update model Livewire
+                        }, 2000); // 2 detik
+                    }
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#product_category').select2({
+                placeholder: '--Pilih Kategori--',
+                minimumResultsForSearch: Infinity,
+                width: '100%'
+            });
+
+            // Event listener untuk Select2
+            $('#product_category').on('change', function (e) {
+                @this.set('selectedId', $(this).val());
+            });
+
+            // Inisialisasi nilai awal Select2 dari Livewire
+            $('#product_category').val(@this.selectedId).trigger('change');
+
+            // Update Select2 ketika Livewire memperbarui nilai
+            Livewire.hook('message.processed', (message, component) => {
+                $('#product_category').val(@this.selectedId).trigger('change');
+            });
+        });
+
+    </script>
+
+    @endpush
+</div>

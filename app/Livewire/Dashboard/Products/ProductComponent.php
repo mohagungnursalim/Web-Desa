@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Livewire\Dashboard\Products;
+
+
+use Livewire\Component;
+use App\Models\Product;
+
+class ProductComponent extends Component
+{
+    public $search = '';
+    public $limit = 4; // Limit produk yang akan ditampilkan pertama kali
+    public $totalProducts; // Total produk di database
+    public $product_id;
+    
+    public function mount() 
+    {
+        // Menghitung total produk pada saat komponen pertama kali di-mount
+        $this->totalProducts = Product::count();
+
+    }
+
+    public function updatingSearch()
+    {
+        // Mereset halaman dan limit jika pencarian berubah
+        $this->limit = 4;
+    }
+
+    public function loadMore()
+    {
+        // Tambah jumlah produk yang ditampilkan setiap kali tombol Load More diklik
+        $this->limit += 4;
+    }
+
+    public function delete($id)
+    {
+        $this->product_id = $id;
+        // Cari produk berdasarkan ID
+        $product = Product::find($id);
+
+        // Cek jika produk ditemukan
+        if ($product) {
+
+            $imagePath = storage_path('app/public/' . $product->image); // Sesuaikan dengan lokasi penyimpanan file Anda
+
+            // Cek jika file gambar ada dan hapus
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            $product->delete();
+
+            // Kirim event ke JavaScript dengan ID modal sebagai string
+            $this->dispatch('hideModalDelete', 'modalDelete' . $id);  // Pastikan modal ID sebagai string
+            $this->dispatch('deleteSuccess');
+           
+        } else {
+
+            toast('Oops..produk tidak tersedia!','error');
+            return redirect('/dashboard/produk');
+        }
+    }
+
+
+
+
+    public function render()
+    {
+        // Ambil produk berdasarkan pencarian dan jumlah limit
+        $products = Product::with('categories')->where('title', 'like', '%' . $this->search . '%')
+                           ->latest()
+                           ->take($this->limit)
+                           ->get();
+
+        return view('livewire.dashboard.products.product-component', [
+            'products' => $products,
+            'totalProducts' => $this->totalProducts
+        ]);
+    }
+}
