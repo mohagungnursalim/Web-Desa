@@ -1,7 +1,15 @@
 <div class="py-4">
-    {{-- @push('styles')
+    @push('styles')
+    {{-- <style>
+    .short-text {
+    display: block;
+}
 
-    @endpush --}}
+.full-text {
+    display: none;
+}
+</style> --}}
+    @endpush
     <div class="container">
 
         <div class="card-body text-dark">
@@ -45,9 +53,25 @@
                                                 </div>
                                                 {{-- Menampilkan judul produk --}}
                                                 <h5 class="card-title">{{ $product->title }}</h5>
-
+                                                
                                                 {{-- Menampilkan deskripsi produk --}}
-                                                <p class="card-text">{!! $product->description !!}</p>
+                                                <td class="text-wrap small">
+                                                    {{-- Tampilkan teks singkat dari deskripsi --}}
+                                                    <span class="short-text">
+                                                        {!! \Illuminate\Support\Str::limit(strip_tags($product->description), 50) !!}
+                                                        @if (\Illuminate\Support\Str::length(strip_tags($product->description)) > 50)
+                                                        <span class="read-more-btn text-primary" style="cursor: pointer;" onclick="toggleDescription(this)">Selengkapnya</span>
+                                                        @endif
+                                                    </span>
+
+                                                    {{-- Tampilkan deskripsi lengkap, tersembunyi secara default --}}
+                                                    @if (\Illuminate\Support\Str::length(strip_tags($product->description)) > 50)
+                                                    <span class="full-text" style="display: none;">
+                                                        {!! $product->description !!}
+                                                        <span class="read-less-btn text-primary" style="cursor: pointer;" onclick="toggleDescription(this)">Lebih sedikit</span>
+                                                    </span>
+                                                    @endif
+                                                </td>
 
                                                 {{-- Menampilkan harga produk dengan format angka --}}
                                                 <p class="card-text">
@@ -56,13 +80,6 @@
                                                 </p>
 
                                                 <div class="text-center">
-
-                                                    {{-- <button wire:click="productEdit({{ $product }})"
-                                                    data-toggle="modal"
-                                                    data-target="#modalEdit" type="button"
-                                                    class="badge bg-warning text-white" style="border: none">
-                                                    <i class="bi bi-pencil-square"></i> Edit
-                                                    </button> --}}
                                                     <a href="{{ route('dashboard.produk.edit',$product->id) }}"
                                                         class="badge bg-warning text-white"
                                                         style="text-decoration: none;">
@@ -165,6 +182,30 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
+            function toggleDescription(element) {
+    // Dapatkan elemen-elemen terkait
+    var shortText = element.parentElement.parentElement.querySelector('.short-text');
+    var fullText = element.parentElement.parentElement.querySelector('.full-text');
+    
+    // Periksa apakah teks pendek sedang ditampilkan
+    if (shortText.style.display === 'none') {
+        // Jika teks pendek tersembunyi, tampilkan teks pendek dan sembunyikan teks penuh
+        shortText.style.display = 'inline';
+        fullText.style.display = 'none';
+    } else {
+        // Jika teks pendek terlihat, sembunyikan teks pendek dan tampilkan teks penuh
+        shortText.style.display = 'none';
+        fullText.style.display = 'inline';
+    }
+}
+
+        </script>
+        
+
+
+
+        {{-- Hide modal delete --}}
+        <script>
             $(document).ready(function () {
                 window.addEventListener('hideModalDelete', function (event) {
                     var modalId = event.detail;
@@ -201,6 +242,7 @@
             });
 
         </script>
+
 
         {{-- Sweet alert,delete success --}}
         <script>
