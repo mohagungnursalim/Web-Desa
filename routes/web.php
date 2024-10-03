@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Route;
 
 // ------------Dashboard-------------
 
+Route::get('/dashboard/kategori-produk', function () {
+    return view('dashboard.categories.index');
+})->middleware('auth')->name('dashboard.kategori-produk');
+
 // Route untuk menampilkan daftar produk
 Route::get('/dashboard/produk', function () {
     return view('dashboard.products.index');

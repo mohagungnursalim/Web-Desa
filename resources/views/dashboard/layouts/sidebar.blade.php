@@ -22,19 +22,29 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="true">
                 <li class="nav-header">Konten</li>
-                <li class="nav-item {{Request::is('dashboard/produk*') ? 'menu-open' : ''}}">
-                    <a href="#" class="nav-link {{Request::is('dashboard/produk*') ? 'active' : ''}}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                <li class="nav-item {{ Request::is('dashboard/produk*') || Request::is('dashboard/kategori-produk*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('dashboard/produk*') || Request::is('dashboard/kategori-produk*') ? 'active' : '' }}">
+                        <i class="bi bi-bag"></i>
                         <p>
-                            Dashboard
+                            Produk
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="/dashboard/produk" class="nav-link {{Request::is('dashboard/produk*') ? 'active' : ''}}">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="bi bi-arrow-return-right"></i>
                                 <p>Master Produk</p>
+                            </a>
+                        </li>
+                       
+                    </ul>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/dashboard/kategori-produk" class="nav-link {{Request::is('dashboard/kategori-produk') ? 'active' : ''}}">
+                                <i class="bi bi-arrow-return-right"></i>
+                                <p>Master Kategori Produk</p>
                             </a>
                         </li>
                        

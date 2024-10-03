@@ -10,7 +10,7 @@
             <div class="d-flex justify-content-center">
 
                 <div class="w-100">
-                    <!-- Button trigger modal -->
+
                     <a href="/dashboard/produk/tambah-produk" class="btn btn-primary mb-4">Tambah Produk</a>
 
                     <!-- Input untuk mencari produk -->
@@ -164,55 +164,21 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-        {{-- <script>
-            $(document).ready(function () {
-                window.addEventListener('hideModalDelete', function (modalId) {
-                    // Jika modalId adalah array, ambil elemen pertamanya
-                    if (Array.isArray(modalId)) {
-                        modalId = modalId[0];
-                    }
-
-                    // Pastikan modalId adalah string ID yang benar
-                    if (typeof modalId === 'string') {
-                        // Menutup modal berdasarkan ID
-                        $('#' + modalId).modal('hide');
-
-                        // Tunggu modal selesai tersembunyi sebelum menghapus backdrop
-                        $('#' + modalId).on('hidden.bs.modal', function () {
-                            $('body').removeClass(
-                            'modal-open'); // Menghapus class modal-open pada body
-                            $('body').css('padding-right',
-                            ''); // Menghapus padding pada body yang ditambahkan modal
-                            setTimeout(function () {
-                                $('.modal-backdrop')
-                            .remove(); // Menghapus backdrop setelah modal tertutup
-                            },
-                            300); // Beri jeda untuk memastikan elemen backdrop sudah muncul sebelum dihapus
-                        });
-                    } else {
-                        console.error('Invalid modal ID:', modalId);
-                    }
-                });
-            });
-
-        </script> --}}
-
         <script>
             $(document).ready(function () {
                 window.addEventListener('hideModalDelete', function (event) {
                     var modalId = event.detail;
-                    
+
                     if (Array.isArray(modalId)) {
                         modalId = modalId[0];
                     }
-        
+
                     if (typeof modalId === 'string' && modalId.trim() !== '') {
                         var $modal = $('#' + modalId);
-                        
+
                         // Menutup modal
                         $modal.modal('hide');
-        
+
                         // Fungsi untuk membersihkan modal dan backdrop
                         function cleanupModal() {
                             $('body').removeClass('modal-open');
@@ -222,10 +188,10 @@
                             $('body').css('overflow', '');
                             $('body').css('padding-right', '');
                         }
-        
+
                         // Mencoba membersihkan setelah animasi modal selesai
                         $modal.on('hidden.bs.modal', cleanupModal);
-        
+
                         // Backup: jika event tidak terpicu, bersihkan setelah delay
                         setTimeout(cleanupModal, 500);
                     } else {
@@ -233,6 +199,7 @@
                     }
                 });
             });
+
         </script>
 
         {{-- Sweet alert,delete success --}}
@@ -243,7 +210,7 @@
                         title: "Sukses!",
                         text: "Data produk berhasil dihapus!",
                         icon: "success",
-                        timer: 1500,
+                        timer: 1000,
                         timerProgressBar: true,
                     });
                 });
@@ -268,3 +235,4 @@
         </script>
         @endpush
     </div>
+</div>
