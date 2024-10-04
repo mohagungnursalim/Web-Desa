@@ -29,7 +29,7 @@ Produk
 </section>
 
 <section class="content">
-    @livewire('dashboard.products.product-component')
+    @livewire('dashboard.products.product')
 </section>
 
 @endsection

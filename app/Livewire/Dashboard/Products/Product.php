@@ -4,9 +4,9 @@ namespace App\Livewire\Dashboard\Products;
 
 
 use Livewire\Component;
-use App\Models\Product;
+use App\Models\Product as ModelProduct;
 
-class ProductComponent extends Component
+class Product extends Component
 {
     public $search = '';
     public $limit = 4; // Limit produk yang akan ditampilkan pertama kali
@@ -16,7 +16,7 @@ class ProductComponent extends Component
     public function mount() 
     {
         // Menghitung total produk pada saat komponen pertama kali di-mount
-        $this->totalProducts = Product::count();
+        $this->totalProducts = ModelProduct::count();
 
     }
 
@@ -36,7 +36,7 @@ class ProductComponent extends Component
     {
         $this->product_id = $id;
         // Cari produk berdasarkan ID
-        $product = Product::find($id);
+        $product = ModelProduct::find($id);
 
         // Cek jika produk ditemukan
         if ($product) {
@@ -67,12 +67,12 @@ class ProductComponent extends Component
     public function render()
     {
         // Ambil produk berdasarkan pencarian dan jumlah limit
-        $products = Product::with('categories')->where('title', 'like', '%' . $this->search . '%')
+        $products = ModelProduct::with('categories')->where('title', 'like', '%' . $this->search . '%')
                            ->latest()
                            ->take($this->limit)
                            ->get();
 
-        return view('livewire.dashboard.products.product-component', [
+        return view('livewire.dashboard.products.product', [
             'products' => $products,
             'totalProducts' => $this->totalProducts
         ]);
