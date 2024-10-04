@@ -50,6 +50,25 @@
                        
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="bi bi-building-fill-gear"></i>
+                        <p>
+                            Proyek
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="bi bi-arrow-return-right"></i>
+                                <p>Master Proyek</p>
+                            </a>
+                        </li>
+                       
+                    </ul>
+                </li>
         
                 <li class="nav-header">Pengaturan</li>
 
