@@ -51,8 +51,8 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item {{ Request::is('dashboard/proyek*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('dashboard/proyek*') ? 'active' : '' }}">
                         <i class="bi bi-building-fill-gear"></i>
                         <p>
                             Proyek
@@ -61,7 +61,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="/dashboard/proyek" class="nav-link {{ Request::is('dashboard/proyek*') ? 'active' : '' }}">
                                 <i class="bi bi-arrow-return-right"></i>
                                 <p>Master Proyek</p>
                             </a>
