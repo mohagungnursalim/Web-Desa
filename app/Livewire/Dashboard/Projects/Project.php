@@ -1,0 +1,204 @@
+<?php
+
+namespace App\Livewire\Dashboard\Projects;
+
+use App\Models\Project as ModelsProject;
+use Livewire\WithFileUploads;
+use Livewire\Component;
+
+class Project extends Component
+{
+    use WithFileUploads;
+
+    public $search = '';
+    public $limit = 4;
+    public $totalProjects;
+    public $project_id;
+    public $image = [], $imagePaths = [], $project_name, $project_description, $start_date, $end_date;
+    public $existingImages = [];
+
+
+    public function mount()
+    {
+        $this->totalProjects = ModelsProject::count();
+    }
+
+    public function updatingSearch()
+    {
+        $this->limit = 4;
+    }
+
+    public function loadMore()
+    {
+        $this->limit += 4;
+    }
+
+    protected function storeRules()
+    {
+        return [
+            'image' => 'required|array|min:1',
+            'image.*' => 'required|image|max:5120',
+            'project_name' => 'required|string|max:250',
+            'project_description' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date'
+        ];
+    }
+
+    protected function updateRules()
+    {
+        return [
+            'image' => 'nullable|array',
+            'image.*' => 'nullable|image|max:5120',
+            'project_name' => 'required|string|max:250',
+            'project_description' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date'
+        ];
+    }
+
+    public function resetForm()
+    {
+        $this->reset(['image', 'project_name', 'project_description', 'start_date', 'end_date']);
+    }
+
+
+    public function store()
+    {
+        $this->validate($this->storeRules());
+        
+        foreach ($this->image as $img) {
+            $imagePaths[] = $img->store('project-images', 'public');
+        }
+        
+        sleep(1);
+        ModelsProject::create([
+            'image' => json_encode($imagePaths),
+            'project_name' => $this->project_name,
+            'project_description' => $this->project_description,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date
+        ]);
+
+        $this->dispatch('closeAddProjectModal');
+        $this->dispatch('addedSuccess');
+        $this->resetForm();
+    }
+
+    public function openUpdateModal($id)
+    {
+        $this->project_id = $id;
+        $project = ModelsProject::find($id);
+        $this->project_name = $project->project_name;
+        $this->project_description = $project->project_description;
+        $this->start_date = $project->start_date;
+        $this->end_date = $project->end_date;
+        //  data gambar yang sudah ada
+        $this->existingImages = json_decode($project->image, true);
+        // event untuk inisialisasi Summernote
+        $this->dispatch('initSummernote');
+        $this->dispatch('openEditProjectModal'); // Kirim event untuk membuka modal dengan jQuery
+    }
+
+    public function closeUpdateModal()
+    {
+        $this->dispatch('closeUpdateModal');
+    }
+
+    public function update()
+    {
+        $this->validate($this->updateRules());
+
+        $project = ModelsProject::find($this->project_id);
+
+        $imagePaths = [];
+        $updateData = [
+            'project_name' => $this->project_name,
+            'project_description' => $this->project_description,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+        ];
+
+        if (!empty($this->image) && is_array($this->image)) {
+            if ($project->image) {
+                $oldImages = json_decode($project->image, true);
+                foreach ($oldImages as $oldImage) {
+                    $oldImagePath = public_path('storage/' . $oldImage);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+            }
+
+            foreach ($this->image as $img) {
+                if ($img instanceof \Illuminate\Http\UploadedFile) {
+                    $imagePaths[] = $img->store('project-images', 'public');
+                }
+            }
+
+            if (!empty($imagePaths)) {
+                $updateData['image'] = json_encode($imagePaths);
+            }
+        }
+
+        sleep(1);
+        $project->update($updateData);
+
+        $this->closeUpdateModal();
+        $this->dispatch('projectUpdated');
+        // Emit event untuk menutup modal
+        $this->dispatch('closeEditProjectModal');
+    }
+
+
+    public function delete($id)
+    {
+        $this->project_id = $id;
+        
+        // Cari project berdasarkan ID
+        $project = ModelsProject::find($id);
+
+        // Cek jika project ditemukan
+        if ($project) {
+            
+            // Lokasi gambar
+            $imagePaths = json_decode($project->image, true);
+
+            // Hapus semua gambar yang terkait dengan project ini
+            if ($imagePaths && is_array($imagePaths)) {
+                foreach ($imagePaths as $imagePath) {
+                    $filePath = storage_path('app/public/' . $imagePath);
+                    
+                    // Cek jika file gambar ada dan hapus
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+
+            sleep(1);
+            // Hapus project dari database
+            $project->delete();
+
+            // Kirim event ke JavaScript untuk menghilangkan modal dan memunculkan notifikasi sukses
+            $this->dispatch('hideModalDelete', 'modalDelete' . $id);
+            $this->dispatch('deleteSuccess');
+
+        } else {
+            // Jika project tidak ditemukan, tampilkan pesan error
+            toast('Oops..proyek tidak tersedia!', 'error');
+            return redirect('/dashboard/projects');
+        }
+    }
+
+
+    public function render()
+    {
+        $projects = ModelsProject::where('project_name', 'like', '%' . $this->search . '%')
+            ->latest()->take($this->limit)->get();
+        return view('livewire.dashboard.projects.project', [
+            'projects' => $projects,
+            'totalProjects' => $this->totalProjects
+        ]);
+    }
+}

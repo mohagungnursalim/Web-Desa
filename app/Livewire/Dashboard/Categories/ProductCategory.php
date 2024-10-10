@@ -46,10 +46,6 @@ class ProductCategory extends Component
         $this->reset(['name']);
     }    
 
-    public function openModal()
-    {
-        $this->isModalOpen = true;
-    }
 
     public function closeModal()
     {
@@ -69,7 +65,10 @@ class ProductCategory extends Component
             'name' => $this->name
         ]);
 
-        $this->closeModal();
+        // Reset form setelah menyimpan
+        $this->resetForm();
+        // Kirim event ke frontend untuk menutup modal
+        $this->dispatch('closeAddCategoryModal');
         $this->dispatch('addedSuccess');
     }
 

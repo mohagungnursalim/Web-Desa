@@ -5,7 +5,9 @@
         <div class="card">
             <div class="card-body">
                 <!-- Tombol untuk membuka modal -->
-                <button wire:click="$set('isModalOpen', true)"  class="btn btn-primary mb-4 d-block d-md-inline-block">Tambah Kategori Produk</button>
+                <button id="openModalBtn" class="btn btn-primary mb-4 d-block d-md-inline-block">Tambah Kategori
+                    Produk</button>
+
 
                 <!-- Input untuk mencari kategori produk -->
                 <div class="mb-2">
@@ -81,14 +83,14 @@
 
     {{-- ----------------Modal------------------------ --}}
 
-    {{-- Modal Tambah Data --}}
-    @if($isModalOpen)
-    <div class="modal show d-block" tabindex="-1" role="dialog">
+
+    <!-- Modal Tambah Data -->
+    <div id="addCategoryModal" class="modal" tabindex="-1" role="dialog" wire:ignore.self>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Tambah Kategori Produk</h5>
-                    <button type="button" class="close" wire:click="closeModal">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -103,57 +105,53 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" wire:loading.remove wire:target='store' wire:click="closeModal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:loading.remove
+                        wire:target="store">Tutup</button>
                     <button type="button" class="btn btn-primary" wire:loading.remove wire:click="store">Simpan</button>
-                    <button type="button" class="btn btn-primary" disabled wire:loading wire:target='store'>
+                    <button type="button" class="btn btn-primary" disabled wire:loading wire:target="store">
                         Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal-backdrop show"></div>
-    @endif
-
-
-   <!-- Modal update -->
-@if($isUpdateModalOpen)
-<div class="modal show d-block" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Update Kategori</h5>
-                <button type="button" class="close" wire:click="closeUpdateModal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form wire:submit.prevent="update">
-                    <div class="form-group">
-                        <label for="categoryName">Nama Kategori</label>
-                        <input type="text" class="form-control" id="categoryName" wire:model="categoryName">
-                        @error('categoryName') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </form>
-            </div>
-            {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" wire:click="closeUpdateModal">Tutup</button>
-                <button type="button" class="btn btn-primary" wire:click="update">Simpan</button>
-            </div> --}}
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" wire:loading.remove wire:target='update' wire:click="closeUpdateModal">Tutup</button>
-                <button type="button" class="btn btn-primary" wire:loading.remove wire:click="update">Simpan</button>
-                <button type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
-                    Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                </button>
+    
+    <!-- Modal update -->
+    @if($isUpdateModalOpen)
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Kategori</h5>
+                    <button type="button" class="close" wire:click="closeUpdateModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form wire:submit.prevent="update">
+                        <div class="form-group">
+                            <label for="categoryName">Nama Kategori</label>
+                            <input type="text" class="form-control" id="categoryName" wire:model="categoryName">
+                            @error('categoryName') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" wire:loading.remove wire:target='update'
+                        wire:click="closeUpdateModal">Tutup</button>
+                    <button type="button" class="btn btn-primary" wire:loading.remove
+                        wire:click="update">Simpan</button>
+                    <button type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
+                        Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal-backdrop fade show"></div>
-@endif
+    <div class="modal-backdrop fade show"></div>
+    @endif
 
-    
+
     {{-- Modal Delete --}}
     @foreach ($categories as $category)
 
@@ -194,6 +192,30 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+        $(document).ready(function () {
+            // Membuka modal ketika tombol ditekan
+            $('#openModalBtn').click(function () {
+                $('#addCategoryModal').modal('show');
+            });
+
+            // Mendengarkan event dari Livewire untuk menutup modal
+            window.addEventListener('closeAddCategoryModal', function (event) {
+                $('#addCategoryModal').modal('hide'); // Menutup modal
+            });
+
+            // Reset form di backend setelah modal ditutup
+            $('#addCategoryModal').on('hidden.bs.modal', function (e) {
+                @this.call('resetForm'); // Reset input form di Livewire
+            });
+
+            // Jika modal ditutup, hapus backdrop jika ada
+            $('#addCategoryModal').on('hidden.bs.modal', function (e) {
+                $('.modal-backdrop').remove(); // Hapus backdrop
+            });
+        });
+
+    </script>
 
     {{-- Sweet alert,added success --}}
     <script>
