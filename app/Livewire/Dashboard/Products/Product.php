@@ -41,13 +41,22 @@ class Product extends Component
         // Cek jika produk ditemukan
         if ($product) {
 
-            $imagePath = storage_path('app/public/' . $product->image); // Sesuaikan dengan lokasi penyimpanan file Anda
+            // Lokasi gambar
+            $imagePaths = json_decode($product->image, true);
 
-            // Cek jika file gambar ada dan hapus
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
+            // Hapus semua gambar yang terkait dengan product ini
+            if ($imagePaths && is_array($imagePaths)) {
+                foreach ($imagePaths as $imagePath) {
+                    $filePath = storage_path('app/public/' . $imagePath);
+                    
+                    // Cek jika file gambar ada dan hapus
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
             }
 
+            sleep(1);
             $product->delete();
 
             // Kirim event ke JavaScript dengan ID modal sebagai string

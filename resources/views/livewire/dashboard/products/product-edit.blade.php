@@ -38,50 +38,60 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="image">Gambar Produk</label>
-
-
-
+                        <label for="image">Gambar Proyek</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Gambar</span>
                             </div>
                             <div class="custom-file">
-                                <input type="file" id="image" class="custom-file-input" wire:model="image">
+                                <input multiple type="file" id="image" class="custom-file-input"
+                                    wire:model="image">
                                 <label class="custom-file-label" for="image">
-                                    @if ($image && !is_string($image))
-                                    <!-- Cek apakah $image adalah file upload -->
-                                    {{ $image->getClientOriginalName() }}
-                                    @elseif ($product && $product->image)
-                                    {{ $product->image }}
+                                    @if ($image)
+                                    File dipilih: {{ count($image) }}
                                     @else
                                     Pilih gambar
                                     @endif
                                 </label>
                             </div>
                         </div>
+                        @error('image') <span class="text-danger error">{{ $message }}</span> @enderror
 
-                        <!-- Menampilkan error jika ada -->
-                        @error('image') <span class="text-danger">{{ $message }}</span> @enderror
-
-                        <!-- Menampilkan preview gambar baru jika ada file di-upload -->
-                        @if ($image && !is_string($image))
-                        <!-- Pastikan ini adalah file upload -->
-                        <img src="{{ $image->temporaryUrl() }}" alt="Preview" class="img-fluid mt-2" width="65px">
-                        @elseif($product && $product->image)
-                        <!-- Menampilkan gambar dari database jika ada -->
-                        <img src="{{ Storage::url($product->image) }}" alt="Current Image" class="img-fluid mt-2"
-                            width="65px">
+                        <!-- Preview gambar yang sudah ada di database -->
+                        @if($existingImages && is_array($existingImages) && count($existingImages) > 0)
+                        <div class="d-flex flex-wrap">
+                            @foreach($existingImages as $img)
+                            <div class="p-2">
+                                <img src="{{ asset('storage/' . $img) }}" alt="Gambar Proyek"
+                                    class="img-fluid img-thumbnail" width="100px">
+                            </div>
+                            @endforeach
+                        </div>
+                        @else
+                        <p>Tidak ada gambar tersimpan.</p>
                         @endif
 
-                        <!-- Menampilkan progress bar saat mengunggah -->
-                        <div wire:loading wire:target="image" class="mt-2 col" style="width: 400px">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                    role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100"
-                                    aria-valuemax="100">
-                                    Mengunggah...
+                        <!-- Preview gambar yang dipilih -->
+                        @if($image)
+                        <div class="mt-3 preview">
+                            <p>Preview Gambar Baru:</p>
+                            <div class="d-flex flex-wrap">
+                                @foreach($image as $img)
+                                <div class="p-2">
+                                    <img src="{{ $img->temporaryUrl() }}" alt="Preview Gambar"
+                                        class="img-fluid img-thumbnail" width="100px">
                                 </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    <div wire:loading wire:target="image" class="mt-2 col" style="width: 400px">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100"
+                                aria-valuemax="100">
+                                Mengunggah...
                             </div>
                         </div>
                     </div>
