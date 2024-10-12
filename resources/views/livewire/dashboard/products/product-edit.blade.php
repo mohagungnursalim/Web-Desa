@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="image">Gambar Proyek</label>
+                        <label for="image">Gambar Produk</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Gambar</span>
