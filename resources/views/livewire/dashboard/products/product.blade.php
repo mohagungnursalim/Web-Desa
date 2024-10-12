@@ -1,14 +1,6 @@
 <div class="py-4">
     @push('styles')
-    {{-- <style>
-    .short-text {
-    display: block;
-}
-
-.full-text {
-    display: none;
-}
-</style> --}}
+  
     @endpush
     <div class="container">
 
@@ -39,9 +31,48 @@
                                     <div class="col-md-6 col-lg-3">
                                         <div class="card">
                                             {{-- Menampilkan gambar produk --}}
+                                            @php
+                                            $images = is_string($product->image) ? json_decode($product->image, true) :
+                                            $product->image;
+                                            @endphp
+
+                                            @if($images && is_array($images) && count($images) > 0)
+                                            <div id="productCarousel{{ $product->id }}" class="carousel slide"
+                                                data-ride="carousel">
+                                                <ol class="carousel-indicators">
+                                                    @foreach($images as $imageIndex => $img)
+                                                    <li data-target="#productCarousel{{ $product->id }}"
+                                                        data-slide-to="{{ $imageIndex }}"
+                                                        class="{{ $imageIndex == 0 ? 'active' : '' }}"></li>
+                                                    @endforeach
+                                                </ol>
+                                                <div class="carousel-inner">
+                                                    @foreach($images as $imageIndex => $img)
+                                                    <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
+                                                        <img class="d-block w-100" src="{{ asset('storage/' . $img) }}"
+                                                            alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                                @if(count($images) > 1)
+                                                <a class="carousel-control-prev"
+                                                    href="#productCarousel{{ $product->id }}" role="button"
+                                                    data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                                <a class="carousel-control-next"
+                                                    href="#productCarousel{{ $product->id }}" role="button"
+                                                    data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                                @endif
+                                            </div>
+                                            @elseif($product->image)
                                             <img class="img-fluid" src="{{ asset('storage/' . $product->image) }}"
                                                 alt="{{ $product->title }}">
-
+                                            @endif
                                             <div class="card-body">
 
                                                 {{-- Loop kategori terkait --}}
@@ -52,7 +83,7 @@
                                                     @endforeach
                                                 </div>
                                                 {{-- Menampilkan judul produk --}}
-                                                <h5 class="card-title">{{ $product->title }}</h5>
+                                                <h5 class="card-title"><b>{{ $product->title }}</b></h5><br>
                                                 
                                                 {{-- Menampilkan deskripsi produk --}}
                                                 <td class="text-wrap small">

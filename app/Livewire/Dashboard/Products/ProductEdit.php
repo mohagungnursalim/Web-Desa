@@ -16,6 +16,7 @@ class ProductEdit extends Component
     public $product_id, $title, $image, $price, $description, $wa_number, $product_category = [];
     public $categories = [];
     public $selectedId = []; // untuk kategori yang dipilih
+    public $existingImages = [];
 
     // Validasi input
     protected $rules = [
@@ -33,7 +34,7 @@ class ProductEdit extends Component
         $product = Product::findOrFail($id);
         $this->product = $product; // Tambahkan baris ini
         $this->product_id = $product->id;
-        $this->image = $product->image;
+        $this->existingImages = json_decode($product->image,true);
         $this->title = $product->title;
         $this->wa_number = $product->wa_number;
         $this->price = $product->price;
@@ -69,26 +70,39 @@ class ProductEdit extends Component
         $product->description = $this->description;
         
          
-       // Mengelola penggantian gambar jika ada file baru
-        if ($this->image instanceof \Illuminate\Http\UploadedFile) {
-            // Jika ada gambar lama, hapus
+        if (!empty($this->image) && is_array($this->image)) {
+            // Menghapus gambar lama jika ada
             if ($product->image) {
-                $oldImagePath = public_path('storage/' . $product->image);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
+                $oldImages = json_decode($product->image, true);
+                foreach ($oldImages as $oldImage) {
+                    $oldImagePath = public_path('storage/' . $oldImage);
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
                 }
             }
-            // Simpan gambar baru
-            $product->image = $this->image->store('products', 'public');
+        
+            // Menyimpan gambar baru
+            foreach ($this->image as $img) {
+                if ($img instanceof \Illuminate\Http\UploadedFile) {
+                    $imagePaths[] = $img->store('product-images', 'public');
+                }
+            }
+        
+            if (!empty($imagePaths)) {
+                $product->image = json_encode($imagePaths);
+            }
+        } else {
+            // Jika tidak ada gambar baru yang di-upload, tetap gunakan gambar lama
+            $product->image = $product->image;
         }
-        // Jika tidak ada gambar baru yang diupload, biarkan gambar lama
+        
 
-
-        usleep(500000);
+        sleep(1);
         // Simpan perubahan produk
         $product->save();
+
         // Update kategori yang dipilih
-        // $product->categories()->sync($this->selectedId);
         $product->categories()->sync($this->selectedId);
 
         // Menampilkan notifikasi berhasil menggunakan toast
