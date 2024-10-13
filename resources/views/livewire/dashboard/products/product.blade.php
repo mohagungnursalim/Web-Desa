@@ -11,11 +11,11 @@
 
                 <div class="w-100">
 
-                    <a href="/dashboard/produk/tambah-produk" class="btn btn-primary mb-4">Tambah Produk</a>
+                    <a href="/dashboard/produk/tambah-produk"  style="border-radius: 10px;" class="btn btn-primary mb-4">Tambah Produk</a>
 
                     <!-- Input untuk mencari produk -->
                     <div class="mb-2">
-                        <input type="text" wire:model.live.debounce.500ms="search" placeholder="Cari produk.."
+                        <input  style="border-radius: 10px;" type="text" wire:model.live.debounce.500ms="search" placeholder="Cari produk.."
                             class="form-control" style="color: black;">
 
                         &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
@@ -29,7 +29,7 @@
                                 <div class="row">
                                     @foreach ($products as $index => $product)
                                     <div class="col-md-6 col-lg-3">
-                                        <div class="card">
+                                        <div class="card"  style="border-radius: 20px;">
                                             {{-- Menampilkan gambar produk --}}
                                             @php
                                             $images = is_string($product->image) ? json_decode($product->image, true) :
@@ -49,8 +49,8 @@
                                                 <div class="carousel-inner">
                                                     @foreach($images as $imageIndex => $img)
                                                     <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
-                                                        <img class="d-block w-100" src="{{ asset('storage/' . $img) }}"
-                                                            alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
+                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;" class="d-block w-100" src="{{ asset('storage/' . $img) }}" alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
+
                                                     </div>
                                                     @endforeach
                                                 </div>
@@ -78,7 +78,7 @@
                                                 {{-- Loop kategori terkait --}}
                                                 <div class="d-flex flex-wrap">
                                                     @foreach ($product->categories as $category)
-                                                    <button
+                                                    <button  style="border-radius: 10px;"
                                                         class="badge bg-dark me-2">{{ $category->name }}</button>&nbsp;
                                                     @endforeach
                                                 </div>
@@ -113,13 +113,13 @@
                                                 <div class="text-center">
                                                     <a href="{{ route('dashboard.produk.edit',$product->id) }}"
                                                         class="badge bg-warning text-white"
-                                                        style="text-decoration: none;">
+                                                        style="text-decoration: none; border-radius: 20px">
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </a>
 
                                                     <button data-toggle="modal"
                                                         data-target="#modalDelete{{ $product->id }}" type="button"
-                                                        class="badge bg-danger text-white" style="border: none">
+                                                        class="badge bg-danger text-white" style="border: none; border-radius: 20px;">
                                                         <i class="bi bi-trash3"></i> Delete
                                                     </button>
 
@@ -148,13 +148,13 @@
                     @if($products->count() >= $limit && $totalProducts > $limit)
                     <div class="mt-4 d-flex justify-content-center">
                         <!-- Tombol "Tampilkan Lebih" (akan hilang saat loading) -->
-                        <button wire:click="loadMore" class="btn btn-info btn-rounded" wire:loading.remove
+                        <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded" wire:loading.remove
                             wire:target="loadMore">
                             Tampilkan Lebih
                         </button>
 
                         <!-- Tombol Loading (hanya muncul saat loading) -->
-                        <button class="btn btn-info  btn-rounded" type="button" disabled wire:loading
+                        <button style="border-radius: 20px;" class="btn btn-dark  btn-rounded" type="button" disabled wire:loading
                             wire:target="loadMore">
                             Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                         </button>
@@ -176,7 +176,7 @@
         <div class="modal" id="modalDelete{{ $product->id }}" tabindex="-1" role="dialog"
             aria-labelledby="deleteModalLabel{{ $product->id }}" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content"  style="border-radius: 20px;">
                     <div class="modal-header">
                         <h6 class="modal-title" id="deleteModalLabel{{ $product->id }}">
                             Hapus Produk "{{ $product->title }}" </h6>
@@ -188,14 +188,14 @@
                         Apakah anda yakin ingin menghapus produk ini?
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button wire:loading.remove wire:target='delete({{ $product->id }})' type="button"
+                        <button style="border-radius: 10px;"  wire:loading.remove wire:target='delete({{ $product->id }})' type="button"
                             class="btn btn-secondary" data-dismiss="modal">Batal
                         </button>
-                        <button wire:loading.remove wire:click="delete({{ $product->id }})" type="button"
+                        <button style="border-radius: 10px;" wire:loading.remove wire:click="delete({{ $product->id }})" type="button"
                             class="btn btn-danger">Hapus
                         </button>
 
-                        <button wire:loading wire:target='delete({{ $product->id }})' class="btn btn-danger" disabled>
+                        <button style="border-radius: 10px;" wire:loading wire:target='delete({{ $product->id }})' class="btn btn-danger" disabled>
                             Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
@@ -214,21 +214,21 @@
 
         <script>
             function toggleDescription(element) {
-    // Dapatkan elemen-elemen terkait
-    var shortText = element.parentElement.parentElement.querySelector('.short-text');
-    var fullText = element.parentElement.parentElement.querySelector('.full-text');
-    
-    // Periksa apakah teks pendek sedang ditampilkan
-    if (shortText.style.display === 'none') {
-        // Jika teks pendek tersembunyi, tampilkan teks pendek dan sembunyikan teks penuh
-        shortText.style.display = 'inline';
-        fullText.style.display = 'none';
-    } else {
-        // Jika teks pendek terlihat, sembunyikan teks pendek dan tampilkan teks penuh
-        shortText.style.display = 'none';
-        fullText.style.display = 'inline';
-    }
-}
+                // Dapatkan elemen-elemen terkait
+                var shortText = element.parentElement.parentElement.querySelector('.short-text');
+                var fullText = element.parentElement.parentElement.querySelector('.full-text');
+                
+                // Periksa apakah teks pendek sedang ditampilkan
+                if (shortText.style.display === 'none') {
+                    // Jika teks pendek tersembunyi, tampilkan teks pendek dan sembunyikan teks penuh
+                    shortText.style.display = 'inline';
+                    fullText.style.display = 'none';
+                } else {
+                    // Jika teks pendek terlihat, sembunyikan teks pendek dan tampilkan teks penuh
+                    shortText.style.display = 'none';
+                    fullText.style.display = 'inline';
+                }
+            }
 
         </script>
         

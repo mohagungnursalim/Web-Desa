@@ -26,9 +26,9 @@
     </style>
     @endpush
     <div class="container-fluid">
-        <div class="card">
+        <div class="card" style="border-radius: 25px;">
             <div class="card-body">
-                <h4><a href="/dashboard/produk" class="btn btn-secondary">👈Kembali</a></h4>
+                <h4><a href="/dashboard/produk" style="border-radius: 10px;" class="btn btn-white"><u>👈Kembali</u></a></h4>
                 <form wire:submit.prevent="update">
                     <div class="form-group">
                         <label for="title">Nama Produk</label>
@@ -133,10 +133,10 @@
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary" wire:loading.remove wire:target="update">
+                        <button style="border-radius: 10px;" type="submit" class="btn btn-primary" wire:loading.remove wire:target="update">
                             Simpan
                         </button>
-                        <button class="btn btn-primary" type="button" disabled wire:loading wire:target="update">
+                        <button style="border-radius: 10px;" class="btn btn-primary" type="button" disabled wire:loading wire:target="update">
                             Memperbarui <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                         </button>
                     </div>

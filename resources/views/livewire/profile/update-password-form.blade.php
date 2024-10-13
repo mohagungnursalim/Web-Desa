@@ -76,10 +76,10 @@ $updatePassword = function () {
         </div>
 
         <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-primary" wire:loading.remove
+            <button style="border-radius: 10px;" type="submit" class="btn btn-primary" wire:loading.remove
                 wire:target="updatePassword">{{ __('Simpan') }}</button>
 
-            <button class="btn btn-primary" type="button" disabled wire:loading wire:target="updatePassword">
+            <button style="border-radius: 10px;" class="btn btn-primary" type="button" disabled wire:loading wire:target="updatePassword">
                 Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
             </button>
         </div>
