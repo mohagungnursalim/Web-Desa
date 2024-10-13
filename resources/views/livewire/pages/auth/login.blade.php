@@ -17,7 +17,10 @@ $login = function () {
 
     Session::regenerate();
 
-    $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // Menggunakan paket sweet-alert untuk menampilkan toast
+        alert()->success('Selamat datang, ' . Auth::user()->name, 'Login Berhasil')->autoClose(2500);
+
+    return redirect('/dashboard');
 };
 
 ?>

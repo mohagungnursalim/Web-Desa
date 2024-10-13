@@ -34,9 +34,9 @@ Route::get('/dashboard/produk/tambah-produk', function () {
 Route::get('/dashboard/produk/{id}/edit', [ProductController::class, 'edit'])->middleware('auth')->name('dashboard.produk.edit');
 
 // Route untuk dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
-})->middleware('auth')->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard.dashboard-user');
+// })->middleware('auth')->name('dashboard');
 
 // Logout
 Route::post('logout', [LogoutController::class, 'destroy'])
