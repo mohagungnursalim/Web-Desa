@@ -2,16 +2,16 @@
     @push('styles')
     @endpush
     <div class="container-fluid col-md">
-        <div class="card">
+        <div class="card" style="border-radius: 25px;">
             <div class="card-body">
                 <!-- Tombol untuk membuka modal -->
-                <button id="openModalBtn" class="btn btn-primary mb-4 d-block d-md-inline-block">Tambah Kategori
+                <button style="border-radius: 10px;" id="openModalBtn" class="btn btn-primary mb-4 d-block d-md-inline-block">Tambah Kategori
                     Produk</button>
 
 
                 <!-- Input untuk mencari kategori produk -->
                 <div class="mb-2">
-                    <input type="text" wire:model.live.debounce.500ms="search" placeholder="Cari kategori.."
+                    <input style="border-radius: 10px;" type="text" wire:model.live.debounce.500ms="search" placeholder="Cari kategori.."
                         class="form-control" style="color: black;">
 
                     &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
@@ -38,12 +38,12 @@
                             <td>{{ $category->updated_at }}</td>
                             <td>
                                 <!-- Tombol untuk membuka modal update -->
-                                <button wire:click="openUpdateModal({{ $category->id }})" class="btn btn-primary">
+                                <button style="border-radius: 10px;" wire:click="openUpdateModal({{ $category->id }})" class="btn btn-primary">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
 
                                 </button>
-                                <button data-toggle="modal" data-target="#modalDelete{{ $category->id }}" type="button"
+                                <button style="border-radius: 10px;" data-toggle="modal" data-target="#modalDelete{{ $category->id }}" type="button"
                                     class="btn btn-danger text-white" style="border: none">
                                     <i class="bi bi-trash3"></i>
                                 </button>
@@ -64,13 +64,13 @@
                 @if($categories->count() >= $limit && $totalCategories > $limit)
                 <div class="mt-4 d-flex justify-content-center">
                     <!-- Tombol "Tampilkan Lebih" (akan hilang saat loading) -->
-                    <button wire:click="loadMore" class="btn btn-info btn-rounded" wire:loading.remove
+                    <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded" wire:loading.remove
                         wire:target="loadMore">
                         Tampilkan Lebih
                     </button>
 
                     <!-- Tombol Loading (hanya muncul saat loading) -->
-                    <button class="btn btn-info  btn-rounded" type="button" disabled wire:loading
+                    <button style="border-radius: 20px;" class="btn btn-dark  btn-rounded" type="button" disabled wire:loading
                         wire:target="loadMore">
                         Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     </button>
@@ -87,7 +87,7 @@
     <!-- Modal Tambah Data -->
     <div id="addCategoryModal" class="modal" tabindex="-1" role="dialog" wire:ignore.self>
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="border-radius: 20px;">
                 <div class="modal-header">
                     <h5 class="modal-title">Tambah Kategori Produk</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -105,10 +105,10 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:loading.remove
+                    <button style="border-radius: 10px;" type="button" class="btn btn-secondary" data-dismiss="modal" wire:loading.remove
                         wire:target="store">Tutup</button>
-                    <button type="button" class="btn btn-primary" wire:loading.remove wire:click="store">Simpan</button>
-                    <button type="button" class="btn btn-primary" disabled wire:loading wire:target="store">
+                    <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove wire:click="store">Simpan</button>
+                    <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading wire:target="store">
                         Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -120,7 +120,7 @@
     @if($isUpdateModalOpen)
     <div class="modal show d-block" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="border-radius: 20px;">
                 <div class="modal-header">
                     <h5 class="modal-title">Update Kategori</h5>
                     <button type="button" class="close" wire:click="closeUpdateModal">
@@ -137,11 +137,11 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" wire:loading.remove wire:target='update'
+                    <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove wire:target='update'
                         wire:click="closeUpdateModal">Tutup</button>
-                    <button type="button" class="btn btn-primary" wire:loading.remove
+                    <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
                         wire:click="update">Simpan</button>
-                    <button type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
+                    <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
                         Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -158,7 +158,7 @@
     <div class="modal" id="modalDelete{{ $category->id }}" tabindex="-1" role="dialog"
         aria-labelledby="deleteModalLabel{{ $category->id }}" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="border-radius: 20px;">
                 <div class="modal-header">
                     <h6 class="modal-title" id="deleteModalLabel{{ $category->id }}">
                         Hapus Kategori Produk "{{ $category->name }}" </h6>
@@ -170,14 +170,14 @@
                     Apakah anda yakin ingin menghapus kategori ini?
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button wire:loading.remove wire:target='delete({{ $category->id }})' type="button"
+                    <button style="border-radius: 10px;" wire:loading.remove wire:target='delete({{ $category->id }})' type="button"
                         class="btn btn-secondary" data-dismiss="modal">Batal
                     </button>
-                    <button wire:loading.remove wire:click="delete({{ $category->id }})" type="button"
+                    <button style="border-radius: 10px;" wire:loading.remove wire:click="delete({{ $category->id }})" type="button"
                         class="btn btn-danger">Hapus
                     </button>
 
-                    <button wire:loading wire:target='delete({{ $category->id }})' class="btn btn-danger" disabled>
+                    <button style="border-radius: 10px;" wire:loading wire:target='delete({{ $category->id }})' class="btn btn-danger" disabled>
                         Menghapus <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     </button>
                 </div>

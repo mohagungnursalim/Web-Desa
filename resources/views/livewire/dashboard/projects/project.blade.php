@@ -13,14 +13,14 @@
                 <div class="w-100">
 
                     <!-- Tombol untuk membuka modal -->
-                    <button id="openModalBtn" class="btn btn-primary mb-4 d-block d-md-inline-block">
+                    <button style="border-radius: 10px;" id="openModalBtn" class="btn btn-primary mb-4 d-block d-md-inline-block">
                         Tambah Proyek
                     </button>
 
 
                     <!-- Input untuk mencari proyek -->
                     <div class="mb-2">
-                        <input type="text" wire:model.live.debounce.500ms="search" placeholder="Cari proyek.."
+                        <input style="border-radius: 10px;" type="text" wire:model.live.debounce.500ms="search" placeholder="Cari proyek.."
                             class="form-control" style="color: black;">
 
                         &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
@@ -34,7 +34,7 @@
                                 <div class="row">
                                     @foreach ($projects as $index => $project)
                                     <div class="col-md-6 col-lg-3">
-                                        <div class="card">
+                                        <div class="card" style="border-radius: 25px;">
 
                                             @php
                                             $images = is_string($project->image) ? json_decode($project->image, true) :
@@ -54,7 +54,7 @@
                                                 <div class="carousel-inner">
                                                     @foreach($images as $imageIndex => $img)
                                                     <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
-                                                        <img class="d-block w-100" src="{{ asset('storage/' . $img) }}"
+                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;" class="d-block w-100" src="{{ asset('storage/' . $img) }}"
                                                             alt="{{ $project->project_name }} - Image {{ $imageIndex + 1 }}">
                                                     </div>
                                                     @endforeach
@@ -103,12 +103,12 @@
 
                                                 <div class="text-center">
                                                     <!-- Tombol untuk membuka modal update -->
-                                                    <button wire:click="openUpdateModal({{ $project->id }})"
+                                                    <button style="border-radius: 10px;" wire:click="openUpdateModal({{ $project->id }})"
                                                         class="btn btn-primary">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </button>
 
-                                                    <button data-toggle="modal" data-target="#modalDelete{{ $project->id }}"
+                                                    <button style="border-radius: 10px;" data-toggle="modal" data-target="#modalDelete{{ $project->id }}"
                                                         class="btn btn-danger">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
@@ -137,13 +137,13 @@
                     @if($projects->count() >= $limit && $totalProjects > $limit)
                     <div class="mt-4 d-flex justify-content-center">
                         <!-- Tombol "Tampilkan Lebih" (akan hilang saat loading) -->
-                        <button wire:click="loadMore" class="btn btn-info btn-rounded" wire:loading.remove
+                        <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded" wire:loading.remove
                             wire:target="loadMore">
                             Tampilkan Lebih
                         </button>
 
                         <!-- Tombol Loading (hanya muncul saat loading) -->
-                        <button class="btn btn-info  btn-rounded" type="button" disabled wire:loading
+                        <button style="border-radius: 20px;" class="btn btn-dark  btn-rounded" type="button" disabled wire:loading
                             wire:target="loadMore">
                             Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                         </button>
@@ -163,7 +163,7 @@
         <!-- Modal Tambah Project -->
         <div id="addProjectModal" class="modal fade" tabindex="-1" role="dialog" wire:ignore.self>
             <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
+                <div class="modal-content" style="border-radius: 20px;"> 
                     <div class="modal-header">
                         <h5 class="modal-title">Tambah Proyek</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -246,11 +246,11 @@
                     </div>
                     <div class="modal-footer justify-content-center">
                         <!-- Tombol untuk menyimpan data -->
-                        <button type="button" class="btn btn-secondary" wire:loading.remove wire:target='store'
+                        <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove wire:target='store'
                             data-dismiss="modal">Tutup</button>
-                        <button type="button" class="btn btn-primary" wire:loading.remove
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
                             wire:click="store">Simpan</button>
-                        <button type="button" class="btn btn-primary" disabled wire:loading wire:target='store'>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading wire:target='store'>
                             Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
@@ -262,7 +262,7 @@
        <!-- Modal Edit -->
         <div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" wire:ignore.self>
             <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
+                <div class="modal-content" style="border-radius: 20px;">
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Proyek</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -358,9 +358,9 @@
                         </form>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" wire:loading.remove wire:target='update' data-dismiss="modal">Tutup</button>
-                        <button type="button" class="btn btn-primary" wire:loading.remove wire:click="update">Simpan</button>
-                        <button type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove wire:target='update' data-dismiss="modal">Tutup</button>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove wire:click="update">Simpan</button>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
                             Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
@@ -375,7 +375,7 @@
         <div class="modal" id="modalDelete{{ $project->id }}" tabindex="-1" role="dialog"
             aria-labelledby="deleteModalLabel{{ $project->id }}" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content" style="border-radius: 20px;">
                     <div class="modal-header">
                         <h6 class="modal-title" id="deleteModalLabel{{ $project->id }}">
                             Hapus Proyek "{{ $project->project_name }}" </h6>
@@ -387,14 +387,14 @@
                         Apakah anda yakin ingin menghapus proyek ini?
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button wire:loading.remove wire:target='delete({{ $project->id }})' type="button"
+                        <button style="border-radius: 10px;" wire:loading.remove wire:target='delete({{ $project->id }})' type="button"
                             class="btn btn-secondary" data-dismiss="modal">Batal
                         </button>
-                        <button wire:loading.remove wire:click="delete({{ $project->id }})" type="button"
+                        <button style="border-radius: 10px;" wire:loading.remove wire:click="delete({{ $project->id }})" type="button"
                             class="btn btn-danger">Hapus
                         </button>
 
-                        <button wire:loading wire:target='delete({{ $project->id }})' class="btn btn-danger" disabled>
+                        <button style="border-radius: 10px;" wire:loading wire:target='delete({{ $project->id }})' class="btn btn-danger" disabled>
                             Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
