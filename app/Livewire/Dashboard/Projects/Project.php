@@ -11,7 +11,7 @@ class Project extends Component
     use WithFileUploads;
 
     public $search = '';
-    public $limit = 4;
+    public $limit = 8;
     public $totalProjects;
     public $project_id;
     public $image = [], $imagePaths = [], $project_name, $project_description, $start_date, $end_date;
@@ -25,11 +25,12 @@ class Project extends Component
 
     public function updatingSearch()
     {
-        $this->limit = 4;
+        $this->limit = 8;
     }
 
     public function loadMore()
     {
+        usleep(500000);
         $this->limit += 4;
     }
 

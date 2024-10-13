@@ -59,23 +59,12 @@
                     </tbody>
                 </table>
 
-
-                <!-- Tombol Load More -->
-                @if($categories->count() >= $limit && $totalCategories > $limit)
-                <div class="mt-4 d-flex justify-content-center">
-                    <!-- Tombol "Tampilkan Lebih" (akan hilang saat loading) -->
-                    <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded" wire:loading.remove
-                        wire:target="loadMore">
-                        Tampilkan Lebih
-                    </button>
-
-                    <!-- Tombol Loading (hanya muncul saat loading) -->
-                    <button style="border-radius: 20px;" class="btn btn-dark  btn-rounded" type="button" disabled wire:loading
-                        wire:target="loadMore">
-                        Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                    </button>
+                <div x-intersect="$wire.loadMore()">
+                    @if($categories->count() >= $limit && $totalCategories > $limit)
+                      <div class="d-flex justify-content-center" wire:loading wire:target="loadMore">  Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> </div> 
+                        @endif
                 </div>
-                @endif
+                
             </div>
         </div>
     </div>

@@ -9,7 +9,7 @@ use App\Models\Product as ModelProduct;
 class Product extends Component
 {
     public $search = '';
-    public $limit = 4; // Limit produk yang akan ditampilkan pertama kali
+    public $limit = 8; // Limit produk yang akan ditampilkan pertama kali
     public $totalProducts; // Total produk di database
     public $product_id;
     
@@ -23,12 +23,12 @@ class Product extends Component
     public function updatingSearch()
     {
         // Mereset halaman dan limit jika pencarian berubah
-        $this->limit = 4;
+        $this->limit = 8;
     }
 
     public function loadMore()
     {
-        // Tambah jumlah produk yang ditampilkan setiap kali tombol Load More diklik
+        usleep(500000);
         $this->limit += 4;
     }
 

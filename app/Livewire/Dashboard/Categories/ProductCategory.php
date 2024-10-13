@@ -9,7 +9,7 @@ class ProductCategory extends Component
 {
 
     public $search = '';
-    public $limit = 4;
+    public $limit = 7;
     public $totalCategories;
     public $category_id;
     public $isModalOpen = false;
@@ -27,11 +27,12 @@ class ProductCategory extends Component
 
     public function updatingSearch()
     {
-        $this->limit = 4;
+        $this->limit = 7;
     }
 
     public function loadMore()
     {
+        usleep(500000);
         $this->limit += 4;
     }
 
