@@ -14,6 +14,7 @@ class Project extends Component
     public $limit = 8;
     public $totalProjects;
     public $project_id;
+    public $hasMore = true;
     public $image = [], $imagePaths = [], $project_name, $project_description, $start_date, $end_date;
     public $existingImages = [];
 
@@ -26,12 +27,25 @@ class Project extends Component
     public function updatingSearch()
     {
         $this->limit = 8;
+        $this->hasMore = true;
     }
 
     public function loadMore()
     {
+        if (!$this->hasMore) {
+            return; //jika tidak ada lagi data,maka kembalikan nilai kosong
+        }
+
         usleep(500000);
-        $this->limit += 4;
+        $newLimit = $this->limit + 4;
+
+        //jika limit data melebihi total data,hentikan render 
+        if ($newLimit >= $this->totalProjects) {
+            $this->hasMore = false;
+            $this->limit = $this->totalProjects;
+        }else {
+            $this->limit = $newLimit;
+        }
     }
 
     protected function storeRules()

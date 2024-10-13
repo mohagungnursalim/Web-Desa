@@ -142,11 +142,13 @@
                     </div>
 
                    
-                    <div x-intersect="$wire.loadMore()">
-                        @if($products->count() >= $limit && $totalProducts > $limit)
-                          <div class="d-flex justify-content-center" wire:loading wire:target="loadMore">  Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> </div> 
+                    @if($hasMore)
+                        <div x-intersect="$wire.loadMore()">
+                            @if($products->count() >= $limit && $totalProducts > $limit)
+                            <div class="d-flex justify-content-center" wire:loading wire:target="loadMore">  Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> </div> 
                             @endif
-                    </div>
+                        </div>
+                    @endif
                    
 
                 </div>

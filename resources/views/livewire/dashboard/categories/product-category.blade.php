@@ -59,12 +59,16 @@
                     </tbody>
                 </table>
 
+
+                @if($hasMore)
                 <div x-intersect="$wire.loadMore()">
                     @if($categories->count() >= $limit && $totalCategories > $limit)
                       <div class="d-flex justify-content-center" wire:loading wire:target="loadMore">  Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> </div> 
-                        @endif
+                    @endif
                 </div>
-                
+                @endif
+
+
             </div>
         </div>
     </div>

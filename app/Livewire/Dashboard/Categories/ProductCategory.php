@@ -12,6 +12,7 @@ class ProductCategory extends Component
     public $limit = 7;
     public $totalCategories;
     public $category_id;
+    public $hasMore = true;
     public $isModalOpen = false;
     public $name;
    
@@ -28,12 +29,26 @@ class ProductCategory extends Component
     public function updatingSearch()
     {
         $this->limit = 7;
+        $this->hasMore = true; 
     }
 
     public function loadMore()
     {
+
+        if (!$this->hasMore) {
+            return; //jika tidak ada lagi data,maka kembalikan nilai kosong
+        }
+
+
         usleep(500000);
-        $this->limit += 4;
+        $newLimit = $this->limit + 4;
+  //jika limit data melebihi total data,hentikan render 
+        if ($newLimit >= $this->totalCategories) {
+            $this->hasMore = false;
+            $this->limit = $this->totalCategories;
+        }else {
+            $this->limit = $newLimit;
+        }
     }
 
     // validation
