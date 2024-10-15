@@ -66,6 +66,8 @@
                       <div class="d-flex justify-content-center" wire:loading wire:target="loadMore">  Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> </div> 
                     @endif
                 </div>
+                @elseif($categories->count() == $totalCategories) 
+                <div class="d-flex justify-content-center"><p class="text-secondary">Tidak ada lagi kategori</p>
                 @endif
 
 
