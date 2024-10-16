@@ -130,7 +130,7 @@ class ProductCategory extends Component
 
             usleep(500000);
             $category->delete();
-
+            
             // Kirim event ke JavaScript dengan ID modal sebagai string
             $this->dispatch('hideModalDelete', 'modalDelete' . $id);  // Pastikan modal ID sebagai string
             $this->dispatch('deleteSuccess');

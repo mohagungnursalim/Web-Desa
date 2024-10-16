@@ -38,6 +38,44 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
                 <li class="nav-header">--Konten--</li>
+
+                <li class="nav-item {{ Request::is('dashboard/kategori-postingan') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('dashboard/kategori-postingan') ? 'active' : '' }}">
+                        <i class="bi bi-pencil-square"></i>
+                        <p>
+                            Postingan
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="bi bi-arrow-return-right"></i>
+                                <p class="">Master Postingan</p>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/dashboard/kategori-postingan" class="nav-link">
+                                <i class="bi bi-arrow-return-right"></i>
+                                <p class="{{Request::is('dashboard/kategori-postingan') ? 'text-warning' : ''}}">Master
+                                    Kategori</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="bi bi-arrow-return-right"></i>
+                                <p class="{{Request::is('dashboard/kategori-produk') ? 'text-warning' : ''}}">Master
+                                    Tag</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li
                     class="nav-item {{ Request::is('dashboard/produk*') || Request::is('dashboard/kategori-produk*') ? 'menu-open' : '' }}">
                     <a href="#"
@@ -110,8 +148,6 @@
 
                     </ul>
                 </li>
-
-
 
 
                 {{-- LogOut --}}
