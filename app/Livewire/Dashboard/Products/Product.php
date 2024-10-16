@@ -12,7 +12,6 @@ class Product extends Component
     public $limit = 8; // Limit produk yang akan ditampilkan pertama kali
     public $totalProducts; // Total produk di database
     public $product_id;
-    public $hasMore = true;
     
     public function mount() 
     {
@@ -25,25 +24,12 @@ class Product extends Component
     {
         // Mereset halaman dan limit jika pencarian berubah
         $this->limit = 8;
-        $this->hasMore = true;
     }
 
     public function loadMore()
     {
-        if (!$this->hasMore) {
-            return; // Hentikan pemanggilan jika tidak ada lebih banyak produk
-        }
-
         usleep(500000);
-        $newLimit = $this->limit + 4;
-
-        // Jika batas baru melebihi total produk, hentikan pemuatan lebih banyak
-        if ($newLimit >= $this->totalProducts) {
-            $this->hasMore = false;
-            $this->limit = $this->totalProducts; // Ambil semua sisa produk yang ada
-        } else {
-            $this->limit = $newLimit;
-        }
+        $this->limit += 8;
     }
 
     public function delete($id)

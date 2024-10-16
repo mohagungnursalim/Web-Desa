@@ -12,7 +12,6 @@ class ProductCategory extends Component
     public $limit = 7;
     public $totalCategories;
     public $category_id;
-    public $hasMore = true;
     public $isModalOpen = false;
     public $name;
    
@@ -22,33 +21,18 @@ class ProductCategory extends Component
     
     public function mount()
     {
-
         $this->totalCategories = ModelsProductCategory::count();
     }
 
     public function updatingSearch()
     {
         $this->limit = 7;
-        $this->hasMore = true; 
     }
 
     public function loadMore()
     {
-
-        if (!$this->hasMore) {
-            return; //jika tidak ada lagi data,maka kembalikan nilai kosong
-        }
-
-
         usleep(500000);
-        $newLimit = $this->limit + 4;
-  //jika limit data melebihi total data,hentikan render 
-        if ($newLimit >= $this->totalCategories) {
-            $this->hasMore = false;
-            $this->limit = $this->totalCategories;
-        }else {
-            $this->limit = $newLimit;
-        }
+        $this->limit += 7;
     }
 
     // validation
@@ -74,7 +58,7 @@ class ProductCategory extends Component
     {
         $this->validate();
 
-        usleep(500000);
+        sleep(1);
 
         // Create new product
         ModelsProductCategory::create([
@@ -109,6 +93,7 @@ class ProductCategory extends Component
             'categoryName' => 'required|string|max:30',
         ]);
 
+        sleep(1);
         ModelsProductCategory::find($this->category_id)->update([
             'name' => $this->categoryName,
         ]);
@@ -128,7 +113,7 @@ class ProductCategory extends Component
         // Cek jika category ditemukan
         if ($category) {
 
-            usleep(500000);
+            sleep(1);
             $category->delete();
             
             // Kirim event ke JavaScript dengan ID modal sebagai string
