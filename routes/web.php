@@ -16,8 +16,12 @@ Route::get('/dashboard/proyek', function () {
     return view('dashboard.projects.index');
 })->middleware('auth')->name('dashboard.kategori-produk');
 
+Route::get('/dashboard/kategori-postingan', function () {
+    return view('dashboard.categories.post-category');
+})->middleware('auth')->name('dashboard.kategori-postingan');
+
 Route::get('/dashboard/kategori-produk', function () {
-    return view('dashboard.categories.index');
+    return view('dashboard.categories.product-category');
 })->middleware('auth')->name('dashboard.kategori-produk');
 
 // Route untuk menampilkan daftar produk
