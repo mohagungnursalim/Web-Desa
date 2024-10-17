@@ -20,6 +20,10 @@ Route::get('/dashboard/kategori-postingan', function () {
     return view('dashboard.categories.post-category');
 })->middleware('auth')->name('dashboard.kategori-postingan');
 
+Route::get('/dashboard/tag-postingan', function () {
+    return view('dashboard.tags.index');
+})->middleware('auth')->name('dashboard.tag-postingan');
+
 Route::get('/dashboard/kategori-produk', function () {
     return view('dashboard.categories.product-category');
 })->middleware('auth')->name('dashboard.kategori-produk');
@@ -44,7 +48,7 @@ Route::get('/dashboard/produk/{id}/edit', [ProductController::class, 'edit'])->m
 
 // Logout
 Route::post('logout', [LogoutController::class, 'destroy'])
-->name('logout');
+->name('logout')->middleware('auth');
 
 
 // Route terkait profil

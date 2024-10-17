@@ -154,13 +154,7 @@ class PostCategory extends Component
         $this->dispatch('deleteSuccess');
     }
 
-    public function updateCategories()
-    {
-        // Ambil jumlah total kategori terbaru
-        $this->totalCategories = ModelsPostCategory::count();
-        // Ambil kategori terbaru berdasarkan pencarian
-        $this->limit = 7; // Reset limit jika perlu
-    }
+ 
 
     public function render()
     {
