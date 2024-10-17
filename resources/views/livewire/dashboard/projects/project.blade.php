@@ -456,7 +456,6 @@
                         toolbar: [
                             ['font', ['bold', 'italic', 'underline', 'clear']],
                             ['para', ['ul', 'ol']],
-                            ['insert', ['link']],
                             ['view', ['codeview', 'help']]
                         ],
                         callbacks: {
@@ -520,7 +519,6 @@
                         toolbar: [
                             ['font', ['bold', 'italic', 'underline', 'clear']],
                             ['para', ['ul', 'ol']],
-                            ['insert', ['link']],
                             ['view', ['codeview', 'help']]
                         ],
                         callbacks: {
