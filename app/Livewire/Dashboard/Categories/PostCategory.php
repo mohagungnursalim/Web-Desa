@@ -22,7 +22,6 @@ class PostCategory extends Component
 
     // properti Edit Form
     public $categoryName, $imageUpdate, $colorUpdate;
-    public $isUpdateModalOpen = false;
 
     public function mount()
     {
@@ -87,16 +86,9 @@ class PostCategory extends Component
         $this->imageUpdate = $category->image; // Mengambil gambar lama
         $this->colorUpdate = $category->color; // Mengambil warna lama
     
-        $this->isUpdateModalOpen = true; 
+        $this->dispatch('openEditCategoryModal');
     }
     
-
-    public function closeUpdateModal()
-    {
-        $this->dispatch('closeUpdateModal');
-        $this->isUpdateModalOpen = false; 
-        $this->resetForm();
-    }
 
     public function update()
     {
@@ -131,8 +123,9 @@ class PostCategory extends Component
         $category->save();
 
         // Kirim event ke frontend untuk menutup modal
+        $this->resetForm();
         $this->dispatch('categoryUpdated');
-        $this->closeUpdateModal(); // Tutup modal setelah update
+        $this->dispatch('closeUpdatedModal'); // Tutup modal setelah update
     }
 
 
