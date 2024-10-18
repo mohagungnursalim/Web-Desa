@@ -119,13 +119,12 @@
     </div>
     
     <!-- Modal update -->
-    @if($isUpdateModalOpen)
-    <div class="modal show d-block" tabindex="-1" role="dialog">
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" wire:ignore.self>
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius: 20px;">
                 <div class="modal-header">
                     <h5 class="modal-title">Update Kategori</h5>
-                    <button type="button" class="close" wire:click="closeUpdateModal">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -140,7 +139,7 @@
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove wire:target='update'
-                        wire:click="closeUpdateModal">Tutup</button>
+                    data-dismiss="modal" aria-label="Close">Tutup</button>
                     <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
                         wire:click="update">Simpan</button>
                     <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
@@ -150,8 +149,8 @@
             </div>
         </div>
     </div>
-    <div class="modal-backdrop fade show"></div>
-    @endif
+
+    
 
 
     {{-- Modal Delete --}}
@@ -287,6 +286,33 @@
         });
 
     </script>
+
+ {{-- Edit Modal --}}
+ <script>
+    $(document).ready(function (){
+        // Membuka modal edit
+        window.addEventListener('openEditCategoryModal', function (e) {
+            $('#editCategoryModal').modal('show');
+        });
+
+        // Menutup modal
+        window.addEventListener('closeUpdatedModal', function (e) {
+            $('#editCategoryModal').modal('hide');
+            
+            // Hapus backdrop
+            $('#editCategoryModal').on('hidden.bs.modal', function (e) {
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            });
+        });
+
+        // Reset form
+        $('#editCategoryModal').on('hidden.bs.modal', function (e) {
+            @this.call('resetForm');
+        })
+
+    })
+</script>
 
     {{-- Sweet alert,delete success --}}
     <script>

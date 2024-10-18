@@ -17,7 +17,6 @@ class ProductCategory extends Component
    
     // Properti untuk menyimpan id kategori yang akan diupdate
     public $categoryName;
-    public $isUpdateModalOpen = false;
     
     public function mount()
     {
@@ -47,13 +46,6 @@ class ProductCategory extends Component
     }    
 
 
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-        $this->resetForm();
-        
-    }
-
     public function store()
     {
         $this->validate();
@@ -77,14 +69,10 @@ class ProductCategory extends Component
     {
         $this->category_id = $id;
         $this->categoryName = ModelsProductCategory::find($id)->name;
-        $this->isUpdateModalOpen = true;
+        
+        $this->dispatch('openEditCategoryModal');
     }
 
-    // Tambahkan method untuk menutup modal update
-    public function closeUpdateModal()
-    {
-        $this->isUpdateModalOpen = false;
-    }
 
     // Tambahkan method untuk update kategori
     public function update()
@@ -98,8 +86,8 @@ class ProductCategory extends Component
             'name' => $this->categoryName,
         ]);
 
-        $this->closeUpdateModal();
         $this->dispatch('categoryUpdated');
+        $this->dispatch('closeUpdatedModal'); // Tutup modal setelah update
     }
     
     
