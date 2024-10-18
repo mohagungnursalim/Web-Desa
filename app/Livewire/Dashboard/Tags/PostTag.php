@@ -22,7 +22,7 @@ class PostTag extends Component
 
     // properti Edit Form
     public $tagUpdate;
-    public $isUpdateModalOpen = false;
+
 
     public function mount()
     {
@@ -51,13 +51,6 @@ class PostTag extends Component
         $this->reset(['name']);
     }
     
-
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-        $this->resetForm();
-    }
-
     public function store()
     {
         $this->validate();
@@ -82,11 +75,6 @@ class PostTag extends Component
         $this->dispatch('openEditTagModal'); // Kirim event untuk membuka modal dengan jQuery
     }
     
-
-    public function closeUpdateModal()
-    {
-        $this->reset(['tagUpdate']);
-    }
 
     public function update()
     {

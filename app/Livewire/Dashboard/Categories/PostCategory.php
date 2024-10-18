@@ -53,11 +53,6 @@ class PostCategory extends Component
         $this->reset(['name', 'image', 'color']);
     }
 
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-        $this->resetForm();
-    }
 
     public function store()
     {
@@ -123,7 +118,6 @@ class PostCategory extends Component
         $category->save();
 
         // Kirim event ke frontend untuk menutup modal
-        $this->resetForm();
         $this->dispatch('categoryUpdated');
         $this->dispatch('closeUpdatedModal'); // Tutup modal setelah update
     }

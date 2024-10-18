@@ -148,7 +148,7 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove wire:target='update' data-dismiss="modal">Tutup</button>
+                    <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove wire:target='update' data-dismiss="modal" aria-label="Close">Tutup</button>
                     <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove wire:click="update">Simpan</button>
                     <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
                         Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
@@ -250,7 +250,7 @@
     
             // Reset form di backend setelah modal ditutup
             $('#editTagModal').on('hidden.bs.modal', function () {
-                @this.call('resetForm'); // Memanggil fungsi resetForm di Livewire
+                @this.call('resetForm'); // Memanggil fungsi resetForm di Component
             });
         });
     </script>
