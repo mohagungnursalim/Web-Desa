@@ -6,8 +6,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Livewire\Dashboard\Products\ProductEdit;
 use Illuminate\Support\Facades\Route;
 
+use function Pest\Laravel\json;
+
 // ------------Dashboard-------------
 
+Route::get('/testing', function (){
+
+    return response()->json([
+        'message' => 'Hello'
+    ]);
+});
 Route::get('/dashboard/profil', function () {
     return view('dashboard.edit-profile.index');
 })->middleware('auth')->name('dashboard.kategori-produk');
@@ -41,22 +49,9 @@ Route::get('/dashboard/produk/tambah-produk', function () {
 // Route untuk mengedit produk 
 Route::get('/dashboard/produk/{id}/edit', [ProductController::class, 'edit'])->middleware('auth')->name('dashboard.produk.edit');
 
-// Route untuk dashboard
-// Route::get('/dashboard', function () {
-//     return view('dashboard.dashboard-user');
-// })->middleware('auth')->name('dashboard');
-
 // Logout
 Route::post('logout', [LogoutController::class, 'destroy'])
 ->name('logout')->middleware('auth');
-
-
-// Route terkait profil
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
 
 // -------------Frontend-------------
 
