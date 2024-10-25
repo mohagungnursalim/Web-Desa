@@ -96,8 +96,6 @@
                         </div>
                     </div>
 
-
-
                     <div wire:ignore class="form-group">
                         <label for="product_category">Kategori Produk</label>
                         <select id="product_category" class="form-control" multiple wire:model="selectedId">

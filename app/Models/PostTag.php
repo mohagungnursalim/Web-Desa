@@ -12,4 +12,10 @@ class PostTag extends Model
     protected $guarded = ['id'];
     protected $table = 'tags';
 
+    // Relasi many-to-many dengan Postingan
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'pivot_post_tag');
+    }
+
 }

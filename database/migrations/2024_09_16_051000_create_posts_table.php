@@ -13,10 +13,15 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
             $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('description');
+            $table->text('excerpt');
+            $table->foreignId('user_id');
             $table->string('image');
-            $table->timestamp('published_at');
+            $table->unsignedBigInteger('views')->default(0);
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
+            $table->date('published_at')->nullable();
             $table->timestamps();
         });
     }
