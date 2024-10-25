@@ -12,4 +12,9 @@ class PostCategory extends Model
     protected $guarded = ['id'];
     protected $table = 'categories';
     
+    // Relasi many-to-many dengan Postingan
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'pivot_post_category');
+    }
 }

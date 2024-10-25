@@ -277,7 +277,7 @@
                 window.addEventListener('deleteSuccess', function (event) {
                     Swal.fire({
                         title: "Sukses!",
-                        text: "Data produk berhasil dihapus!",
+                        text: "Data post berhasil dihapus!",
                         icon: "success",
                         timer: 1000,
                         timerProgressBar: true,

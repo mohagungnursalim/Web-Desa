@@ -39,8 +39,8 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
                 <li class="nav-header">--Konten--</li>
 
-                <li class="nav-item {{ Request::is('dashboard/postingan') || Request::is('dashboard/kategori-postingan') || Request::is('dashboard/tag-postingan') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Request::is('dashboard/kategori-postingan') || Request::is('dashboard/kategori-postingan') || Request::is('dashboard/tag-postingan') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('dashboard/postingan*') || Request::is('dashboard/kategori-postingan') || Request::is('dashboard/tag-postingan') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('dashboard/postingan*') || Request::is('dashboard/kategori-postingan') || Request::is('dashboard/tag-postingan') ? 'active' : '' }}">
                         <i class="bi bi-pencil-square"></i>
                         <p>
                             Postingan
@@ -50,9 +50,9 @@
 
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="/dashboard/postingan" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i>
-                                <p class="">Master Postingan</p>
+                                <p class="{{Request::is('dashboard/postingan*') ? 'text-warning' : ''}}">Master Postingan</p>
                             </a>
                         </li>
 

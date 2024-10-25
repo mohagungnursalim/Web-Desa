@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Livewire\Dashboard\Products\ProductEdit;
@@ -10,12 +12,7 @@ use function Pest\Laravel\json;
 
 // ------------Dashboard-------------
 
-Route::get('/testing', function (){
 
-    return response()->json([
-        'message' => 'Hello'
-    ]);
-});
 Route::get('/dashboard/profil', function () {
     return view('dashboard.edit-profile.index');
 })->middleware('auth')->name('dashboard.kategori-produk');
@@ -23,6 +20,16 @@ Route::get('/dashboard/profil', function () {
 Route::get('/dashboard/proyek', function () {
     return view('dashboard.projects.index');
 })->middleware('auth')->name('dashboard.kategori-produk');
+
+// Route untuk menampilkan daftar postingan
+Route::get('/dashboard/postingan', function () {
+    return view('dashboard.posts.index');
+})->middleware('auth')->name('dashboard.postingan');
+
+// Route untuk menampilkan form tambah postingan
+Route::get('/dashboard/postingan/tambah-data', function () {
+    return view('dashboard.posts.create-post');
+})->middleware('auth')->name('dashboard.postingan.tambah');
 
 Route::get('/dashboard/kategori-postingan', function () {
     return view('dashboard.categories.post-category');
@@ -36,6 +43,7 @@ Route::get('/dashboard/kategori-produk', function () {
     return view('dashboard.categories.product-category');
 })->middleware('auth')->name('dashboard.kategori-produk');
 
+
 // Route untuk menampilkan daftar produk
 Route::get('/dashboard/produk', function () {
     return view('dashboard.products.index');
@@ -48,6 +56,9 @@ Route::get('/dashboard/produk/tambah-produk', function () {
 
 // Route untuk mengedit produk 
 Route::get('/dashboard/produk/{id}/edit', [ProductController::class, 'edit'])->middleware('auth')->name('dashboard.produk.edit');
+
+// Route untuk mengedit post
+Route::get('/dashboard/postingan/{slug}/edit', [PostController::class, 'edit'])->middleware('auth')->name('dashboard.post.edit');
 
 // Logout
 Route::post('logout', [LogoutController::class, 'destroy'])
