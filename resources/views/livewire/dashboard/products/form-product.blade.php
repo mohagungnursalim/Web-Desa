@@ -37,38 +37,6 @@
                         @error('title') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
     
-                    {{-- <div class="form-group">
-                        <label for="image">Gambar Produk</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Gambar</span>
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" id="image" class="custom-file-input" wire:model="image">
-                                <label class="custom-file-label" for="image">
-                                    @if ($image)
-                                    {{ $image->getClientOriginalName() }}
-                                    @else
-                                    Pilih gambar
-                                    @endif
-                                </label>
-                            </div>
-                        </div>
-                        @error('image') <span class="text-danger">{{ $message }}</span> @enderror
-                        @if ($image)
-                        <img src="{{ $image->temporaryUrl() }}" alt="Preview" class="img-fluid mt-2" width="65px">
-                        @endif
-                        <div wire:loading wire:target="image" class="mt-2 col" style="width: 400px">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                    role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100"
-                                    aria-valuemax="100">
-                                    Mengunggah...
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
                     <div class="form-group">
                         <label for="image">Gambar Produk</label>
                         <div class="input-group mb-3">
