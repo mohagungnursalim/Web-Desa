@@ -39,8 +39,8 @@
             <div class="card-body">
                 <h4><a href="/dashboard/postingan" style="border-radius: 10px;"
                         class="btn btn-white"><u>👈Kembali</u></a></h4>
-                <form wire:submit.prevent="update">
-                    <!-- Form input -->
+                <form>
+                    
                     <div class="form-group">
 						<label for="image">Gambar Postingan</label>
 						<div class="input-group mb-3">
@@ -138,22 +138,36 @@
                     </div>
                     @error('description') <span class="text-danger error">{{ $message }}</span>@enderror
 
-                    <div class="form-group">
-                        <label for="published_at">Tanggal Terbit</label>
-                        <input type="date" class="form-control" id="published_at" wire:model.defer="published_at">
-                        @error('published_at') <span class="text-danger error">{{ $message }}</span> @enderror
-                    </div>
-
+					
+                   
                     <div class="text-center">
-                        <!-- Tombol untuk menyimpan data -->
-                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
-                            wire:click="update">Simpan</button>
-                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
-                            wire:target='update'>
-                            Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
-                                aria-hidden="true"></span>
-                        </button>
-                    </div>
+						<!-- Tombol untuk menyimpan data sebagai Draft -->
+						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
+							wire:click="update">Draf</button>
+						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" disabled wire:loading
+							wire:target='update'>
+							Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+						</button>
+					
+						<!-- Tombol untuk menerbitkan postingan -->
+						<button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
+							wire:click="publishUpdate">Terbitkan</button>
+						<button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
+							wire:target='publishUpdate'>
+							Menerbitkan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+						</button>
+					
+						<!-- Tombol untuk mengarsipkan postingan -->
+						<button style="border-radius: 10px; background-color: #ffcc00; color: black;" type="button" class="btn" wire:loading.remove
+							wire:click="archivePost">Arsipkan</button>
+						<button style="border-radius: 10px; background-color: #ffcc00; color: black;" type="button" class="btn" disabled wire:loading
+							wire:target='archivePost'>
+							Mengarsipkan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+						</button>
+					</div>
+					
+					
+					
                 </form>
             </div>
         </div>
@@ -535,7 +549,7 @@
 									const data = editor.getData();
 									console.log('Updated description:', data); // Log data untuk debugging
 									@this.set('description', data); // Update Livewire property
-								}, 2000); // 2 detik debounce
+								}, 700); // 700ms debounce
 							});
 						})
 						.catch(error => {
@@ -561,7 +575,7 @@
 				clearTimeout(debounceTimer);
 				debounceTimer = setTimeout(() => {
 					@this.set('selectedCategory', $(this).val());
-				}, 1000); // Menambahkan debounce 1detik
+				}, 700); // Menambahkan debounce 700ms
 			});
 	
 			// Set initial value from Livewire
@@ -589,7 +603,7 @@
 				clearTimeout(debounceTimer);
 				debounceTimer = setTimeout(() => {
 					@this.set('selectedTag', $(this).val());
-				}, 1000); // Menambahkan debounce 1detik
+				}, 700); // Menambahkan debounce 700ms
 			});
 	
 			// Set initial value from Livewire

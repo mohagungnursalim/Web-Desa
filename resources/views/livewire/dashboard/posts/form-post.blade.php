@@ -39,7 +39,7 @@
             <div class="card-body">
                 <h4><a href="/dashboard/postingan" style="border-radius: 10px;"
                         class="btn btn-white"><u>👈Kembali</u></a></h4>
-                <form wire:submit.prevent="store">
+                <form>
                     <!-- Form input -->
                     <div class="form-group">
                         <label for="image">Gambar Postingan</label>
@@ -120,22 +120,23 @@
                     </div>
                     @error('description') <span class="text-danger error">{{ $message }}</span>@enderror
 
-                    <div class="form-group">
-                        <label for="published_at">Tanggal Terbit</label>
-                        <input type="date" class="form-control" id="published_at" wire:model.defer="published_at">
-                        @error('published_at') <span class="text-danger error">{{ $message }}</span> @enderror
-                    </div>
-
                     <div class="text-center">
-                        <!-- Tombol untuk menyimpan data -->
-                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
-                            wire:click="store">Simpan</button>
-                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
-                            wire:target='store'>
-                            Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
-                                aria-hidden="true"></span>
-                        </button>
-                    </div>
+						<!-- Tombol untuk menyimpan data sebagai Draft -->
+						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
+							wire:click="saveAsDraft">Draft</button>
+						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" disabled wire:loading
+							wire:target='saveAsDraft'>
+							Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+						</button>
+					
+						<!-- Tombol untuk mempublikasikan postingan -->
+						<button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
+							wire:click="publish">Publish</button>
+						<button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
+							wire:target='publish'>
+							Mempublikasikan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+						</button>
+					</div>
                 </form>
             </div>
         </div>
@@ -511,7 +512,7 @@
 					clearTimeout(debounceTimer);
 					debounceTimer = setTimeout(() => {
 						@this.set('description', editor.getData()); // Update Livewire property
-					}, 1000); // Debounce selama 1 detik
+					}, 700); // Debounce selama 700ms
 				});
 			})
 			.catch(error => {
@@ -536,7 +537,7 @@
                 debounceTimer = setTimeout(() => {
                     // Memperbarui model Livewire setelah debounce
                     @this.set('post_category', $(this).val());
-                }, 1000); // Debounce selama 1 Detik 
+                }, 700); // Debounce selama 700ms 
             });
         });
 
@@ -557,7 +558,7 @@
                 debounceTimer = setTimeout(() => {
                     // Memperbarui model Livewire setelah debounce
                     @this.set('post_tag', $(this).val());
-                }, 1000); // Debounce selama 1 Detik 
+                }, 700); // Debounce selama 700ms 
             });
         });
 

@@ -72,13 +72,112 @@ class PostEdit extends Component
         
         // Cari post berdasarkan slug
         $post = ModelsPost::where('slug', $this->slug)->first();
-    
+
         // Buat slug berdasarkan title jika title berubah
         if ($post->title !== $this->title) {
             $this->slug = Str::slug($this->title) . '-' . Str::random(4);
         } else {
             $this->slug = $post->slug;
         }
+
+        // Tetapkan user_id dari Auth
+        $this->user_id = Auth::user()->id;
+
+        // Periksa apakah ada gambar baru yang diunggah dan pastikan itu adalah file
+        if ($this->image && !is_array($this->image)) {
+            // Hapus gambar lama jika ada
+            if ($post->image) {
+                // Hapus file gambar lama jika ada
+                if (file_exists(public_path('storage/' . $post->image))) {
+                    unlink(public_path('storage/' . $post->image));
+                }
+            }
+            // Store path gambar baru
+            $imagePath = $this->image->store('post-images', 'public');
+            $post->image = $imagePath; // Tetapkan gambar baru jika diunggah
+        }
+
+        sleep(1);
+
+        // Update data post
+        $post->update([
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'user_id' => $this->user_id,
+            'description' => $this->description,
+            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'published_at' => null,
+            'status' => 'draft' // Tetapkan sebagai draft saat disimpan
+        ]);
+
+        // Gunakan relasi untuk mengatur kategori & tag pada post
+        $post->categories()->sync($this->selectedCategory);
+        $post->tags()->sync($this->selectedTag);
+
+        toast('Postingan berhasil diperbarui!', 'success');
+
+        return redirect()->to('/dashboard/postingan');
+    }
+
+    public function publishUpdate()
+    {
+        $this->validate();
+        
+        // Cari post berdasarkan slug
+        $post = ModelsPost::where('slug', $this->slug)->first();
+
+        // Buat slug berdasarkan title jika title berubah
+        if ($post->title !== $this->title) {
+            $this->slug = Str::slug($this->title) . '-' . Str::random(4);
+        } else {
+            $this->slug = $post->slug;
+        }
+
+        // Tetapkan user_id dari Auth
+        $this->user_id = Auth::user()->id;
+
+        // Periksa apakah ada gambar baru yang diunggah dan pastikan itu adalah file
+        if ($this->image && !is_array($this->image)) {
+            // Hapus gambar lama jika ada
+            if ($post->image) {
+                // Hapus file gambar lama jika ada
+                if (file_exists(public_path('storage/' . $post->image))) {
+                    unlink(public_path('storage/' . $post->image));
+                }
+            }
+            // Store path gambar baru
+            $imagePath = $this->image->store('post-images', 'public');
+            $post->image = $imagePath; // Tetapkan gambar baru jika diunggah
+        }
+
+        sleep(1);
+
+        // Update data post dan tetapkan sebagai published
+        $post->update([
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'user_id' => $this->user_id,
+            'description' => $this->description,
+            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'published_at' => now(), // Set published_at ke waktu saat ini
+            'status' => 'published' // Ubah status menjadi published
+        ]);
+
+        // Gunakan relasi untuk mengatur kategori & tag pada post
+        $post->categories()->sync($this->selectedCategory);
+        $post->tags()->sync($this->selectedTag);
+
+        toast('Postingan berhasil diterbitkan!', 'success');
+
+        return redirect()->to('/dashboard/postingan');
+    }
+
+    public function archivePost()
+    {
+        $this->validate();
+        
+        // Cari post berdasarkan slug
+        $post = ModelsPost::where('slug', $this->slug)->first();
     
         // Tetapkan user_id dari Auth
         $this->user_id = Auth::user()->id;
@@ -99,21 +198,22 @@ class PostEdit extends Component
     
         sleep(1);
     
-        // Update data post
+        // Update data post dan tetapkan sebagai archived
         $post->update([
             'title' => $this->title,
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
             'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
-            'published_at' => $this->published_at
+            'published_at' => $this->published_at, // Tampilkan tanggal publish sebelumnya
+            'status' => 'archived' // Ubah status menjadi archived
         ]);
     
         // Gunakan relasi untuk mengatur kategori & tag pada post
         $post->categories()->sync($this->selectedCategory);
         $post->tags()->sync($this->selectedTag);
     
-        toast('Postingan berhasil diperbarui!', 'success');
+        toast('Postingan berhasil diarsipkan!', 'success');
     
         return redirect()->to('/dashboard/postingan');
     }

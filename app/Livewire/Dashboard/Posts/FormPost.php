@@ -51,41 +51,78 @@ class FormPost extends Component
     }
 
  
-    public function store()
+    public function saveAsDraft()
     {
+        // Validasi form
         $this->validate();
-
-       // Buat slug berdasarkan title
-       $this->slug = Str::slug($this->title) . '-' . Str::random(4);
-
-       // Tetapkan user_id dari Auth
-       $this->user_id = Auth::user()->id;
-
-       // Store Path
-       $imagePath = $this->image->store('post-images', 'public');
-
-       sleep(1);
-
-       // Buat instance Post dan simpan ke database
-       $post = ModelsPost::create([
-           'image' => $imagePath,
-           'title' => $this->title,
-           'slug' => $this->slug,
-           'user_id' => $this->user_id,
-           'description' => $this->description,
-           'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
-           'published_at' => $this->published_at
-       ]);
-
-       // Gunakan relasi untuk mengatur kategori & tag pada post yang baru dibuat
-       $post->categories()->sync($this->post_category);
-       $post->tags()->sync($this->post_tag);
-
-        toast('Postingan berhasil ditambahkan!','success');
-
+    
+        // Buat slug berdasarkan title
+        $this->slug = Str::slug($this->title) . '-' . Str::random(4);
+    
+        // Tetapkan user_id dari Auth
+        $this->user_id = Auth::user()->id;
+    
+        // Store Path
+        $imagePath = $this->image->store('post-images', 'public');
+    
+        sleep(1);
+        // Buat instance Post dan simpan ke database sebagai Draft
+        $post = ModelsPost::create([
+            'image' => $imagePath,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'user_id' => $this->user_id,
+            'description' => $this->description,
+            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'status' => 'draft', // Set status sebagai draft
+            'published_at' => null // Tidak ada tanggal publikasi
+        ]);
+    
+        // Gunakan relasi untuk mengatur kategori & tag pada post yang baru dibuat
+        $post->categories()->sync($this->post_category);
+        $post->tags()->sync($this->post_tag);
+    
+        toast('Postingan berhasil disimpan sebagai Draft!','success');
+    
         return redirect()->to('/dashboard/postingan');
-
     }
+    
+    public function publish()
+    {
+        // Validasi form
+        $this->validate();
+    
+        // Buat slug berdasarkan title
+        $this->slug = Str::slug($this->title) . '-' . Str::random(4);
+    
+        // Tetapkan user_id dari Auth
+        $this->user_id = Auth::user()->id;
+    
+        // Store Path
+        $imagePath = $this->image->store('post-images', 'public');
+    
+        sleep(1);
+        // Buat instance Post dan simpan ke database sebagai Published
+        $post = ModelsPost::create([
+            'image' => $imagePath,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'user_id' => $this->user_id,
+            'description' => $this->description,
+            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'status' => 'published', // Set status sebagai published
+            'published_at' => now() // Tanggal publikasi saat ini
+        ]);
+    
+        // Gunakan relasi untuk mengatur kategori & tag pada post yang baru dibuat
+        $post->categories()->sync($this->post_category);
+        $post->tags()->sync($this->post_tag);
+    
+        toast('Postingan berhasil dipublikasikan!','success');
+    
+        return redirect()->to('/dashboard/postingan');
+    }
+    
 
     // render component
     public function render()

@@ -105,13 +105,28 @@
                                     {{ $post->user->name }}
                                 </td>
                                 <td>{{ $post->views }}x</td>
-                                <td>{{ $post->status }}</td>
+                                <td>
+                                    @if ($post->status == "published")
+                                        <button style="border: none; background-color:#a7d0f4" class="badge">{{ $post->status }}</button>
+                                    @elseif($post->status == "draft")
+                                    <button style="border: none; background-color:#c4c4c4" class="badge">{{ $post->status }}</button>
+                                    @else
+                                    <button style="border: none; background-color:#f0e77e" class="badge">{{ $post->status }}</button>
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="{{ url('blog/' . $post->slug) }}">
                                         {{ url('blog/' . $post->slug) }}
                                     </a>
                                 </td>
-                                <td>{{ $post->published_at }}</td>
+                                <td>
+                                    @isset($post->published_at)
+                                    {{ $post->published_at }}
+                                    @else
+                                    -
+                                    @endisset
+                                    
+                                </td>
                                 <td>{{ $post->created_at }}</td>
                                 <td>{{ $post->updated_at }}</td>
                                 <td class="d-flex justify-content-start">
