@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,14 +31,19 @@ $register = function () {
 
     $validated['password'] = Hash::make($validated['password']);
 
+    // Buat user baru dan login
     event(new Registered($user = User::create($validated)));
-
     Auth::login($user);
 
-    $this->redirect(route('dashboard', absolute: false), navigate: true);
-};
+    // Tambahkan role "Author" ke user yang baru dibuat
+    $role = Role::where('name', 'Author')->first(); // Pastikan role "Author" ada di database
+    $user->roles()->attach($role->id); // Assign role menggunakan pivot
 
+    // Redirect ke dashboard
+    $this->redirect('/dashboard');
+};
 ?>
+
 
 <div>
     <form wire:submit="register">

@@ -47,10 +47,17 @@ class User extends Authenticatable
 
 
      // Relasi ke model Role
-     public function role()
-     {
-         return $this->belongsTo(Role::class);
-     }
+     public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+        // Helper function untuk memeriksa apakah user memiliki role tertentu
+    public function hasRole($role): bool
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+    
 
     //  Relasi ke model Post
     public function posts()
