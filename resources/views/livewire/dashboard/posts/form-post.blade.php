@@ -227,7 +227,7 @@
 			Underline,
 			Undo
 		} from 'ckeditor5';
-	
+		
 		const editorConfig = {
 			toolbar: {
 				items: [
@@ -520,6 +520,7 @@
 			});
 	
 	</script>
+	
 	
 
     {{-- Select2 Kategori--}}

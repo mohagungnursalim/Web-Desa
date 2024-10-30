@@ -49,7 +49,7 @@
         <div class="card" style="border-radius: 25px;">
             <div class="card-body" style="padding: 20px;">
                 
-                <a href="/dashboard/postingan/tambah-data" style="border-radius: 10px;"
+                <a wire:navigate href="/dashboard/postingan/tambah-data" style="border-radius: 10px;"
                     class="btn btn-primary mb-4">Tambah
                     Postingan</a>
 
@@ -140,7 +140,7 @@
                                         <i class="bi bi-eye"></i>
                                     </button>
                                     <!-- Tombol edit data -->
-                                    <a href="{{ route('dashboard.post.edit',$post->slug) }}"
+                                    <a wire:navigate href="{{ route('dashboard.post.edit',$post->slug) }}"
                                         style="border-radius: 10px;" class="btn btn-warning mb-1 me-2">
 
                                         <i class="bi bi-pencil-square"></i>
