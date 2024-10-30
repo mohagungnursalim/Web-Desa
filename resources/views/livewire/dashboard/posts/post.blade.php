@@ -366,6 +366,7 @@
 
     {{-- Code Style --}}
     <script>
+        window.addEventListener('livewire:navigated', () => {
         // Cari semua elemen <pre> di dalam CKEditor
         $('.post-content pre').each(function () {
             var pre = $(this);
@@ -385,13 +386,13 @@
             // Tempatkan header di atas elemen <pre>
             pre.before(header);
         });
-
+    });
     </script>
   
     
     {{-- Menampilkan Iframe --}}
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        window.addEventListener('livewire:navigated', () => {
             // Temukan semua elemen <oembed> dan konversi ke <iframe>
             document.querySelectorAll('oembed[url]').forEach(element => {
                 // Ambil URL dari atribut `url`

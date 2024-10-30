@@ -37,7 +37,7 @@
     <div class="container-fluid">
         <div class="card" style="border-radius: 25px;">
             <div class="card-body">
-                <h4><a href="/dashboard/postingan" style="border-radius: 10px;"
+                <h4><a wire:navigate href="/dashboard/postingan" style="border-radius: 10px;"
                         class="btn btn-white"><u>👈Kembali</u></a></h4>
                 <form>
                     

@@ -17,6 +17,10 @@ Route::get('/dashboard/profil', function () {
     return view('dashboard.edit-profile.index');
 })->middleware('auth')->name('dashboard.kategori-produk');
 
+Route::get('/dashboard/kelola-akun', function () {
+    return view('dashboard.users.index');
+})->middleware('auth')->name('dashboard.kelola-akun');
+
 Route::get('/dashboard/proyek', function () {
     return view('dashboard.projects.index');
 })->middleware('auth')->name('dashboard.kategori-produk');

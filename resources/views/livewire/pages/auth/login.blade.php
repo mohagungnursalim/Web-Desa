@@ -20,7 +20,8 @@ $login = function () {
         // Menggunakan paket sweet-alert untuk menampilkan toast
         alert()->success('Selamat datang, ' . Auth::user()->name, 'Login Berhasil')->autoClose(2500);
 
-    return redirect('/dashboard');
+        return $this->redirect('/dashboard', navigate: false);
+
 };
 
 ?>

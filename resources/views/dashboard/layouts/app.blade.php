@@ -2,9 +2,34 @@
 @include('dashboard.layouts.head')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 {{-- Masukan Head disini --}}
+<style>
+    /* Gaya CSS untuk Preloader */
+    #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999; /* Pastikan preloader di atas elemen lain */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .spinner-border {
+        color: #000000;
+        width: 10rem;
+        height: 10rem;
+        border-width: 1.25rem;
+    }
+</style>
+
 
 <body class="hold-transition sidebar-mini">
-
+    <div id="preloader" style="display: none;">
+        <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
     <div class="wrapper">
 
         {{-- Masukan navbar disini --}}
@@ -35,8 +60,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script>
+        // Mendengarkan event navigasi Livewire
+        document.addEventListener('livewire:navigate', (event) => {
+            // Tampilkan preloader saat navigasi terjadi
+            document.getElementById('preloader').style.display = 'flex';
+        });
+
+        document.addEventListener('livewire:navigated', () => {
+            // Sembunyikan preloader setelah navigasi selesai
+            document.getElementById('preloader').style.display = 'none';
+        });
+    </script>
     @stack('scripts')
 </body>
 

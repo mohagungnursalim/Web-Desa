@@ -17,7 +17,7 @@
         }
 
     </style>
-    <a href="/dashboard" class="brand-link">
+    <a wire:navigate href="/dashboard" class="brand-link">
         {{-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
         <span class="brand-text font-weight-light">Web Desa</span>
@@ -26,9 +26,9 @@
     <div class="sidebar">
 
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            {{-- <div class="image">
-                <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-            </div> --}}
+            <div class="image">
+                <img src="{{ asset('storage/' . Auth::user()->image) }}" class="img-circle elevation-2" alt="User Image">
+            </div>
             <div class="info">
                 <a href="#" class="d-block">{{ Auth::user()->name }}</a>
             </div>
@@ -50,7 +50,7 @@
 
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/dashboard/postingan" class="nav-link">
+                            <a wire:navigate href="/dashboard/postingan" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i>
                                 <p class="{{Request::is('dashboard/postingan*') ? 'text-warning' : ''}}">Master Postingan</p>
                             </a>
@@ -60,7 +60,7 @@
 
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/dashboard/kategori-postingan" class="nav-link">
+                            <a wire:navigate href="/dashboard/kategori-postingan" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i>
                                 <p class="{{Request::is('dashboard/kategori-postingan') ? 'text-warning' : ''}}">Master
                                     Kategori</p>
@@ -69,7 +69,7 @@
                     </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/dashboard/tag-postingan" class="nav-link">
+                            <a wire:navigate href="/dashboard/tag-postingan" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i>
                                 <p class="{{Request::is('dashboard/tag-postingan') ? 'text-warning' : ''}}">Master
                                     Tag</p>
@@ -89,7 +89,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/dashboard/produk" class="nav-link">
+                            <a wire:navigate href="/dashboard/produk" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i>
                                 <p class="{{Request::is('dashboard/produk*') ? 'text-warning' : ''}}">Master Produk</p>
                             </a>
@@ -99,7 +99,7 @@
 
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/dashboard/kategori-produk" class="nav-link">
+                            <a wire:navigate href="/dashboard/kategori-produk" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i>
                                 <p class="{{Request::is('dashboard/kategori-produk') ? 'text-warning' : ''}}">Master
                                     Kategori Produk</p>
@@ -119,7 +119,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/dashboard/proyek" class="nav-link">
+                            <a wire:navigate href="/dashboard/proyek" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i>
                                 <p class="{{ Request::is('dashboard/proyek*') ? 'text-warning' : '' }}">Master Proyek
                                 </p>
@@ -131,8 +131,8 @@
 
                 <li class="nav-header">--Pengaturan--</li>
 
-                <li class="nav-item {{ Request::is('dashboard/profil') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Request::is('dashboard/profil') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('dashboard/profil') || Request::is('dashboard/kelola-akun') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('dashboard/profil') || Request::is('dashboard/kelola-akun') ? 'active' : '' }}">
                         <i class="bi bi-person-fill-gear"></i>
                         <p>
                             Akun
@@ -141,12 +141,18 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/dashboard/profil" class="nav-link">
+                            <a wire:navigate href="/dashboard/profil" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i> <i class="bi bi-person-vcard-fill"></i>
                                 <p class="{{ Request::is('dashboard/profil') ? 'text-warning' : '' }}">Ubah Profil</p>
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a wire:navigate href="/dashboard/kelola-akun" class="nav-link">
+                                <i class="bi bi-arrow-return-right"></i> <i class="bi bi-people-fill"></i>
+                                <p class="{{ Request::is('dashboard/kelola-akun') ? 'text-warning' : '' }}">Kelola Akun</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

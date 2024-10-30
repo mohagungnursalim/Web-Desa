@@ -30,8 +30,7 @@ $updateProfileInformation = function () {
     $user->save();
 
     toast('Profil berhasil diperbarui!','success');
-
-    return redirect()->to('/dashboard/profil');
+    return $this->redirect('/dashboard/profil', navigate: true);
 };
 
 $sendVerification = function () {

@@ -35,7 +35,7 @@ $updatePassword = function () {
     $this->reset('current_password', 'password', 'password_confirmation');
 
     toast('Password berhasil diperbarui!','success');
-    return redirect()->to('/dashboard/profil');
+    return $this->redirect('/dashboard/profil', navigate: true);
 };
 
 ?>
