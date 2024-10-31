@@ -401,12 +401,9 @@
 
 
         @push('scripts')
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <!-- Bootstrap JS (Dibutuhkan oleh Summernote) -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
         <!-- Summernote JS -->
         <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         {{-- Modal Add --}}
         <script>
@@ -445,33 +442,37 @@
 
         </script>
 
-        {{-- Summernote Add --}}
-        <script>
-            $(document).ready(function () {
-                let debounceTimer;
+            {{-- Summernote add --}}
+        <script data-navigate-once>
+            document.addEventListener('livewire:navigated', () => {
+                console.log("Summernote add init");
 
-                function initSummernote() {
+                $(document).ready(function () {
+
+                    let debounceTimer;
+
                     $('#project_description').summernote({
-                        height: 150,
+                        height: 300,
                         toolbar: [
+                            // tambahkan toolbar sesuai dengan kebutuhan
                             ['font', ['bold', 'italic', 'underline', 'clear']],
                             ['para', ['ul', 'ol']],
                             ['view', ['codeview', 'help']]
                         ],
                         callbacks: {
                             onChange: function (contents, $editable) {
+                                // Reset debounceTimer setiap kali ada perubahan
                                 clearTimeout(debounceTimer);
+
                                 debounceTimer = setTimeout(function () {
-                                    @this.set('project_description', contents);
-                                }, 1000);
+                                    @this.set('project_description',
+                                    contents); // Update model Livewire
+                                }, 800); // 800ms
                             }
                         }
                     });
-                }
-
-                initSummernote();
-
-            });
+                });
+            })
 
         </script>
 
@@ -526,7 +527,7 @@
                                 clearTimeout(debounceTimer);
                                 debounceTimer = setTimeout(function () {
                                     @this.set('project_description', contents); // Set value ke Livewire
-                                }, 1000);
+                                }, 800); //800ms
                             }
                         }
                     });

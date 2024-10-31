@@ -174,11 +174,6 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
-        integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <script type="importmap">
         {
                 "imports": {
@@ -549,7 +544,7 @@
 									const data = editor.getData();
 									console.log('Updated description:', data); // Log data untuk debugging
 									@this.set('description', data); // Update Livewire property
-								}, 700); // 700ms debounce
+								}, 600); // 600ms debounce
 							});
 						})
 						.catch(error => {

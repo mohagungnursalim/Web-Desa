@@ -175,7 +175,7 @@
 
                         debounceTimer = setTimeout(function () {
                             @this.set('description', contents); // Update model Livewire
-                        }, 2000); // 2 detik
+                        }, 600); // 600ms
                     }
                 }
             });
@@ -183,29 +183,32 @@
 
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#product_category').select2({
-                placeholder: '--Pilih Kategori--',
-                minimumResultsForSearch: Infinity,
-                width: '100%'
-            });
-
-            // Event listener untuk Select2
-            $('#product_category').on('change', function (e) {
-                @this.set('selectedId', $(this).val());
-            });
-
-            // Inisialisasi nilai awal Select2 dari Livewire
-            $('#product_category').val(@this.selectedId).trigger('change');
-
-            // Update Select2 ketika Livewire memperbarui nilai
-            Livewire.hook('message.processed', (message, component) => {
-                $('#product_category').val(@this.selectedId).trigger('change');
-            });
-        });
-
-    </script>
-
+    {{-- Select2 kategori form edit --}}
+	<script>
+		$(document).ready(function () {
+			$('#product_category').select2({
+				placeholder: '--Pilih Kategori--',
+				minimumResultsForSearch: Infinity,
+				width: '100%',
+			});
+	
+			let debounceTimer;
+			$('#product_category').on('change', function (e) {
+				clearTimeout(debounceTimer);
+				debounceTimer = setTimeout(() => {
+					@this.set('selectedId', $(this).val());
+				}, 700); // Menambahkan debounce 700ms
+			});
+	
+			// Set initial value from Livewire
+			const selectedIds = @json($selectedId ?? []);
+			$('#product_category').val(selectedIds).trigger('change');
+	
+			// Update Select2 when Livewire updates the data
+			Livewire.hook('message.processed', (message, component) => {
+				$('#product_category').val(@json($selectedId ?? [])).trigger('change');
+			});
+		});
+	</script>
     @endpush
 </div>

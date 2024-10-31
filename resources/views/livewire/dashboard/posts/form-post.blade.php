@@ -30,7 +30,7 @@
             /* Atur tinggi maksimal, jika diinginkan */
             overflow: auto;
             /* Agar bisa menggulir jika teks melebihi tinggi maksimal */
-		}
+        }
 
     </style>
     @endpush
@@ -100,8 +100,8 @@
                     </div>
                     @error('post_category') <span class="text-danger">{{ $message }}</span> @enderror
 
-					 <!-- Multiple Select untuk Tag Post -->
-					 <div wire:ignore class="form-group">
+                    <!-- Multiple Select untuk Tag Post -->
+                    <div wire:ignore class="form-group">
                         <label for="post_tag">Tagar</label>
                         <select id="post_tag" class="form-control" multiple wire:model="post_tag">
                             @foreach ($tags as $tag)
@@ -121,32 +121,31 @@
                     @error('description') <span class="text-danger error">{{ $message }}</span>@enderror
 
                     <div class="text-center">
-						<!-- Tombol untuk menyimpan data sebagai Draft -->
-						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
-							wire:click="saveAsDraft">Draft</button>
-						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" disabled wire:loading
-							wire:target='saveAsDraft'>
-							Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-						</button>
-					
-						<!-- Tombol untuk mempublikasikan postingan -->
-						<button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
-							wire:click="publish">Publish</button>
-						<button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
-							wire:target='publish'>
-							Mempublikasikan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-						</button>
-					</div>
+                        <!-- Tombol untuk menyimpan data sebagai Draft -->
+                        <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
+                            wire:click="saveAsDraft">Draft</button>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-secondary" disabled
+                            wire:loading wire:target='saveAsDraft'>
+                            Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
+                                aria-hidden="true"></span>
+                        </button>
+
+                        <!-- Tombol untuk mempublikasikan postingan -->
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
+                            wire:click="publish">Publish</button>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
+                            wire:target='publish'>
+                            Mempublikasikan <span class="spinner-grow spinner-grow-sm" role="status"
+                                aria-hidden="true"></span>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
-        integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
     <script type="importmap">
         {
@@ -157,8 +156,8 @@
             }
     </script>
 
-	<script type="module">
-		import {
+    <script type="module">
+        import {
 			ClassicEditor,
 			AccessibilityHelp,
 			Alignment,
@@ -512,7 +511,7 @@
 					clearTimeout(debounceTimer);
 					debounceTimer = setTimeout(() => {
 						@this.set('description', editor.getData()); // Update Livewire property
-					}, 700); // Debounce selama 700ms
+					}, 800); // Debounce selama 800ms
 				});
 			})
 			.catch(error => {
@@ -520,48 +519,59 @@
 			});
 	
 	</script>
-	
-	
 
-    {{-- Select2 Kategori--}}
-    <script>
-        $(document).ready(function () {
+
+
+
+    {{-- Select2 Kategori Form Tambah --}}
+    <script data-navigate-once>
+        document.addEventListener('livewire:navigated', function () {
+            setTimeout(function () {
+                console.log("Livewire loaded category for add form");
+                initializeSelect2Kategori('#post_category', 'post_category');
+            }, 1); // Timeout pendek 1ms
+        });
+
+        function initializeSelect2Kategori(selector, livewireProperty) {
             let debounceTimer;
 
-            $('#post_category').select2({
+            $(selector).select2({
                 placeholder: '--Pilih Kategori--',
-                minimumResultsForSearch: Infinity, // Menyembunyikan pencarian
-                width: '100%', // Membuat Select2 menyesuaikan lebar field lainnya
-            }).on('change', function (e) {
+                minimumResultsForSearch: Infinity,
+                width: '100%'
+            }).on('change', function () {
                 clearTimeout(debounceTimer);
-
                 debounceTimer = setTimeout(() => {
-                    // Memperbarui model Livewire setelah debounce
-                    @this.set('post_category', $(this).val());
-                }, 700); // Debounce selama 700ms 
+                    @this.set(livewireProperty, $(this).val());
+                }, 700);
             });
-        });
+        }
 
     </script>
 
-	{{-- Select2 Tag--}}
-    <script>
-        $(document).ready(function () {
+    {{-- Select2 Tag Form Tambah --}}
+    <script data-navigate-once>
+        document.addEventListener('livewire:navigated', function () {
+            setTimeout(function () {
+                console.log("Livewire loaded tag for add form");
+                initializeSelect2Tag('#post_tag', 'post_tag');
+            }, 1); // Timeout pendek 1ms
+        });
+
+        function initializeSelect2Tag(selector, livewireProperty) {
             let debounceTimer;
 
-            $('#post_tag').select2({
+            $(selector).select2({
                 placeholder: '--Pilih Tagar--',
-                minimumResultsForSearch: Infinity, // Menyembunyikan pencarian
-                width: '100%', // Membuat Select2 menyesuaikan lebar field lainnya
-            }).on('change', function (e) {
+                minimumResultsForSearch: Infinity,
+                width: '100%'
+            }).on('change', function () {
                 clearTimeout(debounceTimer);
-
                 debounceTimer = setTimeout(() => {
-                    // Memperbarui model Livewire setelah debounce
-                    @this.set('post_tag', $(this).val());
-                }, 700); // Debounce selama 700ms 
+                    @this.set(livewireProperty, $(this).val());
+                }, 700);
             });
-        });
+        }
 
     </script>
 

@@ -11,7 +11,7 @@
 
                 <div class="w-100">
 
-                    <a href="/dashboard/produk/tambah-produk"  style="border-radius: 10px;" class="btn btn-primary mb-4">Tambah Produk</a>
+                    <a wire:navigate href="/dashboard/produk/tambah-produk"  style="border-radius: 10px;" class="btn btn-primary mb-4">Tambah Produk</a>
 
                     <!-- Input untuk mencari produk -->
                     <div class="mb-2">
@@ -111,7 +111,7 @@
                                                 </p>
 
                                                 <div class="text-center">
-                                                    <a href="{{ route('dashboard.produk.edit',$product->id) }}"
+                                                    <a wire:navigate href="{{ route('dashboard.produk.edit',$product->id) }}"
                                                         class="badge bg-warning text-white"
                                                         style="text-decoration: none; border-radius: 20px">
                                                         <i class="bi bi-pencil-square"></i> Edit

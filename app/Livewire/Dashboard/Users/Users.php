@@ -12,6 +12,7 @@ class Users extends Component
 {
     use WithPagination;
 
+    public $search = '';
     public $name, $email,$role;
     public $userIdBeingUpdated = null; // Untuk menangani edit data
 
@@ -28,7 +29,7 @@ class Users extends Component
     public function render()
     {
         return view('livewire.dashboard.users.users', [
-            'users' => User::with('roles')->latest()->paginate(4), // Menampilkan 10 data per halaman
+            'users' => User::where('name', 'like', '%' . $this->search . '%')->with('roles')->latest()->paginate(5), // Menampilkan 10 data per halaman
             'roles' => Role::all()
         ]);
     }
