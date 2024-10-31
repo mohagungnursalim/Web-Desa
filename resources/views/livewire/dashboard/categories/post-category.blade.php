@@ -57,8 +57,7 @@
                                 </button>
 
                                 <!-- Tombol untuk membuka modal delete -->
-                                <button style="border-radius: 10px;" data-toggle="modal"
-                                    data-target="#modalDelete{{ $category->id }}" type="button"
+                                <button style="border-radius: 10px;" wire:click="confirmDelete({{ $category->id }}, '{{ $category->name }}' )" type="button"
                                     class="btn btn-danger text-white">
                                     <i class="bi bi-trash3"></i>
                                 </button>
@@ -271,47 +270,42 @@
         </div>
     </div>
     
-
-
-
-    {{-- Modal Delete --}}
-    @foreach ($categories as $category)
-
-    <div class="modal" id="modalDelete{{ $category->id }}" tabindex="-1" role="dialog"
-        aria-labelledby="deleteModalLabel{{ $category->id }}" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="deleteModalLabel{{ $category->id }}">
-                        Hapus Kategori "{{ $category->name }}" </h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    Apakah anda yakin ingin menghapus kategori ini?
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button style="border-radius: 10px;" wire:loading.remove wire:target='delete({{ $category->id }})'
-                        type="button" class="btn btn-secondary" data-dismiss="modal">Batal
-                    </button>
-                    <button style="border-radius: 10px;" wire:loading.remove wire:click="delete({{ $category->id }})"
-                        type="button" class="btn btn-danger">Hapus
-                    </button>
-
-                    <button style="border-radius: 10px;" wire:loading wire:target='delete({{ $category->id }})'
-                        class="btn btn-danger" disabled>
-                        Menghapus <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                    </button>
+        {{-- Modal Delete --}}
+        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="border-radius: 20px;">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="deleteModalLabel">
+                            Hapus Kategori "{{ $postCategoryName }}"
+                        </h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        Apakah anda yakin ingin menghapus kategori ini?
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button style="border-radius: 10px;" wire:loading.remove wire:target='delete' type="button"
+                            class="btn btn-secondary" data-dismiss="modal">Batal
+                        </button>
+                        <button style="border-radius: 10px;" wire:loading.remove wire:click="delete" type="button"
+                            class="btn btn-danger">Hapus
+                        </button>
+        
+                        <button style="border-radius: 10px;" wire:loading wire:target='delete'
+                            class="btn btn-danger" disabled>
+                            Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
+                                aria-hidden="true"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    @endforeach
 
     @push('scripts')
 
+    {{-- Add Modal Form --}}
     <script>
         $(document).ready(function () {
             // Membuka modal ketika tombol ditekan
@@ -337,7 +331,7 @@
 
     </script>
 
-    {{-- Edit Modal --}}
+    {{-- Edit Modal Form --}}
     <script>
         $(document).ready(function (){
             // Membuka modal edit
@@ -395,42 +389,27 @@
 
     </script>
 
+   {{-- Delete Modal --}}
     <script>
         $(document).ready(function () {
-            window.addEventListener('hideModalDelete', function (event) {
-                var modalId = event.detail;
+        
+        // Membuka modal Delete
+        window.addEventListener('show-delete-modal', function () {
+            $('#modalDelete').modal('show');
+        });
 
-                if (Array.isArray(modalId)) {
-                    modalId = modalId[0];
-                }
-
-                if (typeof modalId === 'string' && modalId.trim() !== '') {
-                    var $modal = $('#' + modalId);
-
-                    // Menutup modal
-                    $modal.modal('hide');
-
-                    // Fungsi untuk membersihkan modal dan backdrop
-                    function cleanupModal() {
-                        $('body').removeClass('modal-open');
-                        $('.modal-backdrop').remove();
-                        $modal.removeClass('show');
-                        $modal.css('display', 'none');
-                        $('body').css('overflow', '');
-                        $('body').css('padding-right', '');
-                    }
-
-                    // Mencoba membersihkan setelah animasi modal selesai
-                    $modal.on('hidden.bs.modal', cleanupModal);
-
-                    // Backup: jika event tidak terpicu, bersihkan setelah delay
-                    setTimeout(cleanupModal, 500);
-                } else {
-                    console.error('Invalid modal ID:', modalId);
-                }
+        // Mendengarkan event dari Livewire untuk menutup modal
+        window.addEventListener('hide-delete-modal', function () {
+            $('#modalDelete').modal('hide'); // Menutup modal
+            
+            // Menghapus backdrop ketika modal ditutup
+            $('#modalDelete').on('hidden.bs.modal', function () {
+                $('body').removeClass('modal-open'); // Hilangkan kelas modal-open pada body
+                $('.modal-backdrop').remove(); // Hapus modal-backdrop
             });
         });
 
+        });
     </script>
 
     {{-- Sweet alert,delete success --}}

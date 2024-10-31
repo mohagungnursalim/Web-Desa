@@ -13,15 +13,16 @@
                 <div class="w-100">
 
                     <!-- Tombol untuk membuka modal -->
-                    <button style="border-radius: 10px;" id="openModalBtn" class="btn btn-primary mb-4 d-block d-md-inline-block">
+                    <button style="border-radius: 10px;" id="openModalBtn"
+                        class="btn btn-primary mb-4 d-block d-md-inline-block">
                         Tambah Proyek
                     </button>
 
 
                     <!-- Input untuk mencari proyek -->
                     <div class="mb-2">
-                        <input style="border-radius: 10px;" type="text" wire:model.live.debounce.500ms="search" placeholder="Cari proyek.."
-                            class="form-control" style="color: black;">
+                        <input style="border-radius: 10px;" type="text" wire:model.live.debounce.500ms="search"
+                            placeholder="Cari proyek.." class="form-control" style="color: black;">
 
                         &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
                     </div>
@@ -54,7 +55,8 @@
                                                 <div class="carousel-inner">
                                                     @foreach($images as $imageIndex => $img)
                                                     <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
-                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;" class="d-block w-100" src="{{ asset('storage/' . $img) }}"
+                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;"
+                                                            class="d-block w-100" src="{{ asset('storage/' . $img) }}"
                                                             alt="{{ $project->project_name }} - Image {{ $imageIndex + 1 }}">
                                                     </div>
                                                     @endforeach
@@ -83,7 +85,7 @@
                                                 <h4 class="card-title"><b>{{ $project->project_name }}</b></h4><br>
                                                 <td class="text-wrap small">
                                                     <span class="short-text">
-                                                        {!! \Illuminate\Support\Str::limit(strip_tags($project->project_description), 50) !!}
+                                                        {!!\Illuminate\Support\Str::limit(strip_tags($project->project_description),50) !!}
                                                         @if (\Illuminate\Support\Str::length(strip_tags($project->project_description)) > 50)
                                                         <span class="read-more-btn text-primary"
                                                             style="cursor: pointer;"
@@ -103,12 +105,13 @@
 
                                                 <div class="text-center">
                                                     <!-- Tombol untuk membuka modal update -->
-                                                    <button style="border-radius: 10px;" wire:click="openUpdateModal({{ $project->id }})"
+                                                    <button style="border-radius: 10px;"
+                                                        wire:click="openUpdateModal({{ $project->id }})"
                                                         class="btn btn-primary">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </button>
 
-                                                    <button style="border-radius: 10px;" data-toggle="modal" data-target="#modalDelete{{ $project->id }}"
+                                                    <button style="border-radius: 10px;" wire:click="confirmDelete({{ $project->id }}, '{{ $project->project_name }}')"
                                                         class="btn btn-danger">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
@@ -131,22 +134,22 @@
                     </div>
 
 
-                      <!-- Tombol Load More -->
-                @if($projects->count() >= $limit && $totalProjects > $limit)
-                <div class="mt-4 d-flex justify-content-center">
-                    <!-- Tombol "Tampilkan Lebih" (akan hilang saat loading) -->
-                    <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded"
-                        wire:loading.remove wire:target="loadMore">
-                        Tampilkan Lebih
-                    </button>
+                    <!-- Tombol Load More -->
+                    @if($projects->count() >= $limit && $totalProjects > $limit)
+                    <div class="mt-4 d-flex justify-content-center">
+                        <!-- Tombol "Tampilkan Lebih" (akan hilang saat loading) -->
+                        <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded"
+                            wire:loading.remove wire:target="loadMore">
+                            Tampilkan Lebih
+                        </button>
 
-                    <!-- Tombol Loading (hanya muncul saat loading) -->
-                    <button style="border-radius: 20px;" class="btn btn-dark  btn-rounded" type="button" disabled
-                        wire:loading wire:target="loadMore">
-                        Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                    </button>
-                </div>
-                @endif
+                        <!-- Tombol Loading (hanya muncul saat loading) -->
+                        <button style="border-radius: 20px;" class="btn btn-dark  btn-rounded" type="button" disabled
+                            wire:loading wire:target="loadMore">
+                            Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    @endif
 
                 </div>
             </div>
@@ -158,7 +161,7 @@
         <!-- Modal Tambah Project -->
         <div id="addProjectModal" class="modal fade" tabindex="-1" role="dialog" wire:ignore.self>
             <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content" style="border-radius: 20px;"> 
+                <div class="modal-content" style="border-radius: 20px;">
                     <div class="modal-header">
                         <h5 class="modal-title">Tambah Proyek</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -241,11 +244,12 @@
                     </div>
                     <div class="modal-footer justify-content-center">
                         <!-- Tombol untuk menyimpan data -->
-                        <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove wire:target='store'
-                            data-dismiss="modal">Tutup</button>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
+                            wire:target='store' data-dismiss="modal">Tutup</button>
                         <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
                             wire:click="store">Simpan</button>
-                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading wire:target='store'>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
+                            wire:target='store'>
                             Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
@@ -254,7 +258,7 @@
             </div>
         </div>
 
-       <!-- Modal Edit -->
+        <!-- Modal Edit -->
         <div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" wire:ignore.self>
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content" style="border-radius: 20px;">
@@ -335,9 +339,11 @@
 
                             <div wire:ignore class="form-group">
                                 <label for="project_description_edit">Deskripsi Proyek</label>
-                                <textarea id="project_description_edit" class="form-control summernote" wire:model.defer="project_description"></textarea>
+                                <textarea id="project_description_edit" class="form-control summernote"
+                                    wire:model.defer="project_description"></textarea>
                             </div>
-                            @error('project_description') <span class="text-danger error mb-1">{{ $message }}</span> @enderror
+                            @error('project_description') <span class="text-danger error mb-1">{{ $message }}</span>
+                            @enderror
                             <div class="form-group">
                                 <label for="start_date">Tanggal Mulai</label>
                                 <input type="date" class="form-control" id="start_date" wire:model="start_date">
@@ -353,9 +359,12 @@
                         </form>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove wire:target='update' data-dismiss="modal">Tutup</button>
-                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove wire:click="update">Simpan</button>
-                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading wire:target='update'>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
+                            wire:target='update' data-dismiss="modal">Tutup</button>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
+                            wire:click="update">Simpan</button>
+                        <button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
+                            wire:target='update'>
                             Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
@@ -366,14 +375,14 @@
 
 
         {{-- Modal Delete --}}
-        @foreach ($projects as $project)
-        <div class="modal" id="modalDelete{{ $project->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="deleteModalLabel{{ $project->id }}" aria-hidden="true">
+        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content" style="border-radius: 20px;">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="deleteModalLabel{{ $project->id }}">
-                            Hapus Proyek "{{ $project->project_name }}" </h6>
+                        <h6 class="modal-title" id="deleteModalLabel">
+                            Hapus Proyek "{{ $projectName }}"
+                        </h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -382,14 +391,15 @@
                         Apakah anda yakin ingin menghapus proyek ini?
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button style="border-radius: 10px;" wire:loading.remove wire:target='delete({{ $project->id }})' type="button"
+                        <button style="border-radius: 10px;" wire:loading.remove wire:target='delete' type="button"
                             class="btn btn-secondary" data-dismiss="modal">Batal
                         </button>
-                        <button style="border-radius: 10px;" wire:loading.remove wire:click="delete({{ $project->id }})" type="button"
+                        <button style="border-radius: 10px;" wire:loading.remove wire:click="delete" type="button"
                             class="btn btn-danger">Hapus
                         </button>
 
-                        <button style="border-radius: 10px;" wire:loading wire:target='delete({{ $project->id }})' class="btn btn-danger" disabled>
+                        <button style="border-radius: 10px;" wire:loading wire:target='delete'
+                            class="btn btn-danger" disabled>
                             Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
@@ -397,7 +407,6 @@
                 </div>
             </div>
         </div>
-        @endforeach
 
 
         @push('scripts')
@@ -442,7 +451,7 @@
 
         </script>
 
-            {{-- Summernote add --}}
+        {{-- Summernote add --}}
         <script data-navigate-once>
             document.addEventListener('livewire:navigated', () => {
                 console.log("Summernote add init");
@@ -466,7 +475,7 @@
 
                                 debounceTimer = setTimeout(function () {
                                     @this.set('project_description',
-                                    contents); // Update model Livewire
+                                        contents); // Update model Livewire
                                 }, 800); // 800ms
                             }
                         }
@@ -476,27 +485,27 @@
 
         </script>
 
-        
         {{-- Edit Modal --}}
         <script>
             $(document).ready(function () {
-                
+
                 // Membuka modal Edit
                 window.addEventListener('openEditProjectModal', function () {
                     $('#editProjectModal').modal('show');
                 });
-        
+
                 // Mendengarkan event dari Livewire untuk menutup modal
                 window.addEventListener('closeEditProjectModal', function () {
                     $('#editProjectModal').modal('hide'); // Menutup modal
-                    
+
                     // Menghapus backdrop ketika modal ditutup
                     $('#editProjectModal').on('hidden.bs.modal', function () {
-                        $('body').removeClass('modal-open'); // Hilangkan kelas modal-open pada body
+                        $('body').removeClass(
+                        'modal-open'); // Hilangkan kelas modal-open pada body
                         $('.modal-backdrop').remove(); // Hapus modal-backdrop
                     });
                 });
-        
+
                 // Reset form di backend setelah modal ditutup
                 $('#editProjectModal').on('hidden.bs.modal', function () {
                     @this.call('resetForm'); // Memanggil fungsi resetForm di Livewire
@@ -506,8 +515,8 @@
                     @this.set('project_description', ''); // Reset Livewire model
                 });
             });
+
         </script>
-        
 
         {{-- Summernote Edit --}}
         <script>
@@ -526,7 +535,8 @@
                             onChange: function (contents, $editable) {
                                 clearTimeout(debounceTimer);
                                 debounceTimer = setTimeout(function () {
-                                    @this.set('project_description', contents); // Set value ke Livewire
+                                    @this.set('project_description',
+                                    contents); // Set value ke Livewire
                                 }, 800); //800ms
                             }
                         }
@@ -543,46 +553,31 @@
                     $('#project_description_edit').summernote('destroy'); // Hapus instance Summernote
                 });
             });
+
         </script>
 
-        {{-- Hide modal delete --}}
-        <script>
-            $(document).ready(function () {
-                window.addEventListener('hideModalDelete', function (event) {
-                    var modalId = event.detail;
+      {{-- Delete Modal --}}
+    <script>
+        $(document).ready(function () {
+            
+            // Membuka modal Delete
+            window.addEventListener('show-delete-modal', function () {
+                $('#modalDelete').modal('show');
+            });
 
-                    if (Array.isArray(modalId)) {
-                        modalId = modalId[0];
-                    }
-
-                    if (typeof modalId === 'string' && modalId.trim() !== '') {
-                        var $modal = $('#' + modalId);
-
-                        // Menutup modal
-                        $modal.modal('hide');
-
-                        // Fungsi untuk membersihkan modal dan backdrop
-                        function cleanupModal() {
-                            $('body').removeClass('modal-open');
-                            $('.modal-backdrop').remove();
-                            $modal.removeClass('show');
-                            $modal.css('display', 'none');
-                            $('body').css('overflow', '');
-                            $('body').css('padding-right', '');
-                        }
-
-                        // Mencoba membersihkan setelah animasi modal selesai
-                        $modal.on('hidden.bs.modal', cleanupModal);
-
-                        // Backup: jika event tidak terpicu, bersihkan setelah delay
-                        setTimeout(cleanupModal, 500);
-                    } else {
-                        console.error('Invalid modal ID:', modalId);
-                    }
+            // Mendengarkan event dari Livewire untuk menutup modal
+            window.addEventListener('hide-delete-modal', function () {
+                $('#modalDelete').modal('hide'); // Menutup modal
+                
+                // Menghapus backdrop ketika modal ditutup
+                $('#modalDelete').on('hidden.bs.modal', function () {
+                    $('body').removeClass('modal-open'); // Hilangkan kelas modal-open pada body
+                    $('.modal-backdrop').remove(); // Hapus modal-backdrop
                 });
             });
 
-        </script>
+        });
+    </script>
 
         {{-- Hide/Show Project Description --}}
         <script>
@@ -618,8 +613,9 @@
                     });
                 });
             })
-        </script>            
-            
+
+        </script>
+
         {{-- Sweet alert,project updated --}}
         <script>
             $(document).ready(function () {
@@ -633,6 +629,7 @@
                     });
                 });
             })
+
         </script>
 
         {{-- Sweet alert,delete success --}}
@@ -648,8 +645,9 @@
                     });
                 });
             })
+
         </script>
 
         @endpush
-    
-</div>
+
+    </div>

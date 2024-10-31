@@ -14,6 +14,6 @@ class Product extends Model
     // Relasi many-to-many dengan Product_Category
     public function categories()
     {
-        return $this->belongsToMany(ProductCategory::class, 'pivot_product_category');
+        return $this->belongsToMany(ProductCategory::class, 'pivot_product_category')->withTimestamps();
     }
 }

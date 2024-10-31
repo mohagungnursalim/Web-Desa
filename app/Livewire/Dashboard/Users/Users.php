@@ -16,6 +16,10 @@ class Users extends Component
     public $name, $email,$role;
     public $userIdBeingUpdated = null; // Untuk menangani edit data
 
+    // delete
+    public $userId;
+    public $userName;
+
     protected function rules()
     {
         return [
@@ -39,6 +43,7 @@ class Users extends Component
    {
        $this->validate();
    
+       sleep(1);
        // Buat user baru
        $user = User::create([
            'name' => $this->name,
@@ -75,6 +80,7 @@ class Users extends Component
         // Ambil user berdasarkan ID yang akan diperbarui
         $user = User::findOrFail($this->userIdBeingUpdated);
     
+        sleep(1);
         // Update informasi pengguna
         $user->update([
             'name' => $this->name,
@@ -89,12 +95,20 @@ class Users extends Component
       
     }
     
+    public function confirmDelete($id, $name)
+    {
+        $this->userId = $id;
+        $this->userName = $name;
+        $this->dispatch('show-delete-modal');
+    }
+
+
 
     // Fungsi untuk menghapus pengguna
-    public function deleteUser($id)
+    public function deleteUser()
     {
         // Ambil user beserta relasi roles dan posts
-        $user = User::with(['roles', 'posts'])->findOrFail($id); 
+        $user = User::with(['roles', 'posts'])->findOrFail($this->userId); 
     
         // Hapus semua relasi roles
         $user->roles()->detach(); // Hapus semua role yang terasosiasi dengan user
@@ -105,8 +119,7 @@ class Users extends Component
         // Hapus data pengguna
         $user->delete();
     
-        // Kirim event ke JavaScript dengan ID modal sebagai string
-        $this->dispatch('hideModalDelete', 'modalDelete' . $id); // Pastikan modal ID sebagai string
+        $this->dispatch('hide-delete-modal'); 
         $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
     }
     

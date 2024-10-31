@@ -17,6 +17,9 @@ class Project extends Component
     public $image = [], $imagePaths = [], $project_name, $project_description, $start_date, $end_date;
     public $existingImages = [];
 
+    // delete
+    public $projectId;
+    public $projectName;
 
     public function mount()
     {
@@ -152,12 +155,18 @@ class Project extends Component
     }
 
 
-    public function delete($id)
+    public function confirmDelete($id, $project_name)
     {
-        $this->project_id = $id;
-        
+        $this->projectId = $id;
+        $this->projectName = $project_name;
+        $this->dispatch('show-delete-modal');
+    }
+
+    public function delete()
+    {
+       
         // Cari project berdasarkan ID
-        $project = ModelsProject::find($id);
+        $project = ModelsProject::find($this->projectId);
 
         // Cek jika project ditemukan
         if ($project) {
@@ -177,13 +186,11 @@ class Project extends Component
                 }
             }
 
-            sleep(1);
             // Hapus project dari database
             $project->delete();
 
-            // Kirim event ke JavaScript untuk menghilangkan modal dan memunculkan notifikasi sukses
-            $this->dispatch('hideModalDelete', 'modalDelete' . $id);
-            $this->dispatch('deleteSuccess');
+             $this->dispatch('hide-delete-modal'); 
+             $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
 
         } else {
             // Jika project tidak ditemukan, tampilkan pesan error

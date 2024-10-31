@@ -23,6 +23,11 @@ class PostTag extends Component
     // properti Edit Form
     public $tagUpdate;
 
+    // Delete
+    public $postTagId;
+    public $postTagName;
+
+
 
     public function mount()
     {
@@ -97,16 +102,22 @@ class PostTag extends Component
     }
 
 
-    public function delete($id)
+    public function confirmDelete($id, $name)
     {
-        $tag = ModelsPostTag::findOrFail($id);
+        $this->postTagId = $id;
+        $this->postTagName = $name;
+        $this->dispatch('show-delete-modal');
+    }
+
+    public function delete()
+    {
+        $tag = ModelsPostTag::findOrFail($this->postTagId);
 
         // Hapus data kategori
         $tag->delete();
 
-        // Kirim event ke JavaScript dengan ID modal sebagai string
-        $this->dispatch('hideModalDelete', 'modalDelete' . $id);  // Pastikan modal ID sebagai string
-        $this->dispatch('deleteSuccess');
+        $this->dispatch('hide-delete-modal'); 
+        $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
     }
 
     public function render()

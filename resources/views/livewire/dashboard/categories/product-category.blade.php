@@ -42,8 +42,7 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
 
-                                </button>
-                                <button style="border-radius: 10px;" data-toggle="modal" data-target="#modalDelete{{ $category->id }}" type="button"
+                                <button style="border-radius: 10px;" wire:click="confirmDelete({{ $category->id }}, '{{ $category->name }}' )" type="button"
                                     class="btn btn-danger text-white" style="border: none">
                                     <i class="bi bi-trash3"></i>
                                 </button>
@@ -154,42 +153,41 @@
 
 
     {{-- Modal Delete --}}
-    @foreach ($categories as $category)
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header">
+                <h6 class="modal-title" id="deleteModalLabel">
+                    Hapus Produk Kategori "{{ $categoryName }}"
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                Apakah anda yakin ingin menghapus produk kategori ini?
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button style="border-radius: 10px;" wire:loading.remove wire:target='delete' type="button"
+                    class="btn btn-secondary" data-dismiss="modal">Batal
+                </button>
+                <button style="border-radius: 10px;" wire:loading.remove wire:click="delete" type="button"
+                    class="btn btn-danger">Hapus
+                </button>
 
-    <div class="modal" id="modalDelete{{ $category->id }}" tabindex="-1" role="dialog"
-        aria-labelledby="deleteModalLabel{{ $category->id }}" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="deleteModalLabel{{ $category->id }}">
-                        Hapus Kategori Produk "{{ $category->name }}" </h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    Apakah anda yakin ingin menghapus kategori ini?
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button style="border-radius: 10px;" wire:loading.remove wire:target='delete({{ $category->id }})' type="button"
-                        class="btn btn-secondary" data-dismiss="modal">Batal
-                    </button>
-                    <button style="border-radius: 10px;" wire:loading.remove wire:click="delete({{ $category->id }})" type="button"
-                        class="btn btn-danger">Hapus
-                    </button>
-
-                    <button style="border-radius: 10px;" wire:loading wire:target='delete({{ $category->id }})' class="btn btn-danger" disabled>
-                        Menghapus <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                    </button>
-                </div>
+                <button style="border-radius: 10px;" wire:loading wire:target='delete'
+                    class="btn btn-danger" disabled>
+                    Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
+                        aria-hidden="true"></span>
+                </button>
             </div>
         </div>
     </div>
-
-    @endforeach
+    </div>
 
     @push('scripts')
 
+    {{-- Open Modal  --}}
     <script>
         $(document).ready(function () {
             // Membuka modal ketika tombol ditekan
@@ -230,6 +228,34 @@
         })
 
     </script>
+
+     {{-- Edit Modal --}}
+    <script>
+        $(document).ready(function (){
+            // Membuka modal edit
+            window.addEventListener('openEditCategoryModal', function (e) {
+                $('#editCategoryModal').modal('show');
+            });
+
+            // Menutup modal
+            window.addEventListener('closeUpdatedModal', function (e) {
+                $('#editCategoryModal').modal('hide');
+                
+                // Hapus backdrop
+                $('#editCategoryModal').on('hidden.bs.modal', function (e) {
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+                });
+            });
+
+            // Reset form
+            $('#editCategoryModal').on('hidden.bs.modal', function (e) {
+                @this.call('resetForm');
+            })
+
+        })
+    </script>
+
     {{-- Sweet alert,categoryUpdated success --}}
     <script>
         $(document).ready(function () {
@@ -246,70 +272,30 @@
 
     </script>
 
+    {{-- Delete Modal --}}
     <script>
         $(document).ready(function () {
-            window.addEventListener('hideModalDelete', function (event) {
-                var modalId = event.detail;
-
-                if (Array.isArray(modalId)) {
-                    modalId = modalId[0];
-                }
-
-                if (typeof modalId === 'string' && modalId.trim() !== '') {
-                    var $modal = $('#' + modalId);
-
-                    // Menutup modal
-                    $modal.modal('hide');
-
-                    // Fungsi untuk membersihkan modal dan backdrop
-                    function cleanupModal() {
-                        $('body').removeClass('modal-open');
-                        $('.modal-backdrop').remove();
-                        $modal.removeClass('show');
-                        $modal.css('display', 'none');
-                        $('body').css('overflow', '');
-                        $('body').css('padding-right', '');
-                    }
-
-                    // Mencoba membersihkan setelah animasi modal selesai
-                    $modal.on('hidden.bs.modal', cleanupModal);
-
-                    // Backup: jika event tidak terpicu, bersihkan setelah delay
-                    setTimeout(cleanupModal, 500);
-                } else {
-                    console.error('Invalid modal ID:', modalId);
-                }
+            
+            // Membuka modal Delete
+            window.addEventListener('show-delete-modal', function () {
+                $('#modalDelete').modal('show');
             });
-        });
 
+            // Mendengarkan event dari Livewire untuk menutup modal
+            window.addEventListener('hide-delete-modal', function () {
+                $('#modalDelete').modal('hide'); // Menutup modal
+                
+                // Menghapus backdrop ketika modal ditutup
+                $('#modalDelete').on('hidden.bs.modal', function () {
+                    $('body').removeClass('modal-open'); // Hilangkan kelas modal-open pada body
+                    $('.modal-backdrop').remove(); // Hapus modal-backdrop
+                });
+            });
+
+        });
     </script>
 
- {{-- Edit Modal --}}
- <script>
-    $(document).ready(function (){
-        // Membuka modal edit
-        window.addEventListener('openEditCategoryModal', function (e) {
-            $('#editCategoryModal').modal('show');
-        });
 
-        // Menutup modal
-        window.addEventListener('closeUpdatedModal', function (e) {
-            $('#editCategoryModal').modal('hide');
-            
-            // Hapus backdrop
-            $('#editCategoryModal').on('hidden.bs.modal', function (e) {
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-            });
-        });
-
-        // Reset form
-        $('#editCategoryModal').on('hidden.bs.modal', function (e) {
-            @this.call('resetForm');
-        })
-
-    })
-</script>
 
     {{-- Sweet alert,delete success --}}
     <script>
@@ -327,21 +313,6 @@
 
     </script>
 
-    {{-- Sweet alert,delete gagal --}}
-    <script>
-        $(document).ready(function () {
-            window.addEventListener('deleteError', function (event) {
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Kategori gagal dihapus!",
-                    icon: "error",
-                    timer: 1500,
-                    timerProgressBar: true,
-                });
-            });
-        })
-
-    </script>
 
     @endpush
 </div>

@@ -17,6 +17,7 @@ class ProductCategory extends Component
    
     // Properti untuk menyimpan id kategori yang akan diupdate
     public $categoryName;
+    public $categoryId;
     
     public function mount()
     {
@@ -91,22 +92,26 @@ class ProductCategory extends Component
     }
     
     
-
-    public function delete($id)
+    public function confirmDelete($id, $name)
     {
-        $this->category_id = $id;
+        $this->categoryId = $id;
+        $this->categoryName = $name;
+        $this->dispatch('show-delete-modal');
+    }
+
+    public function delete()
+    {
         // Cari category berdasarkan ID
-        $category = ModelsProductCategory::find($id);
+        $category = ModelsProductCategory::find($this->categoryId);
 
         // Cek jika category ditemukan
         if ($category) {
 
-            sleep(1);
+            
             $category->delete();
             
-            // Kirim event ke JavaScript dengan ID modal sebagai string
-            $this->dispatch('hideModalDelete', 'modalDelete' . $id);  // Pastikan modal ID sebagai string
-            $this->dispatch('deleteSuccess');
+            $this->dispatch('hide-delete-modal'); 
+            $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
            
         } else {
 

@@ -12,6 +12,10 @@ class Product extends Component
     public $limit = 8; // Limit produk yang akan ditampilkan pertama kali
     public $totalProducts; // Total produk di database
     public $product_id;
+
+    // delete
+    public $productId;
+    public $productTitle;
     
     public function mount() 
     {
@@ -32,11 +36,18 @@ class Product extends Component
         $this->limit += 8;
     }
 
-    public function delete($id)
+    public function confirmDelete($id, $title)
     {
-        $this->product_id = $id;
+        $this->productId = $id;
+        $this->productTitle = $title;
+        $this->dispatch('show-delete-modal');
+    }
+
+    public function delete()
+    {
+       
         // Cari produk berdasarkan ID
-        $product = ModelProduct::find($id);
+        $product = ModelProduct::find($this->productId);
 
         // Cek jika produk ditemukan
         if ($product) {
@@ -56,12 +67,11 @@ class Product extends Component
                 }
             }
 
-            sleep(1);
+            $product->categories()->detach();
             $product->delete();
 
-            // Kirim event ke JavaScript dengan ID modal sebagai string
-            $this->dispatch('hideModalDelete', 'modalDelete' . $id);  // Pastikan modal ID sebagai string
-            $this->dispatch('deleteSuccess');
+            $this->dispatch('hide-delete-modal'); 
+            $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
            
         } else {
 

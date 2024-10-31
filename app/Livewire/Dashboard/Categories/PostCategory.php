@@ -23,6 +23,11 @@ class PostCategory extends Component
     // properti Edit Form
     public $categoryName, $imageUpdate, $colorUpdate;
 
+    // delete
+
+    public $postCategoryId;
+    public $postCategoryName;
+
     public function mount()
     {
         $this->totalCategories = ModelsPostCategory::count();
@@ -122,10 +127,16 @@ class PostCategory extends Component
         $this->dispatch('closeUpdatedModal'); // Tutup modal setelah update
     }
 
-
-    public function delete($id)
+    public function confirmDelete($id, $name)
     {
-        $category = ModelsPostCategory::findOrFail($id);
+        $this->postCategoryId = $id;
+        $this->postCategoryName = $name;
+        $this->dispatch('show-delete-modal');
+    }
+
+    public function delete()
+    {
+        $category = ModelsPostCategory::findOrFail($this->postCategoryId);
         $imagePath = $category->image;
 
         // Hapus file gambar jika ada
@@ -133,12 +144,12 @@ class PostCategory extends Component
             unlink(public_path('storage/' . $imagePath));
         }
 
+    
         // Hapus data kategori
         $category->delete();
 
-        // Kirim event ke JavaScript dengan ID modal sebagai string
-        $this->dispatch('hideModalDelete', 'modalDelete' . $id);  // Pastikan modal ID sebagai string
-        $this->dispatch('deleteSuccess');
+        $this->dispatch('hide-delete-modal'); 
+        $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
     }
 
  

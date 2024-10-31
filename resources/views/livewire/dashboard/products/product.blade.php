@@ -117,8 +117,7 @@
                                                         <i class="bi bi-pencil-square"></i> Edit
                                                     </a>
 
-                                                    <button data-toggle="modal"
-                                                        data-target="#modalDelete{{ $product->id }}" type="button"
+                                                    <button wire:click="confirmDelete({{ $product->id }},'{{ $product->title }}')" type="button"
                                                         class="badge bg-danger text-white" style="border: none; border-radius: 20px;">
                                                         <i class="bi bi-trash3"></i> Delete
                                                     </button>
@@ -167,40 +166,38 @@
 
 
         {{-- ----------------Modal------------------------ --}}
-        @foreach ($products as $product)
-
-        <div class="modal" id="modalDelete{{ $product->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="deleteModalLabel{{ $product->id }}" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content"  style="border-radius: 20px;">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="deleteModalLabel{{ $product->id }}">
-                            Hapus Produk "{{ $product->title }}" </h6>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body text-center">
-                        Apakah anda yakin ingin menghapus produk ini?
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button style="border-radius: 10px;"  wire:loading.remove wire:target='delete({{ $product->id }})' type="button"
-                            class="btn btn-secondary" data-dismiss="modal">Batal
-                        </button>
-                        <button style="border-radius: 10px;" wire:loading.remove wire:click="delete({{ $product->id }})" type="button"
-                            class="btn btn-danger">Hapus
-                        </button>
-
-                        <button style="border-radius: 10px;" wire:loading wire:target='delete({{ $product->id }})' class="btn btn-danger" disabled>
-                            Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
-                                aria-hidden="true"></span>
-                        </button>
-                    </div>
+    {{-- Modal Delete --}}
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="deleteModalLabel">
+                        Hapus Produk "{{ $productTitle }}"
+                    </h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    Apakah anda yakin ingin menghapus produk ini?
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button style="border-radius: 10px;" wire:loading.remove wire:target='delete' type="button"
+                        class="btn btn-secondary" data-dismiss="modal">Batal
+                    </button>
+                    <button style="border-radius: 10px;" wire:loading.remove wire:click="delete" type="button"
+                        class="btn btn-danger">Hapus
+                    </button>
+    
+                    <button style="border-radius: 10px;" wire:loading wire:target='delete'
+                        class="btn btn-danger" disabled>
+                        Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
+                            aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </div>
-
-        @endforeach
+        </div>
 
 
         @push('scripts')
@@ -228,46 +225,27 @@
 
         </script>
         
-
-
-
-        {{-- Hide modal delete --}}
+          {{-- Delete Modal --}}
         <script>
             $(document).ready(function () {
-                window.addEventListener('hideModalDelete', function (event) {
-                    var modalId = event.detail;
-
-                    if (Array.isArray(modalId)) {
-                        modalId = modalId[0];
-                    }
-
-                    if (typeof modalId === 'string' && modalId.trim() !== '') {
-                        var $modal = $('#' + modalId);
-
-                        // Menutup modal
-                        $modal.modal('hide');
-
-                        // Fungsi untuk membersihkan modal dan backdrop
-                        function cleanupModal() {
-                            $('body').removeClass('modal-open');
-                            $('.modal-backdrop').remove();
-                            $modal.removeClass('show');
-                            $modal.css('display', 'none');
-                            $('body').css('overflow', '');
-                            $('body').css('padding-right', '');
-                        }
-
-                        // Mencoba membersihkan setelah animasi modal selesai
-                        $modal.on('hidden.bs.modal', cleanupModal);
-
-                        // Backup: jika event tidak terpicu, bersihkan setelah delay
-                        setTimeout(cleanupModal, 500);
-                    } else {
-                        console.error('Invalid modal ID:', modalId);
-                    }
+                
+                // Membuka modal Delete
+                window.addEventListener('show-delete-modal', function () {
+                    $('#modalDelete').modal('show');
                 });
-            });
 
+                // Mendengarkan event dari Livewire untuk menutup modal
+                window.addEventListener('hide-delete-modal', function () {
+                    $('#modalDelete').modal('hide'); // Menutup modal
+                    
+                    // Menghapus backdrop ketika modal ditutup
+                    $('#modalDelete').on('hidden.bs.modal', function () {
+                        $('body').removeClass('modal-open'); // Hilangkan kelas modal-open pada body
+                        $('.modal-backdrop').remove(); // Hapus modal-backdrop
+                    });
+                });
+
+            });
         </script>
 
 
@@ -277,25 +255,9 @@
                 window.addEventListener('deleteSuccess', function (event) {
                     Swal.fire({
                         title: "Sukses!",
-                        text: "Data post berhasil dihapus!",
+                        text: "Data produk berhasil dihapus!",
                         icon: "success",
                         timer: 1000,
-                        timerProgressBar: true,
-                    });
-                });
-            })
-
-        </script>
-
-        {{-- Sweet alert,delete gagal --}}
-        <script>
-            $(document).ready(function () {
-                window.addEventListener('deleteError', function (event) {
-                    Swal.fire({
-                        title: "Oops!",
-                        text: "Data produk gagal dihapus!",
-                        icon: "error",
-                        timer: 1500,
                         timerProgressBar: true,
                     });
                 });

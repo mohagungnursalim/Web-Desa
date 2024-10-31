@@ -13,6 +13,10 @@ class Post extends Component
     public $limit = 5;
     public $totalPosts;
 
+    // delete
+    public $postId;
+    public $postTitle;
+
    
     public function mount()
     {
@@ -31,10 +35,17 @@ class Post extends Component
         $this->limit += 5;
     }
 
-    // Method Delete
-    public function delete($id)
+    public function confirmDelete($id, $title)
     {
-        $post = ModelsPost::findOrFail($id);
+        $this->postId = $id;
+        $this->postTitle = $title;
+        $this->dispatch('show-delete-modal');
+    }
+
+    // Method Delete
+    public function delete()
+    {
+        $post = ModelsPost::findOrFail($this->postId);
         $imagePath = $post->image;
 
         // Hapus file gambar jika ada
@@ -45,9 +56,8 @@ class Post extends Component
         // Hapus data 
         $post->delete();
 
-        // Kirim event ke JavaScript dengan ID modal sebagai string
-        $this->dispatch('hideModalDelete', 'modalDelete' . $id);  // Pastikan modal ID sebagai string
-        $this->dispatch('deleteSuccess');
+        $this->dispatch('hide-delete-modal'); 
+        $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
     }
 
     public function render()
