@@ -19,13 +19,32 @@
 
     </style>
 
+    {{-- Img Style --}}
     <style>
         .post-content img {
-            max-width: 100%;
-            height: auto;
+                max-width: 100%;
+                height: auto;
+            }
 
+            .image_resized {
+            display: block; /* Agar gambar dapat diperlakukan sebagai blok */
+            margin-left: auto;
+            margin-right: auto; /* Mengatur margin kiri dan kanan otomatis untuk sentralisasi */
         }
 
+        .image-style-block-align-left{
+            float: left;
+        }
+        .image-style-block-align-right {
+            float: right; /* Untuk gambar di sebelah kanan */
+        }
+
+        /* Jika ingin menjaga gambar tetap di tengah hanya saat tidak ada kelas alignment */
+        figure.image {
+            text-align: center; /* Menempatkan gambar di tengah dalam figure */
+        }
+    </style>
+    <style>
         /* CSS untuk highlight */
         .marker-yellow {
             background-color: #fdfd77;
