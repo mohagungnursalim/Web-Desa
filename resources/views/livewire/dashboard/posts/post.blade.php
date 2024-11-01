@@ -3,12 +3,12 @@
     <style>
         /* Gaya untuk blok kode */
         pre {
-            background-color: #000000;
+            background-color: #353434;
             /* Background gelap */
             color: #f8f8f2;
             /* Warna teks */
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 20px;
             overflow-x: auto;
             /* Scroll horizontal jika teks terlalu panjang */
             font-family: 'Courier New', Courier, monospace;
@@ -133,8 +133,7 @@
                                     <!-- Menambahkan kelas d-flex untuk layout flex -->
 
                                     <!-- Tombol untuk membuka modal detail -->
-                                    <button style="border-radius: 10px;" data-toggle="modal"
-                                        data-target="#modalDetail{{ $post->id }}" type="button"
+                                    <button style="border-radius: 10px;" wire:click="showPostDetail({{ $post->id }})" type="button"
                                         class="btn btn-secondary text-white mb-1 me-2">
                                         <!-- Tambahkan kelas me-2 untuk margin di sebelah kanan -->
                                         <i class="bi bi-eye"></i>
@@ -191,34 +190,30 @@
     {{-- ----------------Modal------------------------ --}}
 
     {{-- Modal Detail --}}
-    @foreach ($posts as $post)
-    <div class="modal fade" id="modalDetail{{ $post->id }}" tabindex="-1" role="dialog"
-        aria-labelledby="detailModalLabel{{ $post->id }}" aria-hidden="true" data-backdrop="static"
-        data-keyboard="false">
+    <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
+        aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content" style="border-radius: 20px;">
                 <div class="modal-header">
                     <h6 class="modal-title">
-                        <b>{{ $post->title }}</b>
+                        <b>{{ $selectedPost ? $selectedPost->title : '' }}</b>
                     </h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body"
-                    style="padding-left: 200px; padding-right: 200px; max-height: 75vh; overflow-y: auto;">
-                    <!-- Menggunakan kelas p-4 untuk padding -->
+                <div class="modal-body" style="padding-left: 200px; padding-right: 200px; max-height: 75vh; overflow-y: auto;">
                     <div class="text-center mb-3">
-                        <!-- Menambahkan margin bawah untuk jarak antara gambar dan deskripsi -->
-                        <img class="img-thumbnail" src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
-                            style="width: 250px">
+                        @if ($selectedPost && $selectedPost->image)
+                            <img class="img-thumbnail" src="{{ asset('storage/' . $selectedPost->image) }}" alt="{{ $selectedPost->title }}"
+                                style="width: 250px">
+                        @endif
                     </div>
                     <div class="post-content">
-                        {!! $post->description !!}
-                        <!-- Pastikan deskripsi aman untuk ditampilkan -->
+                        {{-- {!! $selectedPost ? $selectedPost->description : '' !!} --}}
+                        {!! $selectedPost ? $selectedPost->formatted_description : '' !!}
                     </div>
                 </div>
-
                 <div class="modal-footer justify-content-center">
                     <button style="border-radius: 10px;" type="button" class="btn btn-secondary" data-dismiss="modal">
                         Tutup
@@ -227,7 +222,6 @@
             </div>
         </div>
     </div>
-    @endforeach
 
         {{-- Modal Delete --}}
         <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -264,40 +258,24 @@
 
 
     @push('scripts')
-  
 
 
     {{-- Detail Modal --}}
     <script>
-        $(document).on('click', '.open-modal', function (event) {
-            var modalId = $(this).data('modal-id'); // Menggunakan atribut data untuk mendapatkan ID modal
+        document.addEventListener('DOMContentLoaded', function () {
+            window.addEventListener('show-detail-modal', function () {
+                $('#modalDetail').modal('show');
+            });
 
-            if (typeof modalId === 'string' && modalId.trim() !== '') {
-                var $modal = $('#' + modalId);
-
-                // Menutup modal
-                $modal.modal('hide');
-
-                // Fungsi untuk membersihkan modal dan backdrop
-                function cleanupModal() {
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
-                    $modal.removeClass('show');
-                    $modal.css('display', 'none');
-                    $('body').css('overflow', '');
-                    $('body').css('padding-right', '');
-                }
-
-                // Mencoba membersihkan setelah animasi modal selesai
-                $modal.on('hidden.bs.modal', cleanupModal);
-
-                // Backup: jika event tidak terpicu, bersihkan setelah delay
-                setTimeout(cleanupModal, 500);
-            } else {
-                console.error('Invalid modal ID:', modalId);
+            function cleanupModal() {
+                $('#modalDetail').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
             }
-        });
 
+            // Bersihkan backdrop saat modal ditutup
+            $('#modalDetail').on('hidden.bs.modal', cleanupModal);
+        });
     </script>
 
    {{-- Delete Modal --}}
@@ -343,53 +321,9 @@
 
 
     {{-- Code Style --}}
-    <script>
-        window.addEventListener('livewire:navigated', () => {
-        // Cari semua elemen <pre> di dalam CKEditor
-        $('.post-content pre').each(function () {
-            var pre = $(this);
-
-            // Cek jika header sudah ditambahkan, jika iya, lewati
-            if (pre.prev('.code-header').length > 0) return;
-
-            // Ambil class bahasa dari elemen <code>
-            var languageClass = pre.find('code').attr('class');
-            var languageName = languageClass ? languageClass.split('-')[1] : 'kode';
-
-            // Buat header dengan gaya yang sesuai
-            var header = $(
-                '<div class="code-header" style="background-color: #3d3d3d; color: #f8f8f2; padding: 5px; border-bottom: 1px solid #ccc; font-family: \'Courier New\', Courier, monospace; font-size: 14px; border-radius: 5px; font-weight: bold;">' +
-                languageName + '</div>');
-
-            // Tempatkan header di atas elemen <pre>
-            pre.before(header);
-        });
-    });
-    </script>
-  
+   
     
-    {{-- Menampilkan Iframe --}}
-    <script>
-        window.addEventListener('livewire:navigated', () => {
-            // Temukan semua elemen <oembed> dan konversi ke <iframe>
-            document.querySelectorAll('oembed[url]').forEach(element => {
-                // Ambil URL dari atribut `url`
-                const url = element.getAttribute('url');
-
-                // Buat elemen <iframe>
-                const iframe = document.createElement('iframe');
-                iframe.setAttribute('width', '100%');
-                iframe.setAttribute('height', '400');
-                iframe.setAttribute('frameborder', '0');
-                iframe.setAttribute('allowfullscreen', '');
-                iframe.setAttribute('src', url.replace("watch?v=", "embed/"));
-
-                // Ganti <oembed> dengan <iframe>
-                element.parentNode.replaceChild(iframe, element);
-            });
-        });
-    </script>
-
+  
 
     @endpush
 </div>

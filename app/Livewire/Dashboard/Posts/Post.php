@@ -17,6 +17,9 @@ class Post extends Component
     public $postId;
     public $postTitle;
 
+    // detail post
+    public $selectedPost = null;
+
    
     public function mount()
     {
@@ -33,6 +36,14 @@ class Post extends Component
     {
         usleep(500000);
         $this->limit += 5;
+    }
+
+    public function showPostDetail($id)
+    {
+        $this->selectedPost = ModelsPost::find($id); // Ambil objek Post berdasarkan ID, atau null jika tidak ditemukan
+        if ($this->selectedPost) {
+            $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
+        }
     }
 
     public function confirmDelete($id, $title)

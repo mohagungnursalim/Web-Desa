@@ -522,12 +522,10 @@
 
 
 
-
     {{-- Select2 Kategori Form Tambah --}}
     <script data-navigate-once>
         document.addEventListener('livewire:navigated', function () {
             setTimeout(function () {
-                console.log("Livewire loaded category for add form");
                 initializeSelect2Kategori('#post_category', 'post_category');
             }, 1); // Timeout pendek 1ms
         });
@@ -553,7 +551,6 @@
     <script data-navigate-once>
         document.addEventListener('livewire:navigated', function () {
             setTimeout(function () {
-                console.log("Livewire loaded tag for add form");
                 initializeSelect2Tag('#post_tag', 'post_tag');
             }, 1); // Timeout pendek 1ms
         });

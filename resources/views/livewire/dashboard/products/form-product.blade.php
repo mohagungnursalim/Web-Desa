@@ -132,8 +132,6 @@
     {{-- Summernote --}}
     <script data-navigate-once>
         document.addEventListener('livewire:navigated', () => {
-            console.log("Navigated");
-
             $(document).ready(function () {
 
                 let debounceTimer;
@@ -167,7 +165,6 @@
     <script data-navigate-once>
         document.addEventListener('livewire:navigated', function () {
             setTimeout(function () {
-                console.log("Livewire loaded category add product");
                 initializeSelect2Kategori('#product_category', 'product_category');
             }, 1); // Timeout pendek 1ms
         });

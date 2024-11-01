@@ -542,7 +542,6 @@
 								
 								debounceTimer = setTimeout(() => {
 									const data = editor.getData();
-									console.log('Updated description:', data); // Log data untuk debugging
 									@this.set('description', data); // Update Livewire property
 								}, 600); // 600ms debounce
 							});

@@ -454,8 +454,6 @@
         {{-- Summernote add --}}
         <script data-navigate-once>
             document.addEventListener('livewire:navigated', () => {
-                console.log("Summernote add init");
-
                 $(document).ready(function () {
 
                     let debounceTimer;
