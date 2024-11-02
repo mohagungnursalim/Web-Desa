@@ -281,7 +281,7 @@
 
     {{-- Detail Modal --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        $(document).ready(function () {
             window.addEventListener('show-detail-modal', function () {
                 $('#modalDetail').modal('show');
             });
