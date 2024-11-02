@@ -17,6 +17,11 @@ Route::get('/dashboard/profil', function () {
     return view('dashboard.edit-profile.index');
 })->middleware('auth')->name('dashboard.kategori-produk');
 
+
+Route::get('/dashboard/tentang-kami', function () {
+    return view('dashboard.about.index');
+})->middleware('auth')->name('dashboard.tentang-kami');
+
 Route::get('/dashboard/kelola-akun', function () {
     return view('dashboard.users.index');
 })->middleware('auth')->name('dashboard.kelola-akun');

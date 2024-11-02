@@ -129,6 +129,15 @@
                     </ul>
                 </li>
 
+                <li class="nav-item">
+                    <a wire:navigate href="/dashboard/tentang-kami" class="nav-link {{ Request::is('dashboard/tentang-kami') ? 'active' : '' }}">
+                        <i class="bi bi-info-circle-fill"></i>
+                      <p>
+                        Tentang Kami
+                      </p>
+                    </a>
+                </li>
+
                 <li class="nav-header">--Pengaturan--</li>
 
                 <li class="nav-item {{ Request::is('dashboard/profil') || Request::is('dashboard/kelola-akun') ? 'menu-open' : '' }}">
@@ -155,6 +164,7 @@
                         </li>
                     </ul>
                 </li>
+                
 
 
                 {{-- LogOut --}}
