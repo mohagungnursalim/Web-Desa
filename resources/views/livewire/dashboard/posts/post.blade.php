@@ -225,7 +225,7 @@
                     <div class="text-center mb-3">
                         @if ($selectedPost && $selectedPost->image)
                             <img class="img-thumbnail" src="{{ asset('storage/' . $selectedPost->image) }}" alt="{{ $selectedPost->title }}"
-                                style="width: 250px">
+                                style="width: 520px">
                         @endif
                     </div>
                     <div class="post-content">
