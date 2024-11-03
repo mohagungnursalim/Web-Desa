@@ -345,7 +345,7 @@
             window.addEventListener('deleteSuccess', function (event) {
                 Swal.fire({
                     title: "Sukses!",
-                    text: "Tag berhasil dihapus!",
+                    text: "Akun berhasil dihapus!",
                     icon: "success",
                     timer: 1000,
                     timerProgressBar: true,
