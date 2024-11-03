@@ -18,6 +18,10 @@ Route::get('/dashboard/profil', function () {
 })->middleware('auth')->name('dashboard.kategori-produk');
 
 
+Route::get('/dashboard/pengaturan', function () {
+    return view('dashboard.settings.index');
+})->middleware('auth')->name('dashboard.pengaturan');
+
 Route::get('/dashboard/tentang-kami', function () {
     return view('dashboard.about.index');
 })->middleware('auth')->name('dashboard.tentang-kami');
