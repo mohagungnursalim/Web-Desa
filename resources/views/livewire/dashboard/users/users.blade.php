@@ -268,7 +268,7 @@
         });
 
         // Mendengarkan event dari Livewire untuk menutup modal
-        window.addEventListener('closeUpdatedModal', function () {
+        window.addEventListener('successUpdateUser', function () {
             $('#editUserModal').modal('hide'); // Menutup modal
             
             // Menghapus backdrop ketika modal ditutup
@@ -314,7 +314,7 @@
             window.addEventListener('closeAddUserModal', function (event) {
                 Swal.fire({
                     title: "Sukses!",
-                    text: "User berhasil ditambahkan!",
+                    text: "Akun berhasil ditambahkan!",
                     icon: "success",
                     timer: 1000,
                     timerProgressBar: true,
@@ -326,7 +326,7 @@
     {{-- Sweet alert,Updated success --}}
     <script>
         $(document).ready(function () {
-            window.addEventListener('closeUpdatedModal', function (event) {
+            window.addEventListener('successUpdateUser', function (event) {
                 Swal.fire({
                     title: "Sukses!",
                     text: "Akun berhasil diperbarui!",

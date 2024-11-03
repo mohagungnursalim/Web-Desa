@@ -91,7 +91,7 @@ class Users extends Component
         $user->roles()->sync([$this->role]); // Hanya satu role untuk setiap user
     
         // Tutup modal dan reset form
-        $this->dispatch('closeUpdatedModal');
+        $this->dispatch('successUpdateUser');
       
     }
     

@@ -254,7 +254,7 @@
             })
 
         })
-    </script>
+</script>
 
     {{-- Sweet alert,categoryUpdated success --}}
     <script>
