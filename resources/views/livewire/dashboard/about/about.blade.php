@@ -415,23 +415,21 @@
 
     </script>
 
-	<script>
-		$(document).ready(function () {
-			window.addEventListener('updateSuccess', function (event) {
-				Swal.fire({
-					toast: true, // Mengatur untuk menampilkan sebagai toast
-					position: 'top-end', // Posisi toast
-					icon: 'success',
-					title: 'Sukses!',
-					text: 'Deskripsi berhasil diperbarui!',
-					showCloseButton: true, // Tampilkan tombol close
-					timer: 3000, // Durasi tampilnya toast dalam ms
-					timerProgressBar: true, // Tampilkan progress bar
-					showConfirmButton: false // Sembunyikan tombol konfirmasi
+	    {{-- Sweet alert,Updated success --}}
+		<script>
+			$(document).ready(function () {
+				window.addEventListener('updateSuccess', function (event) {
+					Swal.fire({
+						title: "Sukses!",
+						text: "Deskripsi berhasil diperbarui!",
+						icon: "success",
+						timer: 1000,
+						timerProgressBar: true,
+					});
 				});
-			});
-		});
-	</script>
+			})
+	
+		</script>
 
 
     @endpush
