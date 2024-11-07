@@ -8,7 +8,7 @@
   
                 <form>
                     <div wire:ignore class="form-group">
-                        <label for="description">Masukan Deskripsi anjay</label>
+                        <label for="description">Masukan Deskripsi</label>
                         <textarea class="form-control" id="editor" wire:model.defer="description"
                             placeholder="Masukan konten disini"></textarea>
                     </div>
