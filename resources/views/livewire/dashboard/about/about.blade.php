@@ -15,9 +15,9 @@
                     @error('description') <span class="text-danger error">{{ $message }}</span>@enderror
 
                     <div class="text-center">
-						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
+						<button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
 							wire:click="updateDescription">Simpan</button>
-						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" disabled wire:loading
+						<button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
 							wire:target='updateDescription'>
 							Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
 						</button>

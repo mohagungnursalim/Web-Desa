@@ -17,6 +17,9 @@ Route::get('/dashboard/profil', function () {
     return view('dashboard.edit-profile.index');
 })->middleware('auth')->name('dashboard.kategori-produk');
 
+Route::get('/dashboard/aduan-masyarakat', function () {
+    return view('dashboard.aduans.index');
+})->middleware('auth')->name('dashboard.aduan');
 
 Route::get('/dashboard/pengaturan', function () {
     return view('dashboard.settings.index');

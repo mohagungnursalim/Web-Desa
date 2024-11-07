@@ -27,6 +27,7 @@ $login = function () {
 ?>
 
 <div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -46,6 +47,7 @@ $login = function () {
                             type="password"
                             name="password"
                             required autocomplete="current-password" />
+                            &nbsp; <i class="bi bi-eye-slash" id="togglePassword"></i>
 
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
         </div>
@@ -58,16 +60,23 @@ $login = function () {
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
+        <div class="flex items-center justify-center mt-4">
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
     </form>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+         const password = document.querySelector('#password');
+    
+             togglePassword.addEventListener('click', function (e) {
+         // toggle the type attribute
+         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+         password.setAttribute('type', type);
+         // toggle the eye / eye slash icon
+         this.classList.toggle('bi-eye');
+     });
+    </script>
 </div>

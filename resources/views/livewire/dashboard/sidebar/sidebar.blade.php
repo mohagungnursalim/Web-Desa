@@ -120,6 +120,15 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a wire:navigate href="/dashboard/aduan-masyarakat" class="nav-link {{ Request::is('dashboard/aduan-masyarakat') ? 'active' : '' }}">
+                        <i class="bi bi-envelope-arrow-down"></i>
+                      <p>
+                        Aduan Masyarakat
+                      </p>
+                    </a>
+                </li>
+
                 <li class="nav-header">--Pengaturan--</li>
 
                 <li class="nav-item {{ Request::is('dashboard/profil') || Request::is('dashboard/kelola-akun') ? 'menu-open' : '' }}">
