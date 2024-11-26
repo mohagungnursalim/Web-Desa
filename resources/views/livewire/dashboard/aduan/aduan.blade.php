@@ -30,7 +30,7 @@
 
 
                         @forelse ($aduans as $index => $aduan)
-                        <tr>
+                        <tr @if($aduan->is_read == null) style="background-color:rgb(226, 226, 226)" @else @endif >
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $aduan->name }}</td>
                             <td>{{ $aduan->wa_number }}</td>
@@ -42,16 +42,21 @@
                             <td>{{ $aduan->created_at }}</td>
                             <td>{{ $aduan->updated_at }}</td>
                             <td>
-                                <!-- Tombol untuk membuka modal update -->
-                                <button style="border-radius: 10px;" wire:click="openUpdateModal({{ $aduan->id }})"
-                                    class="btn btn-primary">
-                                    <i class="bi bi-pencil-square"></i>
+
+                                <!-- Tombol untuk membuka modal detail -->
+                                <button style="border-radius: 10px;"
+                                    wire:click="showPostDetail({{ $aduan->id }},'{{ $aduan->name }}','{{ $aduan->wa_number }}','{{ $aduan->image }}','{{ $aduan->description }}')"
+                                    type="button" class="btn btn-secondary text-white mb-1 me-2">
+                                    <!-- Tambahkan kelas me-2 untuk margin di sebelah kanan -->
+                                    <i class="bi bi-eye"></i>
                                 </button>
 
                                 <!-- Tombol untuk membuka modal delete -->
-                                <button style="border-radius: 10px;" wire:click="confirmDelete({{ $aduan->id }}, '{{ $aduan->name }}' )" type="button" class="btn btn-danger text-white">
+                                <button style="border-radius: 10px;"
+                                    wire:click="confirmDelete({{ $aduan->id }}, '{{ $aduan->name }}' )" type="button"
+                                    class="btn btn-danger text-white">
                                     <i class="bi bi-trash3"></i>
-                                </button> 
+                                </button>
                             </td>
                         </tr>
                         @empty
@@ -91,130 +96,106 @@
     {{-- ----------------Modal------------------------ --}}
 
 
-        {{-- Modal Delete --}}
-        {{-- <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content" style="border-radius: 20px;">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="deleteModalLabel">
-                            Hapus Tag "{{ $postTagName }}"
-                        </h6>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+    {{-- Modal Detail --}}
+    <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
+        aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header">
+                    <h6 class="modal-title">
+                        <b>{{ $aduanName}}</b>
+                    </h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"
+                    style="padding-left: 200px; padding-right: 200px; max-height: 75vh; overflow-y: auto;">
+                    <div class="text-center mb-3">
+                        @if ($aduanId && is_array($aduanImage))
+                        @foreach ($aduanImage as $image)
+                        <img class="img-thumbnail" src="{{ asset('storage/' . $image) }}" alt="{{ $aduanName }}"
+                            style="width: 520px; margin-bottom: 10px;">
+                        @endforeach
+                        @else
+                        <p>Gambar tidak tersedia.</p>
+                        @endif
                     </div>
-                    <div class="modal-body text-center">
-                        Apakah anda yakin ingin menghapus tag ini?
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button style="border-radius: 10px;" wire:loading.remove wire:target='delete' type="button"
-                            class="btn btn-secondary" data-dismiss="modal">Batal
-                        </button>
-                        <button style="border-radius: 10px;" wire:loading.remove wire:click="delete" type="button"
-                            class="btn btn-danger">Hapus
-                        </button>
-        
-                        <button style="border-radius: 10px;" wire:loading wire:target='delete'
-                            class="btn btn-danger" disabled>
-                            Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
-                                aria-hidden="true"></span>
-                        </button>
+                    <div class="post-content">
+
+                        {!! $aduanDescription !!}
                     </div>
                 </div>
+                <div class="modal-footer justify-content-center">
+                    <button style="border-radius: 10px;" type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Tutup
+                    </button>
+                </div>
             </div>
-        </div> --}}
+        </div>
+    </div>
+
+    {{-- Modal Delete --}}
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="deleteModalLabel">
+                        Hapus Aduan "{{ $aduanName }}"
+                    </h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    Apakah anda yakin ingin menghapus aduan ini?
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button style="border-radius: 10px;" wire:loading.remove wire:target='delete' type="button"
+                        class="btn btn-secondary" data-dismiss="modal">Batal
+                    </button>
+                    <button style="border-radius: 10px;" wire:loading.remove wire:click="delete" type="button"
+                        class="btn btn-danger">Hapus
+                    </button>
+
+                    <button style="border-radius: 10px;" wire:loading wire:target='delete' class="btn btn-danger"
+                        disabled>
+                        Menghapus <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     @push('scripts')
 
-    {{-- Add Modal Form --}}
+
+    {{-- Detail Modal --}}
     <script>
         $(document).ready(function () {
-            // Membuka modal ketika tombol ditekan
-            $('#openModalBtn').click(function () {
-                $('#addTagModal').modal('show');
+            window.addEventListener('show-detail-modal', function () {
+                $('#modalDetail').modal('show');
             });
 
-            // Mendengarkan event dari Livewire untuk menutup modal
-            window.addEventListener('closeAddTagModal', function (event) {
-                $('#addTagModal').modal('hide'); // Menutup modal
-            });
+            function cleanupModal() {
+                $('#modalDetail').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }
 
-            // Reset form di backend setelah modal ditutup
-            $('#addTagModal').on('hidden.bs.modal', function (e) {
-                @this.call('resetForm'); // Reset input form di Livewire
-            });
-
-            // Jika modal ditutup, hapus backdrop jika ada
-            $('#addTagModal').on('hidden.bs.modal', function (e) {
-                $('.modal-backdrop').remove(); // Hapus backdrop
-            });
+            // Bersihkan backdrop saat modal ditutup
+            $('#modalDetail').on('hidden.bs.modal', cleanupModal);
         });
 
     </script>
 
-    {{-- Edit Modal Form --}}
+    {{-- Delete Modal --}}
     <script>
         $(document).ready(function () {
-            
-            // Membuka modal Edit
-            window.addEventListener('openEditTagModal', function () {
-                $('#editTagModal').modal('show');
-            });
-    
-            // Mendengarkan event dari Livewire untuk menutup modal
-            window.addEventListener('closeUpdatedModal', function () {
-                $('#editTagModal').modal('hide'); // Menutup modal
-                
-                // Menghapus backdrop ketika modal ditutup
-                $('#editTagModal').on('hidden.bs.modal', function () {
-                    $('body').removeClass('modal-open'); // Hilangkan kelas modal-open pada body
-                    $('.modal-backdrop').remove(); // Hapus modal-backdrop
-                });
-            });
-    
-            // Reset form di backend setelah modal ditutup
-            $('#editTagModal').on('hidden.bs.modal', function () {
-                @this.call('resetForm'); // Memanggil fungsi resetForm di Component
-            });
-        });
-    </script>
 
-    {{-- Sweet alert,added success --}}
-    <script>
-        $(document).ready(function () {
-            window.addEventListener('addedSuccess', function (event) {
-                Swal.fire({
-                    title: "Sukses!",
-                    text: "Tag berhasil ditambahkan!",
-                    icon: "success",
-                    timer: 1000,
-                    timerProgressBar: true,
-                });
-            });
-        })
-
-    </script>
-
-    {{-- Sweet alert,tagUpdated success --}}
-    <script>
-        $(document).ready(function () {
-            window.addEventListener('tagUpdated', function (event) {
-                Swal.fire({
-                    title: "Sukses!",
-                    text: "Tag berhasil diperbarui!",
-                    icon: "success",
-                    timer: 1000,
-                    timerProgressBar: true,
-                });
-            });
-        })
-
-    </script>
-
-       {{-- Delete Modal --}}
-       <script>
-        $(document).ready(function () {
-            
             // Membuka modal Delete
             window.addEventListener('show-delete-modal', function () {
                 $('#modalDelete').modal('show');
@@ -223,15 +204,10 @@
             // Mendengarkan event dari Livewire untuk menutup modal
             window.addEventListener('hide-delete-modal', function () {
                 $('#modalDelete').modal('hide'); // Menutup modal
-                
-                // Menghapus backdrop ketika modal ditutup
-                $('#modalDelete').on('hidden.bs.modal', function () {
-                    $('body').removeClass('modal-open'); // Hilangkan kelas modal-open pada body
-                    $('.modal-backdrop').remove(); // Hapus modal-backdrop
-                });
             });
 
         });
+
     </script>
 
     {{-- Sweet alert,delete success --}}
@@ -240,7 +216,7 @@
             window.addEventListener('deleteSuccess', function (event) {
                 Swal.fire({
                     title: "Sukses!",
-                    text: "Tag berhasil dihapus!",
+                    text: "Aduan berhasil dihapus!",
                     icon: "success",
                     timer: 1000,
                     timerProgressBar: true,
@@ -256,7 +232,7 @@
             window.addEventListener('deleteError', function (event) {
                 Swal.fire({
                     title: "Oops!",
-                    text: "Tag gagal dihapus!",
+                    text: "Aduan gagal dihapus!",
                     icon: "error",
                     timer: 1500,
                     timerProgressBar: true,
