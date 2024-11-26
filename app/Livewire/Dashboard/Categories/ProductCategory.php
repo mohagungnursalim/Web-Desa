@@ -51,8 +51,6 @@ class ProductCategory extends Component
     {
         $this->validate();
 
-        sleep(1);
-
         // Create new product
         ModelsProductCategory::create([
             'name' => $this->name
@@ -82,7 +80,6 @@ class ProductCategory extends Component
             'categoryName' => 'required|string|max:30',
         ]);
 
-        sleep(1);
         ModelsProductCategory::find($this->category_id)->update([
             'name' => $this->categoryName,
         ]);

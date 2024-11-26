@@ -58,8 +58,6 @@ class FormProduct extends Component
             'description' => $this->description,
         ]);
 
-        // $this->description = '';
-        // $this->dispatch('resetEditor');
         // Attach categories
         $product->categories()->sync($this->product_category);
 

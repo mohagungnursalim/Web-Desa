@@ -54,7 +54,7 @@ class PostCategory extends Component
     //reset form
     public function resetForm()
     {
-        $this->reset(['name', 'image', 'color']);
+        $this->reset(['name', 'image']);
     }
 
 
@@ -64,11 +64,9 @@ class PostCategory extends Component
 
         $imagePath = $this->image->store('post-category', 'public');
         
-        sleep(1);
         ModelsPostCategory::create([
             'name' => $this->name,
             'image' => $imagePath,
-            'color' => $this->color
         ]);
 
         // Kirim event ke frontend untuk menutup modal
@@ -115,7 +113,7 @@ class PostCategory extends Component
         // Update data lainnya
         $category->name = $this->categoryName;
 
-        sleep(1);
+       
         $category->save();
 
         // Kirim event ke frontend untuk menutup modal
