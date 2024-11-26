@@ -79,22 +79,20 @@ class Post extends Component
         // Cek apakah pengguna adalah Admin atau Editor
         if ($user->roles->contains('name', 'Admin') || $user->roles->contains('name', 'Editor')) {
             // Jika Admin atau Editor, tampilkan semua postingan berdasarkan pencarian
-            $posts = ModelsPost::with(['user', 'categories'])
+            $posts = ModelsPost::with(['user', 'categories','tags'])
                 ->where('title', 'like', '%' . $this->search . '%')
                 ->latest()
                 ->take($this->limit)
                 ->get();
         } else {
             // Jika bukan Admin atau Editor, tampilkan hanya postingan milik user tersebut
-            $posts = ModelsPost::with(['user', 'categories'])
+            $posts = ModelsPost::with(['user', 'categories','tags'])
                 ->where('user_id', $user->id) // Filter berdasarkan user_id
                 ->where('title', 'like', '%' . $this->search . '%')
                 ->latest()
                 ->take($this->limit)
                 ->get();
         }
-        // $posts = ModelsPost::with(['user', 'categories'])->where('title', 'like', '%' . $this->search . '%')
-        // ->latest()->take($this->limit)->get();
         return view('livewire.dashboard.posts.post',[
             'posts' => $posts,
             'totalPosts' => $this->totalPosts

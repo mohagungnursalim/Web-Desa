@@ -18,10 +18,10 @@ class PostCategory extends Component
     public $isModalOpen = false;
 
     // properti Form Add
-    public $name, $image, $color;
+    public $name, $image;
 
     // properti Edit Form
-    public $categoryName, $imageUpdate, $colorUpdate;
+    public $categoryName, $imageUpdate;
 
     // delete
 
@@ -49,7 +49,6 @@ class PostCategory extends Component
     protected $rules = [
         'name' => 'required|string|max:30',
         'image' => 'required|image|max:5120',
-        'color' => 'required'
     ];
 
     //reset form
@@ -84,7 +83,6 @@ class PostCategory extends Component
         $this->category_id = $id;
         $this->categoryName = $category->name; // Mengambil nama kategori
         $this->imageUpdate = $category->image; // Mengambil gambar lama
-        $this->colorUpdate = $category->color; // Mengambil warna lama
     
         $this->dispatch('openEditCategoryModal');
     }
@@ -96,7 +94,6 @@ class PostCategory extends Component
         $this->validate([
             'categoryName' => 'required|string|max:30',
             'image' => 'nullable|image|max:5120', // image bisa optional
-            'colorUpdate' => 'required'
         ]);
 
         $category = ModelsPostCategory::findOrFail($this->category_id);
@@ -117,7 +114,6 @@ class PostCategory extends Component
 
         // Update data lainnya
         $category->name = $this->categoryName;
-        $category->color = $this->colorUpdate;
 
         sleep(1);
         $category->save();

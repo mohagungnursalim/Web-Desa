@@ -24,7 +24,6 @@
                             <th>No</th>
                             <th>Kategori</th>
                             <th>Image</th>
-                            <th>Color</th>
                             <th>Dibuat</th>
                             <th>Diperbarui</th>
                             <th>Aksi</th>
@@ -40,12 +39,6 @@
                             <td>
                                 <img src="{{ asset('storage/' . $category->image) }}" style="width: 45px"
                                     alt="{{ $category->name }}">
-                            </td>
-                            <td>
-                                <button class="badge"
-                                    style="border:none; border-radius:10px; background-color:{{ $category->color }}; width: 20px; height: 20px;">
-                                    &nbsp;
-                                </button>
                             </td>
                             <td>{{ $category->created_at }}</td>
                             <td>{{ $category->updated_at }}</td>
@@ -156,11 +149,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="color">Pilih Warna</label>
-                            <input type="color" class="form-control" wire:model="color" id="color">
-                            @error('color') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
 
                     </form>
                 </div>
@@ -246,14 +234,7 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="form-group">
-                            <label for="colorUpdate">Pilih Warna</label>
-                            <input type="color" class="form-control" wire:model="colorUpdate" id="colorUpdate">
-                            @error('colorUpdate') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
-
+                        
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
