@@ -36,13 +36,12 @@ class PostTag extends Component
 
     public function updatingSearch()
     {
-        $this->reset(['tags', 'limit']); // Reset data dan limit
         $this->limit = 7; // Set ulang limit ke nilai awal
     }
 
     public function updatedSearch()
     {
-        usleep(500000); //menampilkan data pencarian 600ms
+        usleep(500000); //menampilkan data pencarian 500ms
         $this->loadInitialTags(); // Muat data baru setelah pencarian di-update
     }
 
