@@ -13,9 +13,9 @@ class PostTag extends Component
     public $search = '';
     public $limit = 7;
     public $totalTags;
+    public $tags;
     public $tag_id;
     public $isModalOpen = false;
-    public $tags;
 
     // properti Form Add
     public $name;
@@ -30,44 +30,35 @@ class PostTag extends Component
     public function mount()
     {
         $this->totalTags = ModelsPostTag::count();
-        $this->tags = collect(); // Koleksi kosong sebagai default
-        
+        $this->tags = collect(); // Koleksi kosong untuk defer loading
     }
 
     public function updatingSearch()
     {
-        $this->limit = 7; // Set ulang limit ke nilai awal
+        $this->limit = 7; // Reset limit saat pencarian diubah
     }
 
     public function updatedSearch()
     {
-        usleep(500000); //menampilkan data pencarian 500ms
-        $this->loadInitialTags(); // Muat data baru setelah pencarian di-update
+        usleep(500000); // Tambahkan jeda pencarian
+        $this->loadInitialTags(); // Muat data sesuai pencarian
     }
 
     public function loadInitialTags()
     {
         $this->tags = ModelsPostTag::where('name', 'like', '%' . $this->search . '%')
             ->latest()
-            ->take($this->limit)
+            ->take($this->limit) // Ambil data berdasarkan limit terbaru
             ->get();
     }
+    
 
     public function loadMore()
     {
-        $newTags = ModelsPostTag::where('name', 'like', '%' . $this->search . '%')
-            ->latest()
-            ->skip($this->tags->count()) // Lewati data yang sudah ada
-            ->take($this->limit) // Tambahkan data baru sesuai limit
-            ->get();
-
-        $this->tags = $this->tags->merge($newTags); // Gabungkan data baru dengan data lama
-
-        // Update totalTags jika pencarian mengubah total data
-        $this->totalTags = ModelsPostTag::where('name', 'like', '%' . $this->search . '%')->count();
-
-        $this->limit += 7;
+        $this->limit += 7; // Tingkatkan limit tanpa menggunakan skip
+        $this->loadInitialTags(); // Panggil fungsi untuk memuat data baru sesuai limit
     }
+
 
     // validasi rules
     protected $rules = [
@@ -83,28 +74,20 @@ class PostTag extends Component
     {
         $this->validate();
 
-        $newTag = ModelsPostTag::create([
-            'name' => $this->name
-        ]);
+        $newTag = ModelsPostTag::create(['name' => $this->name]);
 
-        // Tambahkan data baru ke dalam properti $tags
-        $this->tags->prepend($newTag);
-
-        // Update total tag
-        $this->totalTags++;
-
-        // Kirim event ke frontend untuk menutup modal
-        $this->dispatch('closeAddTagModal');
-        $this->dispatch('addedSuccess');
+        $this->tags->prepend($newTag); // Tambahkan data baru ke awal
+        $this->totalTags++; // Perbarui total data
+        $this->dispatch('closeAddTagModal'); // Tutup modal tambah
+        $this->dispatch('addedSuccess'); // Notifikasi sukses
     }
 
     public function openUpdateModal($id)
     {
         $tag = ModelsPostTag::find($id);
         $this->tag_id = $id;
-        $this->tagUpdate = $tag->name; // Mengambil nama kategori
-
-        $this->dispatch('openEditTagModal'); // Kirim event untuk membuka modal dengan jQuery
+        $this->tagUpdate = $tag->name; // Ambil data kategori untuk diedit
+        $this->dispatch('openEditTagModal'); // Buka modal edit
     }
 
     public function update()
@@ -114,41 +97,27 @@ class PostTag extends Component
         ]);
 
         $tag = ModelsPostTag::findOrFail($this->tag_id);
-
-        // Update data
-        $tag->name = $this->tagUpdate;
-        $tag->save();
-
-        // Kirim event ke frontend untuk menutup modal
-        $this->dispatch('tagUpdated');
-        $this->dispatch('closeUpdatedModal'); // Tutup modal setelah update
+        $tag->update(['name' => $this->tagUpdate]); // Update data
+        $this->dispatch('closeUpdatedModal'); // Tutup modal edit
+        $this->dispatch('tagUpdated'); // Notifikasi sukses
     }
 
     public function confirmDelete($id, $name)
     {
         $this->postTagId = $id;
         $this->postTagName = $name;
-        $this->dispatch('show-delete-modal');
+        $this->dispatch('show-delete-modal'); // Buka modal konfirmasi hapus
     }
 
     public function delete()
     {
         $tag = ModelsPostTag::findOrFail($this->postTagId);
+        $tag->delete(); // Hapus data dari database
 
-        // Hapus data kategori
-        $tag->delete();
-
-        // Hapus data dari properti $tags
-        $this->tags = $this->tags->filter(function ($item) use ($tag) {
-            return $item->id !== $tag->id; // Hanya ambil data yang ID-nya tidak sesuai dengan tag yang dihapus
-        })->values(); // Reset indeks koleksi agar urutan kembali berurutan
-
-        // Kurangi total tag
-        $this->totalTags--;
-
-        // Kirim event untuk menutup modal dan menampilkan notifikasi
-        $this->dispatch('hide-delete-modal');
-        $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
+        $this->tags = $this->tags->filter(fn($item) => $item->id !== $this->postTagId); // Hapus dari koleksi
+        $this->totalTags--; // Kurangi total data
+        $this->dispatch('hide-delete-modal'); // Tutup modal hapus
+        $this->dispatch('deleteSuccess'); // Notifikasi sukses
     }
 
     public function render()
