@@ -42,7 +42,7 @@ class PostTag extends Component
 
     public function updatedSearch()
     {
-        usleep(700000); //menampilkan data pencarian 700ms
+        usleep(500000); //menampilkan data pencarian 600ms
         $this->loadInitialTags(); // Muat data baru setelah pencarian di-update
     }
 
@@ -63,6 +63,11 @@ class PostTag extends Component
             ->get();
 
         $this->tags = $this->tags->merge($newTags); // Gabungkan data baru dengan data lama
+
+        // Update totalTags jika pencarian mengubah total data
+        $this->totalTags = ModelsPostTag::where('name', 'like', '%' . $this->search . '%')->count();
+
+        $this->limit += 7;
     }
 
     // validasi rules

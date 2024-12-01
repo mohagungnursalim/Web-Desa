@@ -12,7 +12,7 @@
 
                 <!-- Input untuk mencari tag -->
                 <div class="mb-2">
-                    <input style="border-radius: 10px;" type="text" wire:model.live.debounce.500ms="search"
+                    <input style="border-radius: 10px;" type="text" wire:model.live="search"
                         placeholder="Cari tag.." class="form-control" style="color: black;">
 
                     &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
@@ -75,9 +75,10 @@
 
                 </div>
 
+
                 <!-- Tombol Load More -->
                 @if($tags->count() >= $limit && $totalTags > $limit)
-                <div class="mt-4 d-flex justify-content-center">
+                <div class="mt-4 d-flex justify-content-center" wire:loading.remove>
                     <!-- Tombol "Tampilkan Lebih" (akan hilang saat loading) -->
                     <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded"
                         wire:loading.remove wire:target="loadMore">
@@ -85,12 +86,13 @@
                     </button>
 
                     <!-- Tombol Loading (hanya muncul saat loading) -->
-                    <button style="border-radius: 20px;" class="btn btn-dark  btn-rounded" type="button" disabled
+                    <button style="border-radius: 20px;" class="btn btn-dark btn-rounded" type="button" disabled
                         wire:loading wire:target="loadMore">
                         Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     </button>
                 </div>
                 @endif
+
 
 
             </div>
