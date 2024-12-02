@@ -68,7 +68,7 @@
 
                     <div class="text-center">
                         <!-- Loading saat memuat data pertama kali -->
-                        <p wire:loading wire:target="loadInitialTags" colspan="7" class="text-center">Memuat data..<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        <p wire:loading wire:target="loadInitialTags" class="text-center">Memuat data..<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                         </p>
                     </div>
 

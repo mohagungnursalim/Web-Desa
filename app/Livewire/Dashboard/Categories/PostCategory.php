@@ -13,8 +13,8 @@ class PostCategory extends Component
     public $search = '';
     public $limit = 5;
     public $totalCategories;
+    public $categories;
     public $category_id;
-    public $hasMore = true;
     public $isModalOpen = false;
 
     // properti Form Add
@@ -31,18 +31,28 @@ class PostCategory extends Component
     public function mount()
     {
         $this->totalCategories = ModelsPostCategory::count();
+        $this->categories = collect();
     }
 
     public function updatingSearch()
     {
         $this->limit = 5;
-        $this->hasMore = true; 
     }
 
+    public function updatedSearch()
+    {
+        usleep(500000); //Tambahkan jeda pencarian (ms)
+        $this->loadInitialCategories(); //Muat data sesuai pencarian
+    }
+
+    public function loadInitialCategories()
+    {
+        $this->categories = ModelsPostCategory::where('name','like', '%' . $this->search . '%')->latest()->take($this->limit)->get();
+    }
     public function loadMore()
     {
-        usleep(500000);
         $this->limit += 5;
+        $this->loadInitialCategories();
     }
 
     // validasi rules
@@ -64,10 +74,13 @@ class PostCategory extends Component
 
         $imagePath = $this->image->store('post-category', 'public');
         
-        ModelsPostCategory::create([
+        $newCategory = ModelsPostCategory::create([
             'name' => $this->name,
             'image' => $imagePath,
         ]);
+
+        $this->categories->prepend($newCategory);
+        $this->totalCategories++;
 
         // Kirim event ke frontend untuk menutup modal
         $this->dispatch('closeAddCategoryModal');
@@ -137,10 +150,12 @@ class PostCategory extends Component
         if (file_exists(public_path('storage/' . $imagePath))) {
             unlink(public_path('storage/' . $imagePath));
         }
-
     
         // Hapus data kategori
         $category->delete();
+
+        $this->categories = $this->categories->filter(fn($item) => $item->id !== $this->postCategoryId);
+        $this->totalCategories--;
 
         $this->dispatch('hide-delete-modal'); 
         $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
@@ -150,10 +165,9 @@ class PostCategory extends Component
 
     public function render()
     {
-        $categories = ModelsPostCategory::where('name', 'like', '%' . $this->search . '%')->latest()
-            ->take($this->limit)->get();
+
         return view('livewire.dashboard.categories.post-category', [
-            'categories' => $categories,
+            'categories' => $this->categories,
             'totalCategories' => $this->totalCategories
         ]);
     }
