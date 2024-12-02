@@ -17,8 +17,8 @@ $updateProfileInformation = function () {
     $user = Auth::user();
 
     $validated = $this->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+        'name' => ['required', 'string', 'max:40'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:50', Rule::unique(User::class)->ignore($user->id)],
     ]);
 
     $user->fill($validated);
@@ -33,18 +33,18 @@ $updateProfileInformation = function () {
     return $this->redirect('/dashboard/profil', navigate: true);
 };
 
-$sendVerification = function () {
-    $user = Auth::user();
+// $sendVerification = function () {
+//     $user = Auth::user();
 
-    if ($user->hasVerifiedEmail()) {
-        $this->redirectIntended(default: route('dashboard', absolute: false));
-        return;
-    }
+//     if ($user->hasVerifiedEmail()) {
+//         $this->redirectIntended(default: route('dashboard', absolute: false));
+//         return;
+//     }
 
-    $user->sendEmailVerificationNotification();
+//     $user->sendEmailVerificationNotification();
 
-    Session::flash('status', 'verification-link-sent');
-};
+//     Session::flash('status', 'verification-link-sent');
+// };
 ?>
 
 <section>
