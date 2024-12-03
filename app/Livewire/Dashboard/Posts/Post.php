@@ -12,6 +12,7 @@ class Post extends Component
     public $search = '';
     public $limit = 5;
     public $totalPosts;
+    public $posts;
 
     // delete
     public $postId;
@@ -24,18 +25,48 @@ class Post extends Component
     public function mount()
     {
         $this->totalPosts = ModelsPost::count();
+        $this->posts = collect();
     }
 
     public function updatingSearch()
     {
-        usleep(500000);
         $this->limit = 5;
     }
 
-    public function loadMore()
+    public function updatedSearch()
     {
         usleep(500000);
+        $this->loadInitialPosts();
+    }
+
+    public function loadInitialPosts()
+    {
+        $user = Auth::user();
+    
+        // Cek apakah pengguna adalah Admin atau Editor
+        if ($user->roles->contains('name', 'Admin') || $user->roles->contains('name', 'Editor')) {
+            // Jika Admin atau Editor, tampilkan semua postingan berdasarkan pencarian
+            $this->posts = ModelsPost::with(['user', 'categories', 'tags'])
+                ->where('title', 'like', '%' . $this->search . '%')
+                ->latest()
+                ->take($this->limit)
+                ->get();
+        } else {
+            // Jika bukan Admin atau Editor, tampilkan hanya postingan milik user tersebut
+            $this->posts = ModelsPost::with(['user', 'categories', 'tags'])
+                ->where('user_id', $user->id) // Filter berdasarkan user_id
+                ->where('title', 'like', '%' . $this->search . '%')
+                ->latest()
+                ->take($this->limit)
+                ->get();
+        }
+    }
+    
+
+    public function loadMore()
+    {
         $this->limit += 5;
+        $this->loadInitialPosts();
     }
 
     public function showPostDetail($id)
@@ -67,6 +98,8 @@ class Post extends Component
         // Hapus data 
         $post->delete();
 
+        $this->posts = $this->posts->filter(fn($item) => $item->id !== $this->postId);
+        $this->totalPosts--;
         $this->dispatch('hide-delete-modal'); 
         $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
     }
@@ -74,27 +107,8 @@ class Post extends Component
     public function render()
     {
 
-        $user = Auth::user();
-
-        // Cek apakah pengguna adalah Admin atau Editor
-        if ($user->roles->contains('name', 'Admin') || $user->roles->contains('name', 'Editor')) {
-            // Jika Admin atau Editor, tampilkan semua postingan berdasarkan pencarian
-            $posts = ModelsPost::with(['user', 'categories','tags'])
-                ->where('title', 'like', '%' . $this->search . '%')
-                ->latest()
-                ->take($this->limit)
-                ->get();
-        } else {
-            // Jika bukan Admin atau Editor, tampilkan hanya postingan milik user tersebut
-            $posts = ModelsPost::with(['user', 'categories','tags'])
-                ->where('user_id', $user->id) // Filter berdasarkan user_id
-                ->where('title', 'like', '%' . $this->search . '%')
-                ->latest()
-                ->take($this->limit)
-                ->get();
-        }
         return view('livewire.dashboard.posts.post',[
-            'posts' => $posts,
+            'posts' => $this->posts,
             'totalPosts' => $this->totalPosts
         ]);
     }

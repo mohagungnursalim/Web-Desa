@@ -24,7 +24,6 @@ class PostCategory extends Component
     public $categoryName, $imageUpdate;
 
     // delete
-
     public $postCategoryId;
     public $postCategoryName;
 

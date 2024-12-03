@@ -80,7 +80,7 @@
                     &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
                 </div>
 
-                <div style="overflow-x: auto;">
+                <div style="overflow-x: auto;" wire:init="loadInitialPosts">
                     <table class="table table-responsive-md">
                         <thead>
                             <tr>
@@ -177,11 +177,16 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="14" class="text-center">Tidak ada postingan yang ditemukan.</td>
+                                <td wire:loading.remove wire:target="loadInitialPosts" colspan="14" class="text-center">Tidak ada postingan yang ditemukan.</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
+                    <div class="text-center">
+                        <!-- Loading saat memuat data pertama kali -->
+                        <p wire:loading wire:target="loadInitialPosts" class="text-center">Memuat data..<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Tombol Load More -->
