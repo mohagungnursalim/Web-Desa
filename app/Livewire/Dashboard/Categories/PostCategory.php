@@ -11,7 +11,7 @@ class PostCategory extends Component
     use WithFileUploads;
 
     public $search = '';
-    public $limit = 5;
+    public $limit = 7;
     public $totalCategories;
     public $categories;
     public $category_id;
@@ -36,7 +36,7 @@ class PostCategory extends Component
 
     public function updatingSearch()
     {
-        $this->limit = 5;
+        $this->limit = 7;
     }
 
     public function updatedSearch()
@@ -51,7 +51,7 @@ class PostCategory extends Component
     }
     public function loadMore()
     {
-        $this->limit += 5;
+        $this->limit += 7;
         $this->loadInitialCategories();
     }
 
