@@ -11,6 +11,7 @@ class ProductCategory extends Component
     public $search = '';
     public $limit = 7;
     public $totalCategories;
+    public $categories;
     public $category_id;
     public $isModalOpen = false;
     public $name;
@@ -22,6 +23,7 @@ class ProductCategory extends Component
     public function mount()
     {
         $this->totalCategories = ModelsProductCategory::count();
+        $this->categories = collect();
     }
 
     public function updatingSearch()
@@ -29,10 +31,21 @@ class ProductCategory extends Component
         $this->limit = 7;
     }
 
-    public function loadMore()
+    public function updatedSearch()
     {
         usleep(500000);
+        $this->loadInitialCategories();
+    }
+
+    public function loadInitialCategories()
+    {
+        $this->categories = ModelsProductCategory::where('name', 'like', '%'. $this->search . '%')->latest()->take($this->limit)->get();
+    }
+
+    public function loadMore()
+    {
         $this->limit += 7;
+        $this->loadInitialCategories();
     }
 
     // validation
@@ -52,9 +65,12 @@ class ProductCategory extends Component
         $this->validate();
 
         // Create new product
-        ModelsProductCategory::create([
+        $newCategory = ModelsProductCategory::create([
             'name' => $this->name
         ]);
+
+        $this->categories->prepend($newCategory);
+        $this->totalCategories++;
 
         // Reset form setelah menyimpan
         $this->resetForm();
@@ -107,6 +123,9 @@ class ProductCategory extends Component
             
             $category->delete();
             
+            $this->categories = $this->categories->filter(fn($item) => $item->id !== $this->categoryId);
+            $this->totalCategories--;
+
             $this->dispatch('hide-delete-modal'); 
             $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
            
@@ -119,11 +138,8 @@ class ProductCategory extends Component
 
     public function render()
     {
-        $categories = ModelsProductCategory::where('name', 'like', '%' . $this->search . '%')->latest()
-        ->take($this->limit)
-        ->get();
         return view('livewire.dashboard.categories.product-category',[
-            'categories' => $categories,
+            'categories' => $this->categories,
             'totalCategories' => $this->totalCategories
         ]);
     }
