@@ -11,6 +11,7 @@ class Product extends Component
     public $search = '';
     public $limit = 8; // Limit produk yang akan ditampilkan pertama kali
     public $totalProducts; // Total produk di database
+    public $products;
     public $product_id;
 
     // delete
@@ -21,6 +22,7 @@ class Product extends Component
     {
         // Menghitung total produk pada saat komponen pertama kali di-mount
         $this->totalProducts = ModelProduct::count();
+        $this->products = collect();
 
     }
 
@@ -30,10 +32,21 @@ class Product extends Component
         $this->limit = 8;
     }
 
-    public function loadMore()
+    public function updatedSearch()
     {
         usleep(500000);
+        $this->loadInitialProducts();
+    }
+
+    public function loadInitialProducts()
+    {
+        $this->products = ModelProduct::where('title','like', '%'. $this->search . '%')->latest()->take($this->limit)->get();
+    }
+
+    public function loadMore()
+    {
         $this->limit += 8;
+        $this->loadInitialProducts();
     }
 
     public function confirmDelete($id, $title)
@@ -70,6 +83,9 @@ class Product extends Component
             $product->categories()->detach();
             $product->delete();
 
+            $this->products = $this->products->filter(fn($item) => $item->id !== $this->productId);
+            $this->totalProducts--;
+
             $this->dispatch('hide-delete-modal'); 
             $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
            
@@ -85,14 +101,8 @@ class Product extends Component
 
     public function render()
     {
-        // Ambil produk berdasarkan pencarian dan jumlah limit
-        $products = ModelProduct::with('categories')->where('title', 'like', '%' . $this->search . '%')
-                           ->latest()
-                           ->take($this->limit)
-                           ->get();
-
         return view('livewire.dashboard.products.product', [
-            'products' => $products,
+            'products' => $this->products,
             'totalProducts' => $this->totalProducts
         ]);
     }

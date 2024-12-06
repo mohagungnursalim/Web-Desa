@@ -20,14 +20,13 @@
 
                         &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
                     </div>
-
+                    <div wire:init="loadInitialProducts">
                     <div class="container-fluid">
                         <!-- End Row -->
                         <div class="row">
-                            @if ($products->isNotEmpty())
                             <div class="col-12 m-b-30">
                                 <div class="row">
-                                    @foreach ($products as $index => $product)
+                                    @forelse ($products as $index => $product)
                                     <div class="col-md-6 col-lg-3">
                                         <div class="card"  style="border-radius: 20px;">
                                             {{-- Menampilkan gambar produk --}}
@@ -126,20 +125,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
+                                    @empty
+                                    <!-- Jika tidak ada data yang ditemukan -->
+                                    <div wire:loading.remove class="text-center text-secondary">
+                                        &nbsp;&nbsp; Produk tidak tersedia..
+                                    </div>
+                                    @endforelse
+                                </div>
+                                <div class="text-center">
+                                    <!-- Loading saat memuat data pertama kali -->
+                                    <p wire:loading wire:target="loadInitialProducts" class="text-center">Memuat data..<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                    </p>
                                 </div>
                             </div>
-                            @else
-                            <!-- Jika tidak ada data yang ditemukan -->
-                            <div wire:loading.remove class="text-center text-secondary">
-                                &nbsp;&nbsp; Produk tidak tersedia..
-                            </div>
-                            @endif
+
                         </div>
 
 
                     </div>
-
+                    </div>
                    
                    <!-- Tombol Load More -->
                 @if($products->count() >= $limit && $totalProducts > $limit)
