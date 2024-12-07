@@ -127,7 +127,7 @@
                                     </div>
                                     @empty
                                     <!-- Jika tidak ada data yang ditemukan -->
-                                    <div wire:loading.remove wire:target="loadInitialProducts" class="text-center text-secondary">
+                                    <div wire:loading.remove class="text-center text-secondary">
                                         &nbsp;&nbsp; Produk tidak tersedia..
                                     </div>
                                     @endforelse

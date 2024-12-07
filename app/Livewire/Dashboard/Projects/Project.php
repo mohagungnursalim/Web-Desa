@@ -13,6 +13,7 @@ class Project extends Component
     public $search = '';
     public $limit = 8;
     public $totalProjects;
+    public $projects;
     public $project_id;
     public $image = [], $imagePaths = [], $project_name, $project_description, $start_date, $end_date;
     public $existingImages = [];
@@ -24,6 +25,7 @@ class Project extends Component
     public function mount()
     {
         $this->totalProjects = ModelsProject::count();
+        $this->projects = collect();
     }
 
     public function updatingSearch()
@@ -31,10 +33,21 @@ class Project extends Component
         $this->limit = 8;
     }
 
-    public function loadMore()
+    public function updatedSearch()
     {
         usleep(500000);
+        $this->loadInitialProjects();
+    }
+
+    public function loadInitialProjects()
+    {
+       $this->projects = ModelsProject::where('project_name', 'like', '%' . $this->search . '%')->latest()->take($this->limit)->get();
+
+    }
+    public function loadMore()
+    {
         $this->limit += 8;
+        $this->loadInitialProjects();
     }
 
     protected function storeRules()
@@ -76,7 +89,7 @@ class Project extends Component
         }
         
         sleep(1);
-        ModelsProject::create([
+       $newProject = ModelsProject::create([
             'image' => json_encode($imagePaths),
             'project_name' => $this->project_name,
             'project_description' => $this->project_description,
@@ -84,9 +97,13 @@ class Project extends Component
             'end_date' => $this->end_date
         ]);
 
+        $this->projects->prepend($newProject);
+        $this->totalProjects++;
+
+        $this->resetForm();
         $this->dispatch('closeAddProjectModal');
         $this->dispatch('addedSuccess');
-        $this->resetForm();
+        
     }
 
     public function openUpdateModal($id)
@@ -189,6 +206,9 @@ class Project extends Component
             // Hapus project dari database
             $project->delete();
 
+             $this->projects = $this->projects->filter(fn($item) => $item->id !== $this->projectId);
+             $this->totalProjects--;
+
              $this->dispatch('hide-delete-modal'); 
              $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
 
@@ -202,10 +222,9 @@ class Project extends Component
 
     public function render()
     {
-        $projects = ModelsProject::where('project_name', 'like', '%' . $this->search . '%')
-            ->latest()->take($this->limit)->get();
+     
         return view('livewire.dashboard.projects.project', [
-            'projects' => $projects,
+            'projects' => $this->projects,
             'totalProjects' => $this->totalProjects
         ]);
     }
