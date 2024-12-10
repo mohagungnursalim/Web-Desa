@@ -12,6 +12,7 @@ class Aduan extends Component
     public $search = '';
     public $limit = 7;
     public $totalAduans;
+    public $aduans; 
     public $hasMore = true;
 
     public $aduanId,$aduanName,$aduanWa,$aduanImage = [],$aduanDescription,$aduanIsRead;
@@ -20,16 +21,29 @@ class Aduan extends Component
     public function mount()
     {
         $this->totalAduans = ModelsAduan::count();
+        $this->aduans = collect();
     }
 
     public function updatingSearch()
     {
         $this->limit = 7;
     }
-    public function loadMore()
+
+    public function updatedSearch()
     {
         usleep(500000);
+        $this->loadInitialAduans();
+    }
+
+    public function loadInitialAduans()
+    {
+        $this->aduans = ModelsAduan::where('name', 'like', '%' . $this->search . '%')->latest()->take($this->limit)->get();
+    }
+
+    public function loadMore()
+    {
         $this->limit += 7;
+        $this->loadInitialAduans();
     }
 
     public function showPostDetail($id,$name,$wa_number,$image,$description)
@@ -71,7 +85,10 @@ class Aduan extends Component
  
          // Hapus data 
          $aduan->delete();
- 
+
+         $this->aduans = $this->aduans->filter(fn($item) => $item->id !== $this->aduanId);
+         $this->totalAduans--;
+         
          $this->dispatch('hide-delete-modal'); 
          $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
      }

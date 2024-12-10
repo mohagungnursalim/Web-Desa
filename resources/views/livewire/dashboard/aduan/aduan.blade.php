@@ -12,7 +12,7 @@
 
                     &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
                 </div>
-
+                <div wire:init="loadInitialAduans">
                 <table class="table table-responsive-md">
                     <thead>
                         <tr>
@@ -61,14 +61,19 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7" class="text-center">Tidak ada aduan yang ditemukan.</td>
+                            <td wire:loading.remove wire:target="loadInitialAduans" colspan="7" class="text-center">Tidak ada aduan yang ditemukan.</td>
                         </tr>
                         @endforelse
 
 
                     </tbody>
                 </table>
-
+                <div class="text-center">
+                    <!-- Loading saat memuat data pertama kali -->
+                    <p wire:loading wire:target="loadInitialAduans" class="text-center">Memuat data..<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    </p>
+                </div>
+                </div>
 
                 <!-- Tombol Load More -->
                 @if($aduans->count() >= $limit && $totalAduans > $limit)
