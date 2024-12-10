@@ -95,11 +95,9 @@ class Aduan extends Component
 
     public function render()
     {
-        $aduans = ModelsAduan::where('name', 'like', '%' . $this->search . '%')->latest()
-        ->take($this->limit)->get();
 
         return view('livewire.dashboard.aduan.aduan',[
-            'aduans' => $aduans,
+            'aduans' => $this->aduans,
             'totalAduans' => $this->totalAduans
         ]);
     }
