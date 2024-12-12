@@ -9,23 +9,19 @@ class Sidebar extends Component
 {
     public $appName;
     public $footerText;
+    public $appLogo;
 
-    protected $listeners = ['appNameUpdated' => 'updateAppName', 'footerTextUpdated' => 'updateFooterText'];
+    protected $listeners = [
+        'appNameUpdated' => 'updateAppName', 
+        'footerTextUpdated' => 'updateFooterText',
+        'appLogoUpdated' => 'updatedAppLogo'
+    ];
 
     public function mount()
     {
         $this->appName = Setting::getSetting('app_name', config('app.name'));
         $this->footerText = Setting::getSetting('footer_text', 'Default footer text');
-    }
-
-    public function updateAppName($newName)
-    {
-        $this->appName = $newName;
-    }
-
-    public function updateFooterText($newText)
-    {
-        $this->footerText = $newText;
+        $this->appLogo = Setting::getSetting('appLogo', null);
     }
 
     public function render()

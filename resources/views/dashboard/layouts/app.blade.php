@@ -1,14 +1,12 @@
 {{-- New Template --}}
 @include('dashboard.layouts.head')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-{{-- Masukan Head disini --}}
-{{-- @vite(['resources/js/app.js']) --}}
 <style>
     /* Gaya CSS untuk Preloader */
     #preloader {
         position: fixed;
         top: 0;
-        left: 0;
+        left: 125px;
         width: 100%;
         height: 100%;
         z-index: 9999; /* Pastikan preloader di atas elemen lain */
@@ -17,7 +15,7 @@
         align-items: center;
     }
     .spinner-border {
-        color: #000000;
+        color: #989898;
         width: 8rem;
         height: 8rem;
         border-width: 1rem;
@@ -61,6 +59,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
     </script>
+    <!-- Impor AdminLTE setelah jQuery dan Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
     {{-- Select2 --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
             integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
@@ -70,10 +70,10 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
     {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    
     <script>
         // Mendengarkan event navigasi Livewire
-        document.addEventListener('livewire:navigate', (event) => {
+        document.addEventListener('livewire:navigate', () => {
             // Tampilkan preloader saat navigasi terjadi
             document.getElementById('preloader').style.display = 'flex';
         });

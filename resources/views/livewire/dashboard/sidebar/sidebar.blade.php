@@ -1,7 +1,6 @@
 <div>
     <a wire:navigate href="/dashboard" class="brand-link">
-        {{-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
-            class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
+        <img src="{{ asset('storage/' . $appLogo) }}" alt="App Logo" width="25%">
         <span class="brand-text font-weight-light">{{ $appName }}</span>
     </a>
 
@@ -168,7 +167,7 @@
                         <li class="nav-item">
                             <a wire:navigate href="/dashboard/pengaturan" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i> <i class="bi bi-window-fullscreen"></i>
-                                <p class="{{ Request::is('dashboard/pengaturan') ? 'text-warning' : '' }}">Nama App & Footer</p>
+                                <p class="{{ Request::is('dashboard/pengaturan') ? 'text-warning' : '' }}">Pengaturan Aplikasi</p>
                             </a>
                         </li>
                     </ul>
