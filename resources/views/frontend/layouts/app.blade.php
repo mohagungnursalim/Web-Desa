@@ -22,9 +22,9 @@
     @include('frontend.layouts.navbar')
 
     <!-- Main Content -->
-    <div class="mt-20 mx-auto max-w-screen-xl px-4 py-10 flex-grow">
+    
         @yield('content')
-    </div>
+
 
     <!-- Footer -->
     @include('frontend.layouts.footer')
