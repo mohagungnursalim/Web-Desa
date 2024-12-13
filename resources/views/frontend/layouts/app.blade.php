@@ -36,7 +36,7 @@
     <script>
         // Configure NProgress
         NProgress.configure({
-            template: '<div class="bar" role="bar" style="background: rgb(113, 243, 168, 1); height: 5px;"><div class="peg"></div></div>'
+            template: '<div class="bar" role="bar" style="background: #06ffd5; height: 3px;"><div class="peg"></div></div>'
         });
 
         // Listen for Livewire Navigation Events
