@@ -73,7 +73,7 @@ class Settings extends Component
         // Validasi input
         $this->validate([
             'heroTitle' => 'required|string|max:255',
-            'heroDescription' => 'nullable|string|max:500',
+            'heroDescription' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
