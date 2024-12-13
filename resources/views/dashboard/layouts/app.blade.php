@@ -1,6 +1,19 @@
 {{-- New Template --}}
 @include('dashboard.layouts.head')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+<style>
+/* Mengatur z-index untuk progress bar agar berada di atas elemen lain */
+#nprogress .bar {
+    height: 3px !important;
+    z-index: 9999 !important; /* Pastikan progress bar di atas semua elemen */
+}
+
+#nprogress {
+    z-index: 9999 !important; /* Memastikan kontainer NProgress juga di atas */
+}
+
+</style>
 <style>
     /* Gaya CSS untuk Preloader */
     #preloader {
@@ -83,6 +96,24 @@
             document.getElementById('preloader').style.display = 'none';
         });
     </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+        <!-- Livewire Integration -->
+        <script>
+            // Configure NProgress
+            NProgress.configure({
+                template: '<div class="bar" role="bar" height: 3px;"><div class="peg"></div></div>'
+            });
+    
+            // Listen for Livewire Navigation Events
+            document.addEventListener('livewire:navigate', () => {
+                NProgress.start();
+            });
+    
+            document.addEventListener('livewire:navigated', () => {
+                NProgress.done();
+            });
+    
+        </script>
     @stack('scripts')
 </body>
 
