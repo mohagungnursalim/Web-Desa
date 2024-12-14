@@ -23,17 +23,13 @@
           <li>
             <a wire:navigate href="/"
                class="block py-2 px-3 {{ Request::is('/') ? 'text-gray-700' : 'text-white' }} rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-red-700 md:p-0"
-               aria-current="">Home</a>            
+               aria-current="">Beranda</a>            
           </li>
-          <li>
-            <a href="#"
-               class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Profil</a>
-          </li>
-          <!-- Dropdown Layanan -->
-          {{-- <li class="relative">
+          <!-- Dropdown Profil -->
+          <li class="relative">
             <button id="dropdownButton" type="button"
                class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 flex items-center focus:outline-none">
-              Layanan
+              Profil
               <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
               </svg>
@@ -43,19 +39,32 @@
                     class="absolute hidden mt-2 bg-gray-500 border border-gray-200 rounded-lg shadow-lg">
                 <a href="/layanan1" 
                     class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Layanan 1
+                    Sambutan Lurah
                 </a>
                 <a href="/layanan2" 
                     class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Layanan 2
+                    Sejarah Singkat
                 </a>
                 <a href="/layanan3" 
                     class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Layanan 3
+                    Visi Misi
+                </a>
+                <a href="/layanan3" 
+                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
+                    Struktur Organisasi
+                </a>
+                <a href="/layanan3" 
+                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
+                    Program Prioritas
+                </a>
+                <a href="/layanan3" 
+                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
+                    Program Unggulan
                 </a>
             </div>
 
-          </li> --}}
+          </li>
+     
           <li>
             <a href="#"
                class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Layanan</a>
@@ -69,7 +78,7 @@
     </div>
   </nav>
 
-{{-- <script>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
     const dropdownButton = document.getElementById('dropdownButton');
     const dropdownMenu = document.getElementById('dropdownMenu');
@@ -86,4 +95,4 @@
       }
     });
   });
-</script> --}}
+</script>
