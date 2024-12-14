@@ -72,10 +72,10 @@
                     <div class="card-body">
                         <form wire:submit.prevent="saveheroSettings">
                             <div class="text-center mb-4">
-                                @if ($image)
+                                @if ($image2)
                                 <!-- Preview saat gambar sedang diunggah -->
                                 <div class="p-2">
-                                    <img src="{{ $image->temporaryUrl() }}" alt="Preview"
+                                    <img src="{{ $image2->temporaryUrl() }}" alt="Preview"
                                         class="img-fluid img-thumbnail" width="100px">
                                 </div>
                                 @elseif ($heroImage)
@@ -88,7 +88,7 @@
 
                                 <!-- Loading bar saat upload -->
                                 <br>
-                                <div wire:loading wire:target="image" class="mt-2 col" style="width: 400px">
+                                <div wire:loading wire:target="image2" class="mt-2 col" style="width: 400px">
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
                                             role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0"
@@ -100,8 +100,8 @@
 
                                 <!-- Input file -->
                                 <div class="mt-3">
-                                    <input type="file" wire:model="image">
-                                    @error('image') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <input type="file" wire:model="image2">
+                                    @error('image2') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -113,6 +113,64 @@
                                 <label for="heroDescription" class="form-label">Hero Description</label>
                                 <textarea id="heroDescription" class="form-control" wire:model="heroDescription"></textarea>
                                 @error('heroDescription') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" style="border-radius: 10px;" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-11 mx-auto mb-4">
+                <div class="card shadow-sm border-0" style="border-radius: 25px;">
+                    <div class="card-body">
+                        <form wire:submit.prevent="saveheroSettings2">
+                            <div class="text-center mb-4">
+                                @if ($image3)
+                                <!-- Preview saat gambar sedang diunggah -->
+                                <div class="p-2">
+                                    <img src="{{ $image3->temporaryUrl() }}" alt="Preview"
+                                        class="img-fluid img-thumbnail" width="100px">
+                                </div>
+                                @elseif ($heroImage2)
+                                <!-- Menampilkan gambar lama jika tidak ada upload baru -->
+                                <img src="{{ asset('storage/' . $heroImage2) }}" alt="App Logo"
+                                    class="img-fluid img-thumbnail" width="100px">
+                                @else
+                                <p class="text-muted">No image uploaded</p>
+                                @endif
+
+                                <!-- Loading bar saat upload -->
+                                <br>
+                                <div wire:loading wire:target="image3" class="mt-2 col" style="width: 400px">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                            role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0"
+                                            aria-valuemax="100">
+                                            Mengunggah...
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Input file -->
+                                <div class="mt-3">
+                                    <input type="file" wire:model="image3">
+                                    @error('image3') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="heroTitle2" class="form-label">Hero Title 2</label>
+                                <input type="text" id="heroTitle2" class="form-control" wire:model="heroTitle2">
+                                @error('heroTitle2') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="heroDescription2" class="form-label">Hero Description 2</label>
+                                <textarea id="heroDescription2" class="form-control" wire:model="heroDescription2"></textarea>
+                                @error('heroDescription2') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
                             <div class="text-center">
                                 <button type="submit" style="border-radius: 10px;" class="btn btn-primary">Simpan</button>

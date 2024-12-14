@@ -16,14 +16,17 @@
     </style>
     <section class="bg-white">
 
-        {{-- Jumbotron --}}
+        {{-- Hero Section 1 --}}
         <section
-            class="bg-center bg-no-repeat full-page bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/conference.jpg')] bg-gray-700 bg-blend-multiply">
+            class="bg-center bg-no-repeat full-page bg-gray-700 bg-blend-multiply" style="background-image: url('{{ asset('storage/' . \App\Models\Setting::getSetting('heroImage', null)) }}');">>
             <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
                 <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-4xl lg:text-1xl">
-                    Selamat Datang Website Resmi Kelurahan Lambara</h1>
-                <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Sumber Informasi dan
-                    Layanan Kelurahan Lambara.</p>
+                    {{-- Hero Title --}}
+                    {{ \App\Models\Setting::getSetting('heroTitle', 'Hero Title') }}</h1>
+                <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
+                    {{-- Hero Description --}}
+                    {{ \App\Models\Setting::getSetting('heroDescription', 'Hero Description') }}
+                </p>
                 <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
                     <a href="#"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
@@ -46,30 +49,32 @@
         </section>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffe0b2" fill-opacity="1" d="M0,288L40,250.7C80,213,160,139,240,138.7C320,139,400,213,480,202.7C560,192,640,96,720,85.3C800,75,880,149,960,170.7C1040,192,1120,160,1200,154.7C1280,149,1360,171,1400,181.3L1440,192L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path></svg>
 
-        {{-- Sambutan Kepala OPD --}}
+        {{-- Hero Section 2 --}}
         <div class=" mx-auto max-w-screen-xl px-4 py-10 flex-grow">
             <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
                 <div class="mr-auto place-self-center lg:col-span-7">
                     <h1
                         class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-gray-700 underline decoration-indigo-500">
-                        {{-- Hero Title --}}
-                        {{ \App\Models\Setting::getSetting('heroTitle', 'Hero Title') }}
+                        {{-- Hero Title2 --}}
+                        {{ \App\Models\Setting::getSetting('heroTitle2', 'Hero Title2') }}
                     </h1>
                     <p class="max-w-2xl mb-6 text-gray-500">
-                        {{-- Hero Description --}}
-                        {{ \App\Models\Setting::getSetting('heroDescription', 'Hero Description') }}
+                        {{-- Hero Description2 --}}
+                        {{ \App\Models\Setting::getSetting('heroDescription2', 'Hero Description2') }}
                     </p>
                 </div>
                 <div class="flex justify-center items-center lg:col-span-5">
-                    {{-- Hero Logo --}}
+                    {{-- Hero Logo2 --}}
                     <img class="w-full max-w-xs lg:max-w-full lg:w-auto"
-                        src="{{ asset('storage/'.  \App\Models\Setting::getSetting('heroImage', null)) }}"
+                        src="{{ asset('storage/'.  \App\Models\Setting::getSetting('heroImage2', null)) }}"
                         alt="Logo Kota Palu" width="50%">
                 </div>
             </div>
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffe0b2" fill-opacity="1" d="M0,288L40,266.7C80,245,160,203,240,186.7C320,171,400,181,480,197.3C560,213,640,235,720,208C800,181,880,107,960,101.3C1040,96,1120,160,1200,192C1280,224,1360,224,1400,224L1440,224L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffe0b2" fill-opacity="1" d="M0,288L40,266.7C80,245,160,203,240,186.7C320,171,400,181,480,197.3C560,213,640,235,720,208C800,181,880,107,960,101.3C1040,96,1120,160,1200,192C1280,224,1360,224,1400,224L1440,224L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path></svg>
+
+
 
         {{-- Carousel --}}
         <div class="mt-20 mx-auto max-w-screen-xl px-4 py-10 flex-grow">

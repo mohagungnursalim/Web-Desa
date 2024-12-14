@@ -12,17 +12,12 @@ class Settings extends Component
 
     public $appName;
     public $footerText;
-    public $heroTitle;
-    public $heroDescription;
-    public $heroImage;
+    public $heroTitle,$heroTitle2;
+    public $heroDescription,$heroDescription2;
+    public $heroImage,$heroImage2;
     public $appLogo; // Untuk tampilan gambar yang ada
-    public $image;   // Untuk upload gambar baru
+    public $image,$image2,$image3;   // Untuk upload gambar baru
 
-    protected $listeners = [
-        'appNameUpdated' => 'updateAppName',
-        'footerTextUpdated' => 'updateFooterText',
-        'appLogoUpdated' => 'updateAppLogo',
-    ];
 
     public function mount()
     {
@@ -34,6 +29,9 @@ class Settings extends Component
         $this->heroDescription = Setting::getSetting('heroDescription', 'Hero Description');
         $this->heroImage = Setting::getSetting('heroImage', 'Hero Image');
        
+        $this->heroTitle2 = Setting::getSetting('heroTitle2', 'Hero Title2');
+        $this->heroDescription2 = Setting::getSetting('heroDescription2', 'Hero Description2');
+        $this->heroImage2 = Setting::getSetting('heroImage2', 'Hero Image2');
     }
 
     public function saveSettings()
@@ -42,7 +40,7 @@ class Settings extends Component
         $this->validate([
             'appName' => 'required|string|max:255',
             'footerText' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Simpan teks pengaturan
@@ -50,8 +48,8 @@ class Settings extends Component
         Setting::setSetting('footer_text', $this->footerText);
 
         // Simpan gambar jika ada upload baru
-        if ($this->image) {
-            $newImagePath = $this->image->store('app-logo', 'public');
+        if ($this->image2) {
+            $newImagePath = $this->image2->store('app-logo', 'public');
 
             // Hapus gambar lama jika ada
             if ($this->appLogo && file_exists(public_path('storage/' . $this->appLogo))) {
@@ -74,7 +72,7 @@ class Settings extends Component
         $this->validate([
             'heroTitle' => 'required|string|max:255',
             'heroDescription' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Simpan teks pengaturan
@@ -82,8 +80,8 @@ class Settings extends Component
         Setting::setSetting('heroDescription', $this->heroDescription);
 
         // Simpan gambar jika ada upload baru
-        if ($this->image) {
-            $newImagePath = $this->image->store('hero-image', 'public');
+        if ($this->image2) {
+            $newImagePath = $this->image2->store('hero-image', 'public');
 
             // Hapus gambar lama jika ada
             if ($this->heroImage && file_exists(public_path('storage/' . $this->heroImage))) {
@@ -100,6 +98,37 @@ class Settings extends Component
 
     }
 
+    public function saveheroSettings2()
+    {
+        // Validasi input
+        $this->validate([
+            'heroTitle2' => 'required|string|max:255',
+            'heroDescription2' => 'nullable|string',
+            'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Simpan teks pengaturan
+        Setting::setSetting('heroTitle2', $this->heroTitle2);
+        Setting::setSetting('heroDescription2', $this->heroDescription2);
+
+        // Simpan gambar jika ada upload baru
+        if ($this->image3) {
+            $newImagePath = $this->image3->store('hero-image', 'public');
+
+            // Hapus gambar lama jika ada
+            if ($this->heroImage2 && file_exists(public_path('storage/' . $this->heroImage2))) {
+                unlink(public_path('storage/' . $this->heroImage2));
+            }
+
+            // Perbarui path gambar di database
+            Setting::setSetting('heroImage2', $newImagePath);
+            $this->heroImage2 = $newImagePath;
+        }
+
+        toast('Hero section 2 berhasil diperbarui!','success');
+        return $this->redirect('/dashboard/pengaturan', navigate: true);
+
+    }
     public function render()
     {
         return view('livewire.dashboard.settings.settings');
