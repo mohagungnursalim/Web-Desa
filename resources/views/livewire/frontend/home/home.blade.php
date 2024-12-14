@@ -28,19 +28,19 @@
                     {{ \App\Models\Setting::getSetting('heroDescription', 'Hero Description') }}
                 </p>
                 <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-                    <a href="#"
+                    <a href="/postingan"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
                         Berita <i class="bi bi-newspaper ml-1"></i>
                     </a>
-                    <a href="#"
+                    <a href="/produk"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
                         Produk <i class="bi bi-cart3 ml-1"></i>
                     </a>
-                    <a href="#"
+                    <a href="/aduan-masyarakat"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
-                        Kontak <i class="bi bi-envelope-arrow-up-fill ml-1"></i>
+                        Aduan Masyarakat <i class="bi bi-envelope-arrow-up-fill ml-1"></i>
                     </a>
-                    <a href="#"
+                    <a href="https://cekdptonline.kpu.go.id/"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
                         Cek DPT Online <i class="bi bi-people-fill ml-1"></i> <i class="bi bi-check-all ml-1"></i>
                     </a>
@@ -216,7 +216,7 @@
                     @endif
         
                     <div class="px-5 pb-3">
-                        <a href="#">
+                        <a href="/produk/{{ $product->id }}">
                             <h5 class="text-xl font-semibold tracking-tight text-gray-900">
                                 {{ $product->title }}
                             </h5>

@@ -13,6 +13,9 @@
         .progress-bar {
             height: 5px !important; /* Sesuaikan dengan nilai yang diinginkan */
         }
+        .spinner {
+            display: none !important;
+        }
     </style>
     @stack('styles')
 </head>
@@ -36,7 +39,8 @@
     <script>
         // Configure NProgress
         NProgress.configure({
-            template: '<div class="bar" role="bar" style="background: #06ffd5; height: 3px;"><div class="peg"></div></div>'
+            template: '<div class="bar" role="bar" style="background: #06ffd5; height: 3px;"><div class="peg"></div></div>',
+            showSpinner: false
         });
 
         // Listen for Livewire Navigation Events

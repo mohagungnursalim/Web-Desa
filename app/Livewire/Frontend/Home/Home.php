@@ -11,7 +11,7 @@ class Home extends Component
     public function render()
     {
         $posts = Post::select(['title', 'description','image','slug'])->latest()->take(5)->get();
-        $products = Product::select(['title','price','image','description','wa_number'])->latest()->take(6)->get();
+        $products = Product::select(['title','price','image','description','wa_number','id'])->latest()->take(6)->get();
         return view('livewire.frontend.home.home',[
             'posts' => $posts,
             'products' => $products

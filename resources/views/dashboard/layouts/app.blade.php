@@ -33,6 +33,10 @@
         height: 8rem;
         border-width: 1rem;
     }
+    
+    #nprogress .spinner {
+        display: none !important;
+    }
 </style>
 
 
