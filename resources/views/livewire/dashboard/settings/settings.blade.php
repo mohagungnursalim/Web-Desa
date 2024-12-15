@@ -52,7 +52,8 @@
                                 @error('footerText') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
                             <div class="text-center">
-                                <button type="submit" style="border-radius: 10px;" class="btn btn-primary">Simpan</button>
+                                <button type="submit" style="border-radius: 10px;"
+                                    class="btn btn-primary">Simpan</button>
                             </div>
                         </form>
 
@@ -63,14 +64,15 @@
     </div>
 
     <div class="container">
-        <h4 class="text-center">- Hero Settings -</h4>
+        <h4 class="text-center">- Beranda Settings -</h4>
     </div>
     <div class="container">
+        {{-- Jumbotron --}}
         <div class="row">
             <div class="col-lg-11 mx-auto mb-4">
                 <div class="card shadow-sm border-0" style="border-radius: 25px;">
                     <div class="card-body">
-                        <form wire:submit.prevent="saveheroSettings">
+                        <form wire:submit.prevent="saveJumbotronSettings">
                             <div class="text-center mb-4">
                                 @if ($image2)
                                 <!-- Preview saat gambar sedang diunggah -->
@@ -78,9 +80,9 @@
                                     <img src="{{ $image2->temporaryUrl() }}" alt="Preview"
                                         class="img-fluid img-thumbnail" width="100px">
                                 </div>
-                                @elseif ($heroImage)
+                                @elseif ($jumbotronImage)
                                 <!-- Menampilkan gambar lama jika tidak ada upload baru -->
-                                <img src="{{ asset('storage/' . $heroImage) }}" alt="App Logo"
+                                <img src="{{ asset('storage/' . $jumbotronImage) }}" alt="App Logo"
                                     class="img-fluid img-thumbnail" width="100px">
                                 @else
                                 <p class="text-muted">No image uploaded</p>
@@ -105,17 +107,20 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="heroTitle" class="form-label">Hero Title</label>
-                                <input type="text" id="heroTitle" class="form-control" wire:model="heroTitle">
-                                @error('heroTitle') <small class="text-danger">{{ $message }}</small> @enderror
+                                <label for="jumbotronTitle" class="form-label">Jumbotron Title</label>
+                                <input type="text" id="jumbotronTitle" class="form-control" wire:model="jumbotronTitle">
+                                @error('jumbotronTitle') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="heroDescription" class="form-label">Hero Description</label>
-                                <textarea id="heroDescription" class="form-control" wire:model="heroDescription"></textarea>
-                                @error('heroDescription') <small class="text-danger">{{ $message }}</small> @enderror
+                                <label for="jumbotronDescription" class="form-label">Jumbotron Description</label>
+                                <textarea id="jumbotronDescription" class="form-control"
+                                    wire:model="jumbotronDescription"></textarea>
+                                @error('jumbotronDescription') <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="text-center">
-                                <button type="submit" style="border-radius: 10px;" class="btn btn-primary">Simpan</button>
+                                <button type="submit" style="border-radius: 10px;"
+                                    class="btn btn-primary">Simpan</button>
                             </div>
                         </form>
 
@@ -124,11 +129,12 @@
             </div>
         </div>
 
+        {{-- OPD --}}
         <div class="row">
             <div class="col-lg-11 mx-auto mb-4">
                 <div class="card shadow-sm border-0" style="border-radius: 25px;">
                     <div class="card-body">
-                        <form wire:submit.prevent="saveheroSettings2">
+                        <form wire:submit.prevent="saveOpdSettings">
                             <div class="text-center mb-4">
                                 @if ($image3)
                                 <!-- Preview saat gambar sedang diunggah -->
@@ -136,9 +142,9 @@
                                     <img src="{{ $image3->temporaryUrl() }}" alt="Preview"
                                         class="img-fluid img-thumbnail" width="100px">
                                 </div>
-                                @elseif ($heroImage2)
+                                @elseif ($opdImage)
                                 <!-- Menampilkan gambar lama jika tidak ada upload baru -->
-                                <img src="{{ asset('storage/' . $heroImage2) }}" alt="App Logo"
+                                <img src="{{ asset('storage/' . $opdImage) }}" alt="App Logo"
                                     class="img-fluid img-thumbnail" width="100px">
                                 @else
                                 <p class="text-muted">No image uploaded</p>
@@ -163,17 +169,28 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="heroTitle2" class="form-label">Hero Title 2</label>
-                                <input type="text" id="heroTitle2" class="form-control" wire:model="heroTitle2">
-                                @error('heroTitle2') <small class="text-danger">{{ $message }}</small> @enderror
+                                <label for="opdTitle" class="form-label">Opd Title</label>
+                                <input type="text" id="opdTitle" class="form-control" wire:model="opdTitle">
+                                @error('opdTitle') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                            <div class="mb-3" wire:ignore>
+                                <label for="opdDescription" class="form-label">Opd Description</label>
+                                <textarea id="opdDescription" class="form-control">{{ $opdDescription }}</textarea>
+                                @error('opdDescription') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="heroDescription2" class="form-label">Hero Description 2</label>
-                                <textarea id="heroDescription2" class="form-control" wire:model="heroDescription2"></textarea>
-                                @error('heroDescription2') <small class="text-danger">{{ $message }}</small> @enderror
+                                <label for="opdName" class="form-label">Opd Name</label>
+                                <input type="text" id="opdName" class="form-control" wire:model="opdName">
+                                @error('opdName') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="opdPosition" class="form-label">Opd Position</label>
+                                <input type="text" id="opdPosition" class="form-control" wire:model="opdPosition">
+                                @error('opdPosition') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
                             <div class="text-center">
-                                <button type="submit" style="border-radius: 10px;" class="btn btn-primary">Simpan</button>
+                                <button type="submit" style="border-radius: 10px;"
+                                    class="btn btn-primary">Simpan</button>
                             </div>
                         </form>
 
@@ -182,4 +199,42 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <!-- Bootstrap JS (Dibutuhkan oleh Summernote) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
+
+    <script>
+        // summernote
+        $(document).ready(function () {
+
+            let debounceTimer;
+
+            $('#opdDescription').summernote({
+                height: 300,
+                toolbar: [
+                    // tambahkan toolbar sesuai dengan kebutuhan
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['ul', 'ol']],
+                    ['view', ['codeview', 'help']]
+                ],
+                callbacks: {
+                    onChange: function (contents, $editable) {
+                        // Reset debounceTimer setiap kali ada perubahan
+                        clearTimeout(debounceTimer);
+
+                        debounceTimer = setTimeout(function () {
+                            @this.set('opdDescription', contents); // Update model Livewire
+                        }, 600); // 600ms
+                    }
+                }
+            });
+        });
+
+    </script>
 </div>

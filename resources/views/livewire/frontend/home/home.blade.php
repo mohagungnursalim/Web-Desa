@@ -16,16 +16,16 @@
     </style>
     <section class="bg-white">
 
-        {{-- Hero Section 1 --}}
+        {{-- Jumbotron Section --}}
         <section
-            class="bg-center bg-no-repeat full-page bg-gray-700 bg-blend-multiply" style="background-image: url('{{ asset('storage/' . \App\Models\Setting::getSetting('heroImage', null)) }}');">>
+            class="bg-center bg-no-repeat full-page bg-gray-700 bg-blend-multiply" style="background-image: url('{{ asset('storage/' . \App\Models\Setting::getSetting('jumbotronImage', null)) }}');">>
             <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
                 <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-4xl lg:text-1xl">
-                    {{-- Hero Title --}}
-                    {{ \App\Models\Setting::getSetting('heroTitle', 'Hero Title') }}</h1>
+                    {{-- Jumbotron Title --}}
+                    {{ \App\Models\Setting::getSetting('jumbotronTitle', 'Jumbotron Title') }}</h1>
                 <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
-                    {{-- Hero Description --}}
-                    {{ \App\Models\Setting::getSetting('heroDescription', 'Hero Description') }}
+                    {{-- Jumbotron Description --}}
+                    {{ \App\Models\Setting::getSetting('jumbotronDescription', 'Jumbotron Description') }}
                 </p>
                 <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
                     <a href="/postingan"
@@ -53,26 +53,30 @@
         </section>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffe0b2" fill-opacity="1" d="M0,288L40,250.7C80,213,160,139,240,138.7C320,139,400,213,480,202.7C560,192,640,96,720,85.3C800,75,880,149,960,170.7C1040,192,1120,160,1200,154.7C1280,149,1360,171,1400,181.3L1440,192L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path></svg>
 
-        {{-- Hero Section 2 --}}
+        {{-- OPD Section --}}
         <div class=" mx-auto max-w-screen-xl px-4 py-10 flex-grow">
             <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
                 <div class="mr-auto place-self-center lg:col-span-7">
                     <h1
                         class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-gray-700 underline decoration-indigo-500">
-                        {{-- Hero Title2 --}}
-                        {{ \App\Models\Setting::getSetting('heroTitle2', 'Hero Title2') }}
+                        {{-- OPD Title --}}
+                        {{ \App\Models\Setting::getSetting('opdTitle', 'OPD Title') }}
                     </h1>
-                    <p class="max-w-2xl mb-6 text-gray-500">
-                        {{-- Hero Description2 --}}
-                        {{ \App\Models\Setting::getSetting('heroDescription2', 'Hero Description2') }}
+                    <p class="mb-6 text-gray-500">
+                        {{-- OPD Description --}}
+                        {!! \App\Models\Setting::getSetting('opdDescription', 'OPD Description') !!}
                     </p>
+                    <h4 class="flex justify-center font-extrabold ">{{ \App\Models\Setting::getSetting('opdName', 'OPD Name') }}</h4>
+                    <p class="flex justify-center">{{ \App\Models\Setting::getSetting('opdPosition', 'OPD Position') }}</p>
                 </div>
                 <div class="flex justify-center items-center lg:col-span-5">
-                    {{-- Hero Logo2 --}}
+                    {{-- OPD Logo --}}
                     <img class="w-full max-w-xs lg:max-w-full lg:w-auto"
-                        src="{{ asset('storage/'.  \App\Models\Setting::getSetting('heroImage2', null)) }}"
+                        src="{{ asset('storage/'.  \App\Models\Setting::getSetting('opdImage', null)) }}"
                         alt="Logo Kota Palu" width="50%">
+                        
                 </div>
+
             </div>
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffe0b2" fill-opacity="1" d="M0,288L40,266.7C80,245,160,203,240,186.7C320,171,400,181,480,197.3C560,213,640,235,720,208C800,181,880,107,960,101.3C1040,96,1120,160,1200,192C1280,224,1360,224,1400,224L1440,224L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>

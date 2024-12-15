@@ -12,35 +12,53 @@ class Settings extends Component
 
     public $appName;
     public $footerText;
-    public $heroTitle,$heroTitle2;
-    public $heroDescription,$heroDescription2;
-    public $heroImage,$heroImage2;
+
+    public $jumbotronTitle;
+    public $jumbotronDescription;
+    public $jumbotronImage;
+
+    public $opdTitle;
+    public $opdDescription;
+    public $opdImage;
+    public $opdName;
+    public $opdPosition;
+
+    
+
     public $appLogo; // Untuk tampilan gambar yang ada
-    public $image,$image2,$image3;   // Untuk upload gambar baru
+    public $image,$image2,$image3;   // Image Preview
 
 
     public function mount()
     {
+        // app
         $this->appName = Setting::getSetting('app_name', config('app.name'));
         $this->footerText = Setting::getSetting('footer_text', 'Default footer text');
         $this->appLogo = Setting::getSetting('appLogo', null);
 
-        $this->heroTitle = Setting::getSetting('heroTitle', 'Hero Title');
-        $this->heroDescription = Setting::getSetting('heroDescription', 'Hero Description');
-        $this->heroImage = Setting::getSetting('heroImage', 'Hero Image');
-       
-        $this->heroTitle2 = Setting::getSetting('heroTitle2', 'Hero Title2');
-        $this->heroDescription2 = Setting::getSetting('heroDescription2', 'Hero Description2');
-        $this->heroImage2 = Setting::getSetting('heroImage2', 'Hero Image2');
+        // jumbotron
+        $this->jumbotronTitle = Setting::getSetting('jumbotronTitle', 'Jumbotron Title');
+        $this->jumbotronDescription = Setting::getSetting('jumbotronDescription', 'Jumbotron Description');
+        $this->jumbotronImage = Setting::getSetting('jumbotronImage', 'Jumbotron Image');
+    
+        // opd
+        $this->opdTitle = Setting::getSetting('opdTitle', 'OPD Title');
+        $this->opdDescription = Setting::getSetting('opdDescription','OPD Description');
+        $this->opdImage = Setting::getSetting('opdImage', 'OPD Image');
+        $this->opdName = Setting::getSetting('opdName', 'OPD Name');
+        $this->opdPosition = Setting::getSetting('opdPosition', 'OPD Position');
+
+
     }
 
+    // Settings For AppName,FooterText & AppLogo
     public function saveSettings()
     {
         // Validasi input
         $this->validate([
             'appName' => 'required|string|max:255',
             'footerText' => 'nullable|string|max:500',
-            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Simpan teks pengaturan
@@ -48,8 +66,8 @@ class Settings extends Component
         Setting::setSetting('footer_text', $this->footerText);
 
         // Simpan gambar jika ada upload baru
-        if ($this->image2) {
-            $newImagePath = $this->image2->store('app-logo', 'public');
+        if ($this->image) {
+            $newImagePath = $this->image->store('app-logo', 'public');
 
             // Hapus gambar lama jika ada
             if ($this->appLogo && file_exists(public_path('storage/' . $this->appLogo))) {
@@ -61,71 +79,76 @@ class Settings extends Component
             $this->appLogo = $newImagePath;
         }
 
-        toast('Pengaturan berhasil diperbarui!','success');
+        toast('Pengaturan Aplikasi berhasil!','success');
         return $this->redirect('/dashboard/pengaturan', navigate: true);
 
     }
 
-    public function saveheroSettings()
+    // Settings for Jumbotron
+    public function saveJumbotronSettings()
     {
         // Validasi input
         $this->validate([
-            'heroTitle' => 'required|string|max:255',
-            'heroDescription' => 'nullable|string',
+            'jumbotronTitle' => 'required|string|max:255',
+            'jumbotronDescription' => 'nullable|string',
             'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Simpan teks pengaturan
-        Setting::setSetting('heroTitle', $this->heroTitle);
-        Setting::setSetting('heroDescription', $this->heroDescription);
+        Setting::setSetting('jumbotronTitle', $this->jumbotronTitle);
+        Setting::setSetting('jumbotronDescription', $this->jumbotronDescription);
 
         // Simpan gambar jika ada upload baru
         if ($this->image2) {
-            $newImagePath = $this->image2->store('hero-image', 'public');
+            $newImagePath = $this->image2->store('jumbotron-image', 'public');
 
             // Hapus gambar lama jika ada
-            if ($this->heroImage && file_exists(public_path('storage/' . $this->heroImage))) {
-                unlink(public_path('storage/' . $this->heroImage));
+            if ($this->jumbotronImage && file_exists(public_path('storage/' . $this->jumbotronImage))) {
+                unlink(public_path('storage/' . $this->jumbotronImage));
             }
 
             // Perbarui path gambar di database
-            Setting::setSetting('heroImage', $newImagePath);
-            $this->heroImage = $newImagePath;
+            Setting::setSetting('jumbotronImage', $newImagePath);
+            $this->jumbotronImage = $newImagePath;
         }
 
-        toast('Hero section berhasil diperbarui!','success');
+        toast('Jumbotron berhasil diperbarui!','success');
         return $this->redirect('/dashboard/pengaturan', navigate: true);
 
     }
 
-    public function saveheroSettings2()
+    public function saveOpdSettings()
     {
         // Validasi input
         $this->validate([
-            'heroTitle2' => 'required|string|max:255',
-            'heroDescription2' => 'nullable|string',
+            'opdTitle' => 'required|string|max:255',
+            'opdDescription' => 'nullable|string',
+            'opdName' => 'required|string|max:70',
+            'opdPosition' => 'required|string|max:30',
             'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Simpan teks pengaturan
-        Setting::setSetting('heroTitle2', $this->heroTitle2);
-        Setting::setSetting('heroDescription2', $this->heroDescription2);
+        Setting::setSetting('opdTitle', $this->opdTitle);
+        Setting::setSetting('opdDescription', $this->opdDescription);
+        Setting::setSetting('opdName', $this->opdName);
+        Setting::setSetting('opdPosition', $this->opdPosition);
 
         // Simpan gambar jika ada upload baru
         if ($this->image3) {
-            $newImagePath = $this->image3->store('hero-image', 'public');
+            $newImagePath = $this->image3->store('opd-image', 'public');
 
             // Hapus gambar lama jika ada
-            if ($this->heroImage2 && file_exists(public_path('storage/' . $this->heroImage2))) {
-                unlink(public_path('storage/' . $this->heroImage2));
+            if ($this->opdImage && file_exists(public_path('storage/' . $this->opdImage))) {
+                unlink(public_path('storage/' . $this->opdImage));
             }
 
             // Perbarui path gambar di database
-            Setting::setSetting('heroImage2', $newImagePath);
-            $this->heroImage2 = $newImagePath;
+            Setting::setSetting('opdImage', $newImagePath);
+            $this->opdImage = $newImagePath;
         }
 
-        toast('Hero section 2 berhasil diperbarui!','success');
+        toast('OPD berhasil diperbarui!','success');
         return $this->redirect('/dashboard/pengaturan', navigate: true);
 
     }
