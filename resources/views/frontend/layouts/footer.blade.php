@@ -12,10 +12,10 @@
                     <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">Sosmed</h2>
                     <ul class="text-gray-500 font-medium">
                         <li class="mb-4">
-                            <a href="#" class="hover:underline">Facebook</a>
+                            <a href="{{ \App\Models\Setting::getSetting('facebook', 'Default Facebook') }}" class="hover:underline">Facebook</a>
                         </li>
                         <li>
-                            <a href="#" class="hover:underline">Instagram</a>
+                            <a href="{{ \App\Models\Setting::getSetting('instagram', 'Default Instagram') }}" class="hover:underline">Instagram</a>
                         </li>
                     </ul>
                 </div>

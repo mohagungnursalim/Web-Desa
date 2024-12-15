@@ -51,6 +51,16 @@
                                 <textarea id="footerText" class="form-control" wire:model="footerText"></textarea>
                                 @error('footerText') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="facebook" class="form-label">Facebook</label>
+                                <input type="text" id="facebook" class="form-control" wire:model="facebook">
+                                @error('facebook') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="instagram" class="form-label">Instagram</label>
+                                <input type="text" id="instagram" class="form-control" wire:model="instagram">
+                                @error('instagram') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
                             <div class="text-center">
                                 <button type="submit" style="border-radius: 10px;"
                                     class="btn btn-primary">Simpan</button>

@@ -12,6 +12,7 @@ class Settings extends Component
 
     public $appName;
     public $footerText;
+    public $facebook,$instagram;
 
     public $jumbotronTitle;
     public $jumbotronDescription;
@@ -35,6 +36,8 @@ class Settings extends Component
         $this->appName = Setting::getSetting('app_name', config('app.name'));
         $this->footerText = Setting::getSetting('footer_text', 'Default footer text');
         $this->appLogo = Setting::getSetting('appLogo', null);
+        $this->facebook = Setting::getSetting('facebook', 'Default Facebook');
+        $this->instagram = Setting::getSetting('instagram', 'Default Instagram');
 
         // jumbotron
         $this->jumbotronTitle = Setting::getSetting('jumbotronTitle', 'Jumbotron Title');
@@ -59,11 +62,15 @@ class Settings extends Component
             'appName' => 'required|string|max:255',
             'footerText' => 'nullable|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'facebook' => 'nullable|string|max:50',
+            'instagram' => 'nullable|string|max:50'
         ]);
 
         // Simpan teks pengaturan
         Setting::setSetting('app_name', $this->appName);
         Setting::setSetting('footer_text', $this->footerText);
+        Setting::setSetting('facebook', $this->facebook);
+        Setting::setSetting('instagram', $this->instagram);
 
         // Simpan gambar jika ada upload baru
         if ($this->image) {
