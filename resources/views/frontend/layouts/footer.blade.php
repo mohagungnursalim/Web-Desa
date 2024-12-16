@@ -9,7 +9,7 @@
             </div>
             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                 <div>
-                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">Sosmed</h2>
+                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">Sosial Media</h2>
                     <ul class="text-gray-500 font-medium">
                         <li class="mb-4">
                             <a href="{{ \App\Models\Setting::getSetting('facebook', 'Default Facebook') }}" class="hover:underline">Facebook</a>

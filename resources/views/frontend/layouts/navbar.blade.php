@@ -35,32 +35,12 @@
               </svg>
             </button>
             <!-- Dropdown -->
-            <div id="dropdownMenu"
-                    class="absolute hidden mt-2 bg-gray-500 border border-gray-200 rounded-lg shadow-lg">
-                <a href="/layanan1" 
-                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Sambutan Lurah
-                </a>
-                <a href="/layanan2" 
-                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Sejarah Singkat
-                </a>
-                <a href="/layanan3" 
-                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Visi Misi
-                </a>
-                <a href="/layanan3" 
-                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Struktur Organisasi
-                </a>
-                <a href="/layanan3" 
-                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Program Prioritas
-                </a>
-                <a href="/layanan3" 
-                    class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
-                    Program Unggulan
-                </a>
+            <div id="dropdownMenu" class="absolute hidden mt-2 bg-gray-500 border border-gray-200 rounded-lg shadow-lg">
+                  @foreach ($globalAbouts as $about)
+                  <a href="/profil/{{ $about->slug }}" class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
+                  {{ $about->title }}
+                  </a>    
+                  @endforeach
             </div>
 
           </li>

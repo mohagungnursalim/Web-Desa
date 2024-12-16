@@ -7,7 +7,7 @@
 @endpush
 
 @section('title')
-Tentang Kami (About Us)
+Profil Kami
 @endsection
 
 @section('content')
@@ -20,7 +20,7 @@ Tentang Kami (About Us)
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a class="text-secondary" href="/dashboard">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a class="text-primary" href="/dashboard/tentang-kami">@yield('title')</a>
+                    <li class="breadcrumb-item"><a class="text-primary" href="/dashboard/profil-kami">@yield('title')</a>
                     </li>
                 </ol>
             </div>

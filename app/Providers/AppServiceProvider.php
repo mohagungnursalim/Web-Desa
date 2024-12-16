@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\About;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+          // Share variable global ke semua view
+          View::composer('*', function ($view) {
+            $abouts = About::select(['title','slug'])->oldest()->get(); // Ambil data dari database
+            $view->with('globalAbouts', $abouts);
+        });
     }
 }

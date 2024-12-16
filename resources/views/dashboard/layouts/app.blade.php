@@ -2,6 +2,7 @@
 @include('dashboard.layouts.head')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.css">
 <style>
 /* Mengatur z-index untuk progress bar agar berada di atas elemen lain */
 #nprogress .bar {
@@ -87,6 +88,7 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
     {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
     
     <script>
         // Mendengarkan event navigasi Livewire
@@ -100,7 +102,6 @@
             document.getElementById('preloader').style.display = 'none';
         });
     </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
         <!-- Livewire Integration -->
         <script>
             // Configure NProgress

@@ -25,9 +25,9 @@ Route::get('/dashboard/pengaturan', function () {
     return view('dashboard.settings.index');
 })->middleware('auth')->name('dashboard.pengaturan');
 
-Route::get('/dashboard/tentang-kami', function () {
+Route::get('/dashboard/profil-kami', function () {
     return view('dashboard.about.index');
-})->middleware('auth')->name('dashboard.tentang-kami');
+})->middleware('auth')->name('dashboard.profil-kami');
 
 Route::get('/dashboard/kelola-akun', function () {
     return view('dashboard.users.index');

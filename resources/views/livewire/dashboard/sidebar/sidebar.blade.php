@@ -111,15 +111,6 @@
                 </li>
 
                 <li class="nav-item">
-                    <a wire:navigate href="/dashboard/tentang-kami" class="nav-link {{ Request::is('dashboard/tentang-kami') ? 'active' : '' }}">
-                        <i class="bi bi-info-circle-fill"></i>
-                      <p>
-                        Tentang Kami
-                      </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
                     <a wire:navigate href="/dashboard/aduan-masyarakat" class="nav-link {{ Request::is('dashboard/aduan-masyarakat') ? 'active' : '' }}">
                         <i class="bi bi-envelope-arrow-down"></i>
                       <p>
@@ -155,8 +146,8 @@
                     </ul>
                 </li>
 
-                <li class="nav-item {{ Request::is('dashboard/pengaturan') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Request::is('dashboard/pengaturan') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('dashboard/pengaturan') || Request::is('dashboard/profil-kami') || Request::is('dashboard/profil-kami') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('dashboard/pengaturan') || Request::is('dashboard/profil-kami') ? 'active' : '' }}">
                         <i class="bi bi-gear"></i>
                         <p>
                             Aplikasi
@@ -168,6 +159,10 @@
                             <a wire:navigate href="/dashboard/pengaturan" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i> <i class="bi bi-window-fullscreen"></i>
                                 <p class="{{ Request::is('dashboard/pengaturan') ? 'text-warning' : '' }}">Pengaturan Aplikasi</p>
+                            </a>
+                            <a wire:navigate href="/dashboard/profil-kami" class="nav-link">
+                                <i class="bi bi-arrow-return-right"></i> <i class="bi bi-window-stack"></i>
+                                <p class="{{ Request::is('dashboard/profil-kami') ? 'text-warning' : '' }}">Profil Kami</p>
                             </a>
                         </li>
                     </ul>
