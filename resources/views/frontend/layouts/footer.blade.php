@@ -20,14 +20,13 @@
                     </ul>
                 </div>
                 <div>
-                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">Legal</h2>
+                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">Link Tautan</h2>
                     <ul class="text-gray-500 font-medium">
+                        @foreach ($globalLinks as $link)
                         <li class="mb-4">
-                            <a href="#" class="hover:underline">Privacy Policy</a>
+                            <a href="https://{{ $link->linkHttp }}" class="hover:underline">{{ $link->linkTitle }}</a>
                         </li>
-                        <li>
-                            <a href="#" class="hover:underline">Terms & Conditions</a>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
