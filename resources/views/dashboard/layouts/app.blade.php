@@ -41,7 +41,7 @@
 </style>
 
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div id="preloader" style="display: none;">
         <div class="spinner-border" role="status">
             <span class="sr-only"></span>
