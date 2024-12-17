@@ -2,17 +2,30 @@
 
 namespace App\Livewire\Dashboard\Settings;
 
+use App\Models\Link;
 use App\Models\Setting;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Livewire\Component;
 
 class Settings extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads,WithPagination;
 
     public $appName;
     public $footerText;
     public $facebook,$instagram;
+
+    // properties tambah
+    public $linkId,$linkTitle,$linkHttp;
+    // properties update
+    public $linkIdUpdate,$linkTitleUpdate,$linkHttpUpdate;
+
+    public $links;
+    public $search = ''; // Properti untuk pencarian
+    public $limit = 5;
+
+    public $isModalOpen = false;
 
     public $jumbotronTitle;
     public $jumbotronDescription;
@@ -159,8 +172,86 @@ class Settings extends Component
         return $this->redirect('/dashboard/pengaturan', navigate: true);
 
     }
+
+    public function resetForm()
+    {
+        $this->reset(['linkTitle']);
+        $this->reset(['linkHttp']);
+    }
+
+    public function store()
+    {
+        $this->validate([
+            'linkTitle' => 'required|string|max:255',
+            'linkHttp' => 'nullable',
+        ]);
+
+        Link::create([
+            'linkTitle' => $this->linkTitle,
+            'linkHttp' => $this->linkHttp,
+        ]);
+
+        $this->dispatch('closeAddLinkModal'); // Tutup modal tambah
+        $this->dispatch('addedSuccess'); // Notifikasi sukses
+
+    }
+
+    public function openUpdateModal($id)
+    {
+        $link = Link::find($id); // Gunakan parameter $id
+        $this->linkIdUpdate = $id;
+        $this->linkTitleUpdate = $link->linkTitle; 
+        $this->linkHttpUpdate = $link->linkHttp;
+    
+        $this->dispatch('openEditLinkModal'); // Buka modal edit
+    }
+    
+
+    public function update()
+    {
+        $this->validate([
+            'linkTitleUpdate' => 'required|string|max:255',
+        ]);
+
+        $link = Link::findOrFail($this->linkIdUpdate);
+        $link->update([
+            'linkTitle' => $this->linkTitleUpdate,
+            'linkHttp' => $this->linkHttpUpdate,
+        ]);
+
+        $this->dispatch('closeUpdatedModal'); // Tutup modal edit
+        $this->dispatch('linkUpdated'); // Notifikasi sukses
+
+    }
+
+    public function confirmDelete($id, $linkTitle)
+    {
+        $this->linkIdUpdate = $id;
+        $this->linkTitle = $linkTitle;
+        $this->dispatch('show-delete-modal'); // Buka modal konfirmasi hapus
+    }
+
+    public function delete()
+    {
+        $link = Link::findOrFail($this->linkIdUpdate);
+        $link->delete(); // Hapus data dari database
+
+        $this->dispatch('hide-delete-modal'); // Tutup modal hapus
+        $this->dispatch('deleteSuccess'); // Notifikasi sukses
+    }
+
+
+
     public function render()
     {
-        return view('livewire.dashboard.settings.settings');
+        // Menggunakan paginate di query Link
+        $links = Link::where('linkTitle', 'like', '%' . $this->search . '%')
+            ->latest()
+            ->simplepaginate(5); // Pagination dengan 5 data per halaman
+
+        return view('livewire.dashboard.settings.settings', [
+            'linkData' => $links // Pastikan 'linkData' yang dikirim ke view sesuai
+        ]);
     }
+    
 }
