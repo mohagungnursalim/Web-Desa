@@ -34,21 +34,18 @@
 
     </style>
     @endpush
-    <div class="container-fluid">
-        <div class="card" style="border-radius: 25px;">
-            <div class="card-body">
-                <h4><a wire:navigate href="/dashboard/postingan" style="border-radius: 10px;"
-                        class="btn btn-white"><u>👈Kembali</u></a></h4>
-                <form>
-                    
-                    <div class="form-group">
+	<div class="container-fluid">
+		<div class="card" style="border-radius: 25px;">
+			<div class="card-body">
+				<h4><a wire:navigate href="/dashboard/postingan" style="border-radius: 10px;" class="btn btn-white"><u>👈Kembali</u></a></h4>
+				<form>
+					<div class="form-group">
 						<label for="image">Gambar Postingan</label>
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<span class="input-group-text">Gambar</span>
 							</div>
 							<div class="custom-file">
-								<!-- Hapus atribut multiple dari input file -->
 								<input type="file" id="image" class="custom-file-input" wire:model="image">
 								<label class="custom-file-label" for="image">
 									@if ($image)
@@ -60,118 +57,106 @@
 							</div>
 						</div>
 						@error('image') <span class="text-danger error">{{ $message }}</span> @enderror
-					
-						<!-- Preview gambar yang sudah ada di database -->
-						@if($existingImage)
-						<div class="d-flex flex-wrap">
-							<div class="p-2">
-								<img src="{{ asset('storage/' . $existingImage) }}" alt="Gambar Postingan"
-									class="img-fluid img-thumbnail" width="100px">
+	
+						@if($existing_image)
+							<div class="d-flex flex-wrap">
+								<div class="p-2">
+									<img src="{{ asset('storage/' . $existing_image) }}" alt="Gambar Postingan"
+										class="img-fluid img-thumbnail" width="100px">
+								</div>
 							</div>
-						</div>
 						@else
-						<p>Tidak ada gambar tersimpan.</p>
+							<p>Tidak ada gambar tersimpan.</p>
 						@endif
-					
-						<!-- Preview gambar yang dipilih -->
+	
 						@if($image)
-						<div class="mt-3 preview">
-							<p>Preview Gambar Baru:</p>
-							<div class="p-2">
-								<img src="{{ $image->temporaryUrl() }}" alt="Preview Gambar"
-									class="img-fluid img-thumbnail" width="100px">
+							<div class="mt-3 preview">
+								<p>Preview Gambar Baru:</p>
+								<div class="p-2">
+									<img src="{{ $image->temporaryUrl() }}" alt="Preview Gambar"
+										class="img-fluid img-thumbnail" width="100px">
+								</div>
 							</div>
-						</div>
 						@endif
 					</div>
-					
+	
 					<div wire:loading wire:target="image" class="mt-2 col" style="width: 400px">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100"
-                                aria-valuemax="100">
-                                Mengunggah...
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="title">Judul Postingan</label>
-                        <input type="text" class="form-control" id="title" wire:model.defer="title"
-                            placeholder="Masukan judul">
-                        @error('title') <span class="text-danger error">{{ $message }}</span> @enderror
-                    </div>
-
-                   <!-- Multiple Select Kategori Post -->
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+								role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100"
+								aria-valuemax="100">
+								Mengunggah...
+							</div>
+						</div>
+					</div>
+	
+					<div class="form-group">
+						<label for="title">Judul Postingan</label>
+						<input type="text" class="form-control" id="title" wire:model.defer="title"
+							placeholder="Masukan judul">
+						@error('title') <span class="text-danger error">{{ $message }}</span> @enderror
+					</div>
+	
 					<div wire:ignore class="form-group">
 						<label for="post_category">Kategori</label>
-						<select id="post_category" class="form-control" multiple wire:model="selectedCategory">
+						<select id="post_category" class="form-control" multiple wire:model="selected_category">
 							@foreach ($categories as $category)
-							<option value="{{ $category->id }}"
-								{{ in_array($category->id, $selectedCategory) ? 'selected' : '' }}>
-								{{ $category->name }}
-							</option>
+								<option value="{{ $category->id }}"
+									{{ in_array($category->id, $selected_category) ? 'selected' : '' }}>
+									{{ $category->name }}
+								</option>
 							@endforeach
 						</select>
 					</div>
-					@error('selectedCategory') <span class="text-danger">{{ $message }}</span> @enderror
-
-
-					<!-- Multiple Select Tag Post -->
+					@error('selected_category') <span class="text-danger">{{ $message }}</span> @enderror
+	
 					<div wire:ignore class="form-group">
 						<label for="post_tag">Tagar</label>
-						<select id="post_tag" class="form-control" multiple wire:model="selectedTag">
+						<select id="post_tag" class="form-control" multiple wire:model="selected_tag">
 							@foreach ($tags as $tag)
-							<option value="{{ $tag->id }}"
-								{{ in_array($tag->id, $selectedTag) ? 'selected' : '' }}>
-								{{ $tag->name }}
-							</option>
+								<option value="{{ $tag->id }}"
+									{{ in_array($tag->id, $selected_tag) ? 'selected' : '' }}>
+									{{ $tag->name }}
+								</option>
 							@endforeach
 						</select>
 					</div>
-					@error('selectedTag') <span class="text-danger">{{ $message }}</span> @enderror
-
-                    <div wire:ignore class="form-group">
-                        <label for="description">Isi Konten</label>
-                        <textarea class="form-control" id="editor" wire:model.defer="description"
-                            placeholder="Masukan konten disini"></textarea>
-                    </div>
-                    @error('description') <span class="text-danger error">{{ $message }}</span>@enderror
-
-					
-                   
-                    <div class="text-center">
-						<!-- Tombol untuk menyimpan data sebagai Draft -->
+					@error('selected_tag') <span class="text-danger">{{ $message }}</span> @enderror
+	
+					<div wire:ignore class="form-group">
+						<label for="description">Isi Konten</label>
+						<textarea class="form-control" id="editor" wire:model.defer="description"
+							placeholder="Masukan konten disini"></textarea>
+					</div>
+					@error('description') <span class="text-danger error">{{ $message }}</span>@enderror
+	
+					<div class="text-center">
 						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
 							wire:click="update">Draf</button>
 						<button style="border-radius: 10px;" type="button" class="btn btn-secondary" disabled wire:loading
 							wire:target='update'>
 							Menyimpan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
 						</button>
-					
-						<!-- Tombol untuk menerbitkan postingan -->
+	
 						<button style="border-radius: 10px;" type="button" class="btn btn-primary" wire:loading.remove
-							wire:click="publishUpdate">Terbitkan</button>
+							wire:click="publish_update">Terbitkan</button>
 						<button style="border-radius: 10px;" type="button" class="btn btn-primary" disabled wire:loading
-							wire:target='publishUpdate'>
+							wire:target='publish_update'>
 							Menerbitkan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
 						</button>
-					
-						<!-- Tombol untuk mengarsipkan postingan -->
+	
 						<button style="border-radius: 10px; background-color: #ffcc00; color: black;" type="button" class="btn" wire:loading.remove
-							wire:click="archivePost">Arsipkan</button>
+							wire:click="archive_post">Arsipkan</button>
 						<button style="border-radius: 10px; background-color: #ffcc00; color: black;" type="button" class="btn" disabled wire:loading
-							wire:target='archivePost'>
+							wire:target='archive_post'>
 							Mengarsipkan <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
 						</button>
 					</div>
-					
-					
-					
-                </form>
-            </div>
-        </div>
-    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
 
     @push('scripts')
     <script type="importmap">
@@ -568,17 +553,17 @@
 			$('#post_category').on('change', function (e) {
 				clearTimeout(debounceTimer);
 				debounceTimer = setTimeout(() => {
-					@this.set('selectedCategory', $(this).val());
+					@this.set('selected_category', $(this).val());
 				}, 700); // Menambahkan debounce 700ms
 			});
 	
 			// Set initial value from Livewire
-			const selectedCategorys = @json($selectedCategory ?? []);
-			$('#post_category').val(selectedCategorys).trigger('change');
+			const selected_categorys = @json($selected_category ?? []);
+			$('#post_category').val(selected_categorys).trigger('change');
 	
 			// Update Select2 when Livewire updates the data
 			Livewire.hook('message.processed', (message, component) => {
-				$('#post_category').val(@json($selectedCategory ?? [])).trigger('change');
+				$('#post_category').val(@json($selected_category ?? [])).trigger('change');
 			});
 		});
 	</script>
@@ -596,17 +581,17 @@
 			$('#post_tag').on('change', function (e) {
 				clearTimeout(debounceTimer);
 				debounceTimer = setTimeout(() => {
-					@this.set('selectedTag', $(this).val());
+					@this.set('selected_tag', $(this).val());
 				}, 700); // Menambahkan debounce 700ms
 			});
 	
 			// Set initial value from Livewire
-			const selectedTags = @json($selectedTag ?? []);
-			$('#post_tag').val(selectedTags).trigger('change');
+			const selected_tags = @json($selected_tag ?? []);
+			$('#post_tag').val(selected_tags).trigger('change');
 	
 			// Update Select2 when Livewire updates the data
 			Livewire.hook('message.processed', (message, component) => {
-				$('#post_tag').val(@json($selectedTag ?? [])).trigger('change');
+				$('#post_tag').val(@json($selected_tag ?? [])).trigger('change');
 			});
 		});
 	</script>

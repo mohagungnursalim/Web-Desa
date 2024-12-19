@@ -14,92 +14,76 @@ class PostEdit extends Component
 {
     use WithFileUploads;
 
-    public $title, $categories = [], $post_category = [], $tags = [], $post_tag = [], $slug, $description, $excerpt, $user_id, $image, $status, $published_at;
-    public $selectedCategory = [], $selectedTag = [];
-    public $existingImage; //image lama
+    public $title;
+    public $categories = [];
+    public $post_category = [];
+    public $tags = [];
+    public $post_tag = [];
+    public $slug;
+    public $description;
+    public $excerpt;
+    public $user_id;
+    public $image;
+    public $status;
+    public $published_at;
+    public $selected_category = [];
+    public $selected_tag = [];
+    public $existing_image; // Gambar lama
 
     public function mount($slug)
     {
         $post = ModelsPost::where('slug', $slug)->first();
         if (!$post) {
-            abort(404); // Bisa juga gunakan toast dan redirect seperti di controller jika diperlukan
+            abort(404);
         }
 
-        $this->existingImage = $post->image;
+        $this->existing_image = $post->image;
         $this->title = $post->title;
 
-        // Memastikan categories adalah koleksi Eloquent sebelum pluck
-        if (is_array($post['categories'])) {
-            // Jika categories berbentuk array, kita ambil id secara manual
-            $this->selectedCategory = array_map(function($category) {
-                return $category['id'];
-            }, $post['categories']);
-        } else {
-            // Jika categories adalah koleksi Eloquent, kita bisa langsung menggunakan pluck
-            $this->selectedCategory = $post->categories->pluck('id')->toArray();
-        }
+        $this->selected_category = is_array($post['categories'])
+            ? array_column($post['categories'], 'id')
+            : $post->categories->pluck('id')->toArray();
 
-        // Memastikan tags adalah koleksi Eloquent sebelum pluck
-        if (is_array($post['tags'])) {
-            // Jika tags berbentuk array, kita ambil id secara manual
-            $this->selectedTag = array_map(function($tag) {
-                return $tag['id'];
-            }, $post['tags']);
-        } else {
-            // Jika tags adalah koleksi Eloquent, kita bisa langsung menggunakan pluck
-            $this->selectedTag = $post->tags->pluck('id')->toArray();
-        }
+        $this->selected_tag = is_array($post['tags'])
+            ? array_column($post['tags'], 'id')
+            : $post->tags->pluck('id')->toArray();
 
-        // Parsing data ke view edit
         $this->categories = PostCategory::select(['name', 'id'])->latest()->get();
         $this->tags = PostTag::select(['name', 'id'])->latest()->get();
         $this->description = $post->description;
         $this->published_at = $post->published_at;
     }
 
-    // validation
     protected $rules = [
         'title' => 'required|max:150',
-        'selectedCategory' => 'required|array',
-        'selectedTag' => 'required|array',
+        'selected_category' => 'required|array',
+        'selected_tag' => 'required|array',
         'description' => 'required',
-        'published_at' => 'nullable'
+        'published_at' => 'nullable',
     ];
 
     public function update()
     {
         $this->validate();
-        
-        // Cari post berdasarkan slug
+
         $post = ModelsPost::where('slug', $this->slug)->first();
 
-        // Buat slug berdasarkan title jika title berubah
-        if ($post->title !== $this->title) {
-            $this->slug = Str::slug($this->title) . '-' . Str::random(4);
-        } else {
-            $this->slug = $post->slug;
-        }
+        $this->slug = $post->title !== $this->title
+            ? Str::slug($this->title) . '-' . Str::random(4)
+            : $post->slug;
 
-        // Tetapkan user_id dari Auth
-        $this->user_id = Auth::user()->id;
+        $this->user_id = Auth::id();
 
-        // Periksa apakah ada gambar baru yang diunggah dan pastikan itu adalah file
         if ($this->image && !is_array($this->image)) {
-            // Hapus gambar lama jika ada
-            if ($post->image) {
-                // Hapus file gambar lama jika ada
-                if (file_exists(public_path('storage/' . $post->image))) {
-                    unlink(public_path('storage/' . $post->image));
-                }
+            if ($post->image && file_exists(public_path('storage/' . $post->image))) {
+                unlink(public_path('storage/' . $post->image));
             }
-            // Store path gambar baru
-            $imagePath = $this->image->store('post-images', 'public');
-            $post->image = $imagePath; // Tetapkan gambar baru jika diunggah
+
+            $post->image = $this->image->store('post-images', 'public');
         }
 
         sleep(1);
 
-        // Update data post
         $post->update([
             'title' => $this->title,
             'slug' => $this->slug,
@@ -107,119 +91,93 @@ class PostEdit extends Component
             'description' => $this->description,
             'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
             'published_at' => null,
-            'status' => 'draft' // Tetapkan sebagai draft saat disimpan
+            'status' => 'draft',
         ]);
 
-        // Gunakan relasi untuk mengatur kategori & tag pada post
-        $post->categories()->sync($this->selectedCategory);
-        $post->tags()->sync($this->selectedTag);
+        $post->categories()->sync($this->selected_category);
+        $post->tags()->sync($this->selected_tag);
 
         toast('Postingan berhasil diperbarui!', 'success');
 
         return redirect()->to('/dashboard/postingan');
     }
 
-    public function publishUpdate()
+    public function publish_update()
     {
         $this->validate();
-        
-        // Cari post berdasarkan slug
+
         $post = ModelsPost::where('slug', $this->slug)->first();
 
-        // Buat slug berdasarkan title jika title berubah
-        if ($post->title !== $this->title) {
-            $this->slug = Str::slug($this->title) . '-' . Str::random(4);
-        } else {
-            $this->slug = $post->slug;
-        }
+        $this->slug = $post->title !== $this->title
+            ? Str::slug($this->title) . '-' . Str::random(4)
+            : $post->slug;
 
-        // Tetapkan user_id dari Auth
-        $this->user_id = Auth::user()->id;
+        $this->user_id = Auth::id();
 
-        // Periksa apakah ada gambar baru yang diunggah dan pastikan itu adalah file
         if ($this->image && !is_array($this->image)) {
-            // Hapus gambar lama jika ada
-            if ($post->image) {
-                // Hapus file gambar lama jika ada
-                if (file_exists(public_path('storage/' . $post->image))) {
-                    unlink(public_path('storage/' . $post->image));
-                }
+            if ($post->image && file_exists(public_path('storage/' . $post->image))) {
+                unlink(public_path('storage/' . $post->image));
             }
-            // Store path gambar baru
-            $imagePath = $this->image->store('post-images', 'public');
-            $post->image = $imagePath; // Tetapkan gambar baru jika diunggah
+
+            $post->image = $this->image->store('post-images', 'public');
         }
 
         sleep(1);
 
-        // Update data post dan tetapkan sebagai published
         $post->update([
             'title' => $this->title,
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
             'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
-            'published_at' => now(), // Set published_at ke waktu saat ini
-            'status' => 'published' // Ubah status menjadi published
+            'published_at' => now(),
+            'status' => 'published',
         ]);
 
-        // Gunakan relasi untuk mengatur kategori & tag pada post
-        $post->categories()->sync($this->selectedCategory);
-        $post->tags()->sync($this->selectedTag);
+        $post->categories()->sync($this->selected_category);
+        $post->tags()->sync($this->selected_tag);
 
         toast('Postingan berhasil diterbitkan!', 'success');
 
         return redirect()->to('/dashboard/postingan');
     }
 
-    public function archivePost()
+    public function archive_post()
     {
         $this->validate();
-        
-        // Cari post berdasarkan slug
+
         $post = ModelsPost::where('slug', $this->slug)->first();
-    
-        // Tetapkan user_id dari Auth
-        $this->user_id = Auth::user()->id;
-    
-        // Periksa apakah ada gambar baru yang diunggah dan pastikan itu adalah file
+
+        $this->user_id = Auth::id();
+
         if ($this->image && !is_array($this->image)) {
-            // Hapus gambar lama jika ada
-            if ($post->image) {
-                // Hapus file gambar lama jika ada
-                if (file_exists(public_path('storage/' . $post->image))) {
-                    unlink(public_path('storage/' . $post->image));
-                }
+            if ($post->image && file_exists(public_path('storage/' . $post->image))) {
+                unlink(public_path('storage/' . $post->image));
             }
-            // Store path gambar baru
-            $imagePath = $this->image->store('post-images', 'public');
-            $post->image = $imagePath; // Tetapkan gambar baru jika diunggah
+
+            $post->image = $this->image->store('post-images', 'public');
         }
-    
+
         sleep(1);
-    
-        // Update data post dan tetapkan sebagai archived
+
         $post->update([
             'title' => $this->title,
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
             'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
-            'published_at' => $this->published_at, // Tampilkan tanggal publish sebelumnya
-            'status' => 'archived' // Ubah status menjadi archived
+            'published_at' => $this->published_at,
+            'status' => 'archived',
         ]);
-    
-        // Gunakan relasi untuk mengatur kategori & tag pada post
-        $post->categories()->sync($this->selectedCategory);
-        $post->tags()->sync($this->selectedTag);
-    
+
+        $post->categories()->sync($this->selected_category);
+        $post->tags()->sync($this->selected_tag);
+
         toast('Postingan berhasil diarsipkan!', 'success');
-    
+
         return redirect()->to('/dashboard/postingan');
     }
-    
 
-    // render component
     public function render()
     {
         return view('livewire.dashboard.posts.post-edit');
