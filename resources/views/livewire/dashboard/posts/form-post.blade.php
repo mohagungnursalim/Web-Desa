@@ -13,14 +13,12 @@
             /* Ganti dengan warna teks yang Anda inginkan */
             border: none;
         }
-
         /* Ubah warna saat hover pada item yang dipilih */
         .select2-container--default .select2-selection--multiple .select2-selection__choice:hover {
             background-color: #6d7a89;
             /* Ganti dengan warna hover yang Anda inginkan */
             color: #ffffff;
         }
-
     </style>
     <style>
         .ck-editor__editable[role="textbox"] {
@@ -31,7 +29,6 @@
             overflow: auto;
             /* Agar bisa menggulir jika teks melebihi tinggi maksimal */
         }
-
     </style>
     @endpush
     <div class="container-fluid">
@@ -123,9 +120,9 @@
                     <div class="text-center">
                         <!-- Tombol untuk menyimpan data sebagai Draft -->
                         <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
-                            wire:click="save_as_draft">Draft</button>
+                            wire:click="saveAsDraft">Draft</button>
                         <button style="border-radius: 10px;" type="button" class="btn btn-secondary" disabled
-                            wire:loading wire:target='save_as_draft'>
+                            wire:loading wire:target='saveAsDraft'>
                             Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
@@ -529,10 +526,8 @@
                 initializeSelect2Kategori('#post_category', 'post_category');
             }, 1); // Timeout pendek 1ms
         });
-
         function initializeSelect2Kategori(selector, livewireProperty) {
             let debounceTimer;
-
             $(selector).select2({
                 placeholder: '--Pilih Kategori--',
                 minimumResultsForSearch: Infinity,
@@ -544,7 +539,6 @@
                 }, 700);
             });
         }
-
     </script>
 
     {{-- Select2 Tag Form Tambah --}}
@@ -554,10 +548,8 @@
                 initializeSelect2Tag('#post_tag', 'post_tag');
             }, 1); // Timeout pendek 1ms
         });
-
         function initializeSelect2Tag(selector, livewireProperty) {
             let debounceTimer;
-
             $(selector).select2({
                 placeholder: '--Pilih Tagar--',
                 minimumResultsForSearch: Infinity,
@@ -569,7 +561,6 @@
                 }, 700);
             });
         }
-
     </script>
 
     @endpush

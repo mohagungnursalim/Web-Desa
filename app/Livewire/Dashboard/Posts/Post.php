@@ -10,19 +10,20 @@ class Post extends Component
 {
     public $search = '';
     public $limit = 5;
-    public $total_posts;
+    public $totalPosts;
     public $posts;
 
     // delete
-    public $post_id;
-    public $post_title;
+    public $postId;
+    public $postTitle;
 
     // detail post
-    public $selected_post = null;
+    public $selectedPost = null;
 
+   
     public function mount()
     {
-        $this->total_posts = ModelsPost::count();
+        $this->totalPosts = ModelsPost::count();
         $this->posts = collect();
     }
 
@@ -40,25 +41,26 @@ class Post extends Component
     public function loadInitialPosts()
     {
         $user = Auth::user();
-
-        // Check if the user is Admin or Editor
+    
+        // Cek apakah pengguna adalah Admin atau Editor
         if ($user->roles->contains('name', 'Admin') || $user->roles->contains('name', 'Editor')) {
-            // Show all posts based on search for Admin or Editor
+            // Jika Admin atau Editor, tampilkan semua postingan berdasarkan pencarian
             $this->posts = ModelsPost::with(['user', 'categories', 'tags'])
                 ->where('title', 'like', '%' . $this->search . '%')
                 ->latest()
                 ->take($this->limit)
                 ->get();
         } else {
-            // Show only the user's posts if not Admin or Editor
+            // Jika bukan Admin atau Editor, tampilkan hanya postingan milik user tersebut
             $this->posts = ModelsPost::with(['user', 'categories', 'tags'])
-                ->where('user_id', $user->id)
+                ->where('user_id', $user->id) // Filter berdasarkan user_id
                 ->where('title', 'like', '%' . $this->search . '%')
                 ->latest()
                 ->take($this->limit)
                 ->get();
         }
     }
+    
 
     public function loadMore()
     {
@@ -68,43 +70,44 @@ class Post extends Component
 
     public function showPostDetail($id)
     {
-        $this->selected_post = ModelsPost::find($id);
-        if ($this->selected_post) {
-            $this->dispatch('show-detail-modal');
+        $this->selectedPost = ModelsPost::find($id); // Ambil objek Post berdasarkan ID, atau null jika tidak ditemukan
+        if ($this->selectedPost) {
+            $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
         }
     }
 
     public function confirmDelete($id, $title)
     {
-        $this->post_id = $id;
-        $this->post_title = $title;
+        $this->postId = $id;
+        $this->postTitle = $title;
         $this->dispatch('show-delete-modal');
     }
 
+    // Method Delete
     public function delete()
     {
-        $post = ModelsPost::findOrFail($this->post_id);
-        $image_path = $post->image;
+        $post = ModelsPost::findOrFail($this->postId);
+        $imagePath = $post->image;
 
-        // Delete image file if it exists
-        if (file_exists(public_path('storage/' . $image_path))) {
-            unlink(public_path('storage/' . $image_path));
+        // Hapus file gambar jika ada
+        if (file_exists(public_path('storage/' . $imagePath))) {
+            unlink(public_path('storage/' . $imagePath));
         }
 
-        // Delete post
+        // Hapus data 
         $post->delete();
 
-        $this->posts = $this->posts->filter(fn($item) => $item->id !== $this->post_id);
-        $this->total_posts--;
-        $this->dispatch('hide-delete-modal');
-        $this->dispatch('delete-success');
+        $this->posts = $this->posts->filter(fn($item) => $item->id !== $this->postId);
+        $this->totalPosts--;
+        $this->dispatch('hide-delete-modal'); 
+        $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
     }
 
     public function render()
     {
-        return view('livewire.dashboard.posts.post', [
+        return view('livewire.dashboard.posts.post',[
             'posts' => $this->posts,
-            'total_posts' => $this->total_posts
+            'totalPosts' => $this->totalPosts
         ]);
     }
 }
