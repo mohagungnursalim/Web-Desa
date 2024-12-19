@@ -68,18 +68,13 @@
         <div class="card" style="border-radius: 25px;">
             <div class="card-body" style="padding: 20px;">
                 
-                <a wire:navigate href="/dashboard/postingan/tambah-data" style="border-radius: 10px;"
-                    class="btn btn-primary mb-4">Tambah
-                    Postingan</a>
-
-                
+                <a wire:navigate href="/dashboard/postingan/tambah-data" style="border-radius: 10px;" class="btn btn-primary mb-4">Tambah Postingan</a>
+    
                 <div class="mb-2">
-                    <input type="text" wire:model.live.debounce.500ms="search" placeholder="Cari postingan.."
-                        class="form-control" style="color: black; border-radius: 10px;">
-
-                    &nbsp;&nbsp;<a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
+                    <input type="text" wire:model.live.debounce.500ms="search" placeholder="Cari postingan.." class="form-control" style="color: black; border-radius: 10px;">
+                    <a wire:loading wire:target='search' class="text-secondary">Mencari..</a>
                 </div>
-
+    
                 <div style="overflow-x: auto;" wire:init="loadInitialPosts">
                     <table class="table table-responsive-md">
                         <thead>
@@ -105,8 +100,7 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    <img src="{{ asset('storage/' . $post->image) }}" style="width: 45px"
-                                        alt="{{ $post->title }}">
+                                    <img src="{{ asset('storage/' . $post->image) }}" style="width: 45px" alt="{{ $post->title }}">
                                 </td>
                                 <td>{{ $post->title }}</td>
                                 <td class="sm">
@@ -120,23 +114,19 @@
                                     @endforeach
                                 </td>
                                 <td>{{ $post->excerpt }}</td>
-                                <td>
-                                    {{ $post->user->name }}
-                                </td>
+                                <td>{{ $post->user->name }}</td>
                                 <td>{{ $post->views }}x</td>
                                 <td>
                                     @if ($post->status == "published")
                                         <button style="border: none; background-color:#a7d0f4" class="badge">{{ $post->status }}</button>
                                     @elseif($post->status == "draft")
-                                    <button style="border: none; background-color:#c4c4c4" class="badge">{{ $post->status }}</button>
+                                        <button style="border: none; background-color:#c4c4c4" class="badge">{{ $post->status }}</button>
                                     @else
-                                    <button style="border: none; background-color:#f0e77e" class="badge">{{ $post->status }}</button>
+                                        <button style="border: none; background-color:#f0e77e" class="badge">{{ $post->status }}</button>
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ url('blog/' . $post->slug) }}">
-                                        {{ url('blog/' . $post->slug) }}
-                                    </a>
+                                    <a href="{{ url('blog/' . $post->slug) }}">{{ url('blog/' . $post->slug) }}</a>
                                 </td>
                                 <td>
                                     @isset($post->published_at)
@@ -144,36 +134,20 @@
                                     @else
                                     -
                                     @endisset
-                                    
                                 </td>
                                 <td>{{ $post->created_at }}</td>
                                 <td>{{ $post->updated_at }}</td>
                                 <td class="d-flex justify-content-start">
-                                    <!-- Menambahkan kelas d-flex untuk layout flex -->
-
-                                    <!-- Tombol untuk membuka modal detail -->
-                                    <button style="border-radius: 10px;" wire:click="showPostDetail({{ $post->id }})" type="button"
-                                        class="btn btn-secondary text-white mb-1 me-2">
-                                        <!-- Tambahkan kelas me-2 untuk margin di sebelah kanan -->
+                                    <button style="border-radius: 10px;" wire:click="showPostDetail({{ $post->id }})" type="button" class="btn btn-secondary text-white mb-1 me-2">
                                         <i class="bi bi-eye"></i>
                                     </button>
-                                    <!-- Tombol edit data -->
-                                    <a wire:navigate href="{{ route('dashboard.post.edit',$post->slug) }}"
-                                        style="border-radius: 10px;" class="btn btn-warning mb-1 me-2">
-
+                                    <a wire:navigate href="{{ route('dashboard.post.edit',$post->slug) }}" style="border-radius: 10px;" class="btn btn-warning mb-1 me-2">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-
-                                    <!-- Tombol untuk membuka modal delete -->
-                                    <button style="border-radius: 10px;" wire:click="confirmDelete({{ $post->id }}, '{{ $post->title }}')" type="button"
-                                        class="btn btn-danger text-white mb-1 me-2">
-                                        <!-- Tambahkan kelas me-2 untuk margin di sebelah kanan -->
+                                    <button style="border-radius: 10px;" wire:click="confirmDelete({{ $post->id }}, '{{ $post->title }}')" type="button" class="btn btn-danger text-white mb-1 me-2">
                                         <i class="bi bi-trash"></i>
                                     </button>
-
-
                                 </td>
-
                             </tr>
                             @empty
                             <tr>
@@ -183,24 +157,16 @@
                         </tbody>
                     </table>
                     <div class="text-center">
-                        <!-- Loading saat memuat data pertama kali -->
-                        <p wire:loading wire:target="loadInitialPosts" class="text-center">Memuat data..<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                        </p>
+                        <p wire:loading wire:target="loadInitialPosts" class="text-center">Memuat data..<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span></p>
                     </div>
                 </div>
-
-                <!-- Tombol Load More -->
-                @if($posts->count() >= $limit && $totalPosts > $limit)
+    
+                @if($posts->count() >= $limit && $total_posts > $limit)
                 <div class="mt-4 d-flex justify-content-center">
-                    <!-- Tombol "Tampilkan Lebih" (akan hilang saat loading) -->
-                    <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded"
-                        wire:loading.remove wire:target="loadMore">
+                    <button style="border-radius: 20px;" wire:click="loadMore" class="btn btn-dark btn-rounded" wire:loading.remove wire:target="loadMore">
                         Tampilkan Lebih
                     </button>
-
-                    <!-- Tombol Loading (hanya muncul saat loading) -->
-                    <button style="border-radius: 20px;" class="btn btn-dark btn-rounded" type="button" disabled
-                        wire:loading wire:target="loadMore">
+                    <button style="border-radius: 20px;" class="btn btn-dark btn-rounded" type="button" disabled wire:loading wire:target="loadMore">
                         Memuat.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -208,77 +174,56 @@
             </div>
         </div>
     </div>
-
-
-
-    {{-- ----------------Modal------------------------ --}}
-
+    
     {{-- Modal Detail --}}
-    <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel"
-        aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content" style="border-radius: 20px;">
                 <div class="modal-header">
-                    <h6 class="modal-title">
-                        <b>{{ $selectedPost ? $selectedPost->title : '' }}</b>
-                    </h6>
+                    <h6 class="modal-title"><b>{{ $selected_post ? $selected_post->title : '' }}</b></h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body" style="padding-left: 200px; padding-right: 200px; max-height: 75vh; overflow-y: auto;">
                     <div class="text-center mb-3">
-                        @if ($selectedPost && $selectedPost->image)
-                            <img class="img-thumbnail" src="{{ asset('storage/' . $selectedPost->image) }}" alt="{{ $selectedPost->title }}"
-                                style="width: 520px">
+                        @if ($selected_post && $selected_post->image)
+                            <img class="img-thumbnail" src="{{ asset('storage/' . $selected_post->image) }}" alt="{{ $selected_post->title }}" style="width: 520px">
                         @endif
                     </div>
                     <div class="post-content">
-                        {{-- {!! $selectedPost ? $selectedPost->description : '' !!} --}}
-                        {!! $selectedPost ? $selectedPost->formatted_description : '' !!}
+                        {!! $selected_post ? $selected_post->formatted_description : '' !!}
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button style="border-radius: 10px;" type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Tutup
+                    <button style="border-radius: 10px;" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {{-- Modal Delete --}}
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="deleteModalLabel">Hapus Postingan "{{ $post_title }}"</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">Apakah anda yakin ingin menghapus post ini?</div>
+                <div class="modal-footer justify-content-center">
+                    <button style="border-radius: 10px;" wire:loading.remove wire:target='delete' type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button style="border-radius: 10px;" wire:loading.remove wire:click="delete" type="button" class="btn btn-danger">Hapus</button>
+                    <button style="border-radius: 10px;" wire:loading wire:target='delete' class="btn btn-danger" disabled>
+                        Menghapus <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-
-        {{-- Modal Delete --}}
-        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content" style="border-radius: 20px;">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="deleteModalLabel">
-                            Hapus Postingan "{{ $postTitle }}"
-                        </h6>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body text-center">
-                        Apakah anda yakin ingin menghapus post ini?
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button style="border-radius: 10px;" wire:loading.remove wire:target='delete' type="button"
-                            class="btn btn-secondary" data-dismiss="modal">Batal
-                        </button>
-                        <button style="border-radius: 10px;" wire:loading.remove wire:click="delete" type="button"
-                            class="btn btn-danger">Hapus
-                        </button>
-        
-                        <button style="border-radius: 10px;" wire:loading wire:target='delete'
-                            class="btn btn-danger" disabled>
-                            Menghapus <span class="spinner-grow spinner-grow-sm" role="status"
-                                aria-hidden="true"></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    
 
 
     @push('scripts')

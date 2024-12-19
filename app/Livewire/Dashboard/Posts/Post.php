@@ -8,23 +8,21 @@ use Illuminate\Support\Facades\Auth;
 
 class Post extends Component
 {
-
     public $search = '';
     public $limit = 5;
-    public $totalPosts;
+    public $total_posts;
     public $posts;
 
     // delete
-    public $postId;
-    public $postTitle;
+    public $post_id;
+    public $post_title;
 
     // detail post
-    public $selectedPost = null;
+    public $selected_post = null;
 
-   
     public function mount()
     {
-        $this->totalPosts = ModelsPost::count();
+        $this->total_posts = ModelsPost::count();
         $this->posts = collect();
     }
 
@@ -42,26 +40,25 @@ class Post extends Component
     public function loadInitialPosts()
     {
         $user = Auth::user();
-    
-        // Cek apakah pengguna adalah Admin atau Editor
+
+        // Check if the user is Admin or Editor
         if ($user->roles->contains('name', 'Admin') || $user->roles->contains('name', 'Editor')) {
-            // Jika Admin atau Editor, tampilkan semua postingan berdasarkan pencarian
+            // Show all posts based on search for Admin or Editor
             $this->posts = ModelsPost::with(['user', 'categories', 'tags'])
                 ->where('title', 'like', '%' . $this->search . '%')
                 ->latest()
                 ->take($this->limit)
                 ->get();
         } else {
-            // Jika bukan Admin atau Editor, tampilkan hanya postingan milik user tersebut
+            // Show only the user's posts if not Admin or Editor
             $this->posts = ModelsPost::with(['user', 'categories', 'tags'])
-                ->where('user_id', $user->id) // Filter berdasarkan user_id
+                ->where('user_id', $user->id)
                 ->where('title', 'like', '%' . $this->search . '%')
                 ->latest()
                 ->take($this->limit)
                 ->get();
         }
     }
-    
 
     public function loadMore()
     {
@@ -71,45 +68,43 @@ class Post extends Component
 
     public function showPostDetail($id)
     {
-        $this->selectedPost = ModelsPost::find($id); // Ambil objek Post berdasarkan ID, atau null jika tidak ditemukan
-        if ($this->selectedPost) {
-            $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
+        $this->selected_post = ModelsPost::find($id);
+        if ($this->selected_post) {
+            $this->dispatch('show-detail-modal');
         }
     }
 
     public function confirmDelete($id, $title)
     {
-        $this->postId = $id;
-        $this->postTitle = $title;
+        $this->post_id = $id;
+        $this->post_title = $title;
         $this->dispatch('show-delete-modal');
     }
 
-    // Method Delete
     public function delete()
     {
-        $post = ModelsPost::findOrFail($this->postId);
-        $imagePath = $post->image;
+        $post = ModelsPost::findOrFail($this->post_id);
+        $image_path = $post->image;
 
-        // Hapus file gambar jika ada
-        if (file_exists(public_path('storage/' . $imagePath))) {
-            unlink(public_path('storage/' . $imagePath));
+        // Delete image file if it exists
+        if (file_exists(public_path('storage/' . $image_path))) {
+            unlink(public_path('storage/' . $image_path));
         }
 
-        // Hapus data 
+        // Delete post
         $post->delete();
 
-        $this->posts = $this->posts->filter(fn($item) => $item->id !== $this->postId);
-        $this->totalPosts--;
-        $this->dispatch('hide-delete-modal'); 
-        $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
+        $this->posts = $this->posts->filter(fn($item) => $item->id !== $this->post_id);
+        $this->total_posts--;
+        $this->dispatch('hide-delete-modal');
+        $this->dispatch('delete-success');
     }
 
     public function render()
     {
-
-        return view('livewire.dashboard.posts.post',[
+        return view('livewire.dashboard.posts.post', [
             'posts' => $this->posts,
-            'totalPosts' => $this->totalPosts
+            'total_posts' => $this->total_posts
         ]);
     }
 }
