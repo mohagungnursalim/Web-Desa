@@ -15,9 +15,10 @@ class FormPost extends Component
 {
     use WithFileUploads;
 
-    // Store
+    // Properti Store data
     public $title,$post_category = [], $post_tag = [],$slug,$description,$excerpt,$user_id,$image,$status,$published_at;
     
+    // Properti Loop data form
     public $tags = [], $categories = [];
 
     public function mount()
@@ -39,19 +40,20 @@ class FormPost extends Component
 ];
 
     // Reset Form 
-    public function resetForm()
+    public function reset_form()
     {
         $this->reset([
             'image',
             'title',
             'post_category',
+            'post_tag',
             'description',
             'published_at'
         ]);
     }
 
  
-    public function saveAsDraft()
+    public function save_as_draft()
     {
         // Validasi form
         $this->validate();
@@ -63,12 +65,12 @@ class FormPost extends Component
         $this->user_id = Auth::user()->id;
     
         // Store Path
-        $imagePath = $this->image->store('post-images', 'public');
+        $image_path = $this->image->store('post-images', 'public');
     
         sleep(1);
         // Buat instance Post dan simpan ke database sebagai Draft
         $post = ModelsPost::create([
-            'image' => $imagePath,
+            'image' => $image_path,
             'title' => $this->title,
             'slug' => $this->slug,
             'user_id' => $this->user_id,
@@ -99,12 +101,12 @@ class FormPost extends Component
         $this->user_id = Auth::user()->id;
     
         // Store Path
-        $imagePath = $this->image->store('post-images', 'public');
+        $image_path = $this->image->store('post-images', 'public');
     
         sleep(1);
         // Buat instance Post dan simpan ke database sebagai Published
         $post = ModelsPost::create([
-            'image' => $imagePath,
+            'image' => $image_path,
             'title' => $this->title,
             'slug' => $this->slug,
             'user_id' => $this->user_id,

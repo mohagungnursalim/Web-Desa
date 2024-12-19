@@ -123,9 +123,9 @@
                     <div class="text-center">
                         <!-- Tombol untuk menyimpan data sebagai Draft -->
                         <button style="border-radius: 10px;" type="button" class="btn btn-secondary" wire:loading.remove
-                            wire:click="saveAsDraft">Draft</button>
+                            wire:click="save_as_draft">Draft</button>
                         <button style="border-radius: 10px;" type="button" class="btn btn-secondary" disabled
-                            wire:loading wire:target='saveAsDraft'>
+                            wire:loading wire:target='save_as_draft'>
                             Menyimpan <span class="spinner-grow spinner-grow-sm" role="status"
                                 aria-hidden="true"></span>
                         </button>
