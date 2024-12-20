@@ -1,6 +1,20 @@
 <div class="py-4">
     @push('styles')
 
+    <style>
+    .image-wrapper img {
+        width: 100%;
+        height: auto;
+        transition: opacity 0.5s ease-in-out; /* Efek transisi */
+        opacity: 0; /* Gambar asli dimulai dengan opacity 0 */
+    }
+
+    .image-wrapper img.lazyloaded {
+        opacity: 1; /* Gambar asli menjadi terlihat */
+    }
+
+    
+    </style>
     @endpush
     <div class="container">
 
@@ -48,8 +62,9 @@
                                                 <div class="carousel-inner">
                                                     @foreach($images as $imageIndex => $img)
                                                     <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
-                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;" class="d-block w-100 lazyload" data-src="{{ asset('storage/' . $img) }}" src="{{ asset('img/spinner.gif') }}" alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
-
+                                                        <div class="image-wrapper">
+                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;" class="d-block w-100 lazyload" data-src="{{ asset('storage/' . $img) }}"  alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
+                                                        </div>
                                                     </div>
                                                     @endforeach
                                                 </div>
@@ -69,7 +84,9 @@
                                                 @endif
                                             </div>
                                             @elseif($product->image)
-                                            <img class="img-fluid lazyload" data-src="{{ asset('storage/' . $product->image) }}" src="{{ asset('img/spinner.gif') }}" alt="{{ $product->title }}">
+                                            <div class="image-wrapper">
+                                            <img class="img-fluid lazyload" data-src="{{ asset('storage/' . $product->image) }}"  alt="{{ $product->title }}">
+                                            </div>
                                             @endif
                                             <div class="card-body">
 
