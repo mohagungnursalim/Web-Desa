@@ -40,7 +40,15 @@ class Product extends Component
 
     public function loadInitialProducts()
     {
-        $this->products = ModelProduct::where('title','like', '%'. $this->search . '%')->latest()->take($this->limit)->get();
+        $query = ModelProduct::with(['categories:id,name'])
+            ->where(function ($query) {
+                $query->where('title', 'like', "%{$this->search}%")
+                    ->orWhereHas('categories', function ($q) {
+                        $q->where('name', 'like', "%{$this->search}%");
+                    });
+            });
+
+        $this->products = $query->get(); // Ambil hasil query
     }
 
     public function loadMore()
