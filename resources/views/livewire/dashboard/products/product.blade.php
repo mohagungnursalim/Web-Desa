@@ -1,6 +1,6 @@
 <div class="py-4">
     @push('styles')
-  
+
     @endpush
     <div class="container">
 
@@ -48,7 +48,7 @@
                                                 <div class="carousel-inner">
                                                     @foreach($images as $imageIndex => $img)
                                                     <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
-                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;" class="d-block w-100" src="{{ asset('storage/' . $img) }}" alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
+                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;" class="d-block w-100 lazyload" data-src="{{ asset('storage/' . $img) }}" src="{{ asset('img/spinner.gif') }}" alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
 
                                                     </div>
                                                     @endforeach
@@ -69,8 +69,7 @@
                                                 @endif
                                             </div>
                                             @elseif($product->image)
-                                            <img class="img-fluid" src="{{ asset('storage/' . $product->image) }}"
-                                                alt="{{ $product->title }}">
+                                            <img class="img-fluid lazyload" data-src="{{ asset('storage/' . $product->image) }}" src="{{ asset('img/spinner.gif') }}" alt="{{ $product->title }}">
                                             @endif
                                             <div class="card-body">
 
@@ -208,7 +207,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
         <script>
             function toggleDescription(element) {
                 // Dapatkan elemen-elemen terkait
