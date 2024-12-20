@@ -40,25 +40,27 @@ class Post extends Component
 
     public function loadInitialPosts()
     {
+        $query = ModelsPost::with(['user:id,name','categories:id,name','tags:id,name'])
+        ->where(function ($query) {
+            $query->where('title', 'like', "%{$this->search}%")
+                ->orWhere('excerpt', 'like', "%{$this->search}%")
+                ->orWhereHas('categories', function ($q) {
+                    $q->where('name', 'like', "%{$this->search}%");
+                })
+                ->orWhereHas('tags', function ($q) {
+                    $q->where('name', 'like', "%{$this->search}%");
+                });
+        })
+        ->latest()
+        ->take($this->limit);
+
         $user = Auth::user();
-    
-        // Cek apakah pengguna adalah Admin atau Editor
-        if ($user->roles->contains('name', 'Admin') || $user->roles->contains('name', 'Editor')) {
-            // Jika Admin atau Editor, tampilkan semua postingan berdasarkan pencarian
-            $this->posts = ModelsPost::with(['user', 'categories', 'tags'])
-                ->where('title', 'like', '%' . $this->search . '%')
-                ->latest()
-                ->take($this->limit)
-                ->get();
-        } else {
-            // Jika bukan Admin atau Editor, tampilkan hanya postingan milik user tersebut
-            $this->posts = ModelsPost::with(['user', 'categories', 'tags'])
-                ->where('user_id', $user->id) // Filter berdasarkan user_id
-                ->where('title', 'like', '%' . $this->search . '%')
-                ->latest()
-                ->take($this->limit)
-                ->get();
+
+        if (!$user->roles->contains('name', 'Admin') && !$user->roles->contains('name', 'Editor')) {
+            $query->where('user_id', $user->id);
         }
+
+        $this->posts = $query->get();
     }
     
 
