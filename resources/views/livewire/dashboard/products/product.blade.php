@@ -5,7 +5,7 @@
     .image-wrapper img {
         width: 100%;
         height: auto;
-        transition: opacity 0.5s ease-in-out; /* Efek transisi */
+        transition: opacity 1s ease-in-out; /* Efek transisi */
         opacity: 0; /* Gambar asli dimulai dengan opacity 0 */
     }
 

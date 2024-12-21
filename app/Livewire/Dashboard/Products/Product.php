@@ -48,7 +48,7 @@ class Product extends Component
                     });
             });
 
-        $this->products = $query->get(); // Ambil hasil query
+            $this->products = $query->take($this->limit)->get();  // Ambil hasil query
     }
 
     public function loadMore()
