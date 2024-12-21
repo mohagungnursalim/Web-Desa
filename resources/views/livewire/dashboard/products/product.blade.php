@@ -15,6 +15,8 @@
 
     
     </style>
+
+
     @endpush
     <div class="container">
 
@@ -63,7 +65,11 @@
                                                     @foreach($images as $imageIndex => $img)
                                                     <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
                                                         <div class="image-wrapper">
-                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;" class="d-block w-100 lazyload" data-src="{{ asset('storage/' . $img) }}"  alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
+                                                            <img 
+                                                                style="border-top-left-radius: 20px; border-top-right-radius: 20px;" 
+                                                                class="d-block w-100 lazyload" 
+                                                                data-src="{{ asset('storage/' . $img) }}"  
+                                                                alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
                                                         </div>
                                                     </div>
                                                     @endforeach
@@ -85,7 +91,7 @@
                                             </div>
                                             @elseif($product->image)
                                             <div class="image-wrapper">
-                                            <img class="img-fluid lazyload" data-src="{{ asset('storage/' . $product->image) }}"  alt="{{ $product->title }}">
+                                                <img class="img-fluid lazyload" data-src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}">
                                             </div>
                                             @endif
                                             <div class="card-body">
