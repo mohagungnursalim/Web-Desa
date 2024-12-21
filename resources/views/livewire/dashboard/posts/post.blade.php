@@ -18,6 +18,21 @@
         }
     </style>
 
+    <style>
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            transition: opacity 1s ease-in-out; /* Efek transisi */
+            opacity: 0; /* Gambar asli dimulai dengan opacity 0 */
+        }
+
+        .image-wrapper img.lazyloaded {
+            opacity: 1; /* Gambar asli menjadi terlihat */
+        }
+
+        
+    </style>
+
     {{-- Img Style --}}
     <style>
         .post-content img {
@@ -93,9 +108,9 @@
                             @forelse ($posts as $index => $post)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>
-                                    <img src="{{ asset('storage/' . $post->image) }}" style="width: 45px"
-                                        alt="{{ $post->title }}">
+                                <td class="image-wrapper">
+                                    <img data-src="{{ asset('storage/' . $post->image) }}" style="width: 45px"
+                                        alt="{{ $post->title }}" class="lazyload">
                                 </td>
                                 <td>{{ $post->title }}</td>
                                 <td class="sm">
@@ -258,7 +273,7 @@
 
 
     @push('scripts')
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
 
     {{-- Detail Modal --}}
     <script>
