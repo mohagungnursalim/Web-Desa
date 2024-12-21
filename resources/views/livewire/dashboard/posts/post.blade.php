@@ -219,9 +219,9 @@
                     </button>
                 </div>
                 <div class="modal-body" style="padding-left: 200px; padding-right: 200px; max-height: 75vh; overflow-y: auto;">
-                    <div class="text-center mb-3">
+                    <div class="text-center mb-3 image-wrapper">
                         @if ($selectedPost && $selectedPost->image)
-                            <img class="img-thumbnail" src="{{ asset('storage/' . $selectedPost->image) }}" alt="{{ $selectedPost->title }}"
+                            <img class="img-thumbnail lazyload" src="{{ asset('storage/' . $selectedPost->image) }}" alt="{{ $selectedPost->title }}"
                                 style="width: 520px">
                         @endif
                     </div>
