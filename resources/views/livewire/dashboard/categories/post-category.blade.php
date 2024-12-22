@@ -1,5 +1,19 @@
 <div class="py-4">
     @push('styles')
+    <style>
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            transition: opacity 1s ease-in-out; /* Efek transisi */
+            opacity: 0; /* Gambar asli dimulai dengan opacity 0 */
+        }
+
+        .image-wrapper img.lazyloaded {
+            opacity: 1; /* Gambar asli menjadi terlihat */
+        }
+
+        
+    </style>
     @endpush
     <div class="container-fluid col-md">
         <div class="card" style="border-radius: 25px;">
@@ -37,9 +51,9 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $category->name }}</td>
-                                <td>
-                                    <img src="{{ asset('storage/' . $category->image) }}" style="width: 45px"
-                                        alt="{{ $category->name }}">
+                                <td class="image-wrapper">
+                                    <img data-src="{{ asset('storage/' . $category->image) }}" style="width: 45px"
+                                        alt="{{ $category->name }}" class="lazyload">
                                 </td>
                                 <td>{{ $category->created_at }}</td>
                                 <td>{{ $category->updated_at }}</td>
@@ -216,9 +230,9 @@
                             <div class="d-flex flex-wrap mt-2">
                                 @if ($imageUpdate)
                                 <!-- Tampilkan gambar lama -->
-                                <div class="p-2">
-                                    <img src="{{ asset('storage/' . $imageUpdate) }}" alt="Gambar Lama"
-                                        class="img-fluid img-thumbnail" width="100px">
+                                <div class="p-2 image-wrapper">
+                                    <img data-src="{{ asset('storage/' . $imageUpdate) }}" alt="Gambar Lama"
+                                        class="img-fluid img-thumbnail lazyload" width="100px">
                                 </div>
                                 @endif
                                 @if ($image)
@@ -292,7 +306,7 @@
     </div>
 
     @push('scripts')
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
     {{-- Add Modal Form --}}
     <script>
         $(document).ready(function () {
