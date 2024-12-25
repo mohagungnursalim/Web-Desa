@@ -89,13 +89,23 @@ class PostCategory extends Component
 
     public function openUpdateModal($id)
     {
-        $category = ModelsPostCategory::find($id);
-        $this->category_id = $id;
-        $this->categoryName = $category->name; // Mengambil nama kategori
-        $this->imageUpdate = $category->image; // Mengambil gambar lama
+        try {
+            // Cari kategori berdasarkan ID, gunakan findOrFail agar otomatis menangkap error jika ID tidak ditemukan
+            $category = ModelsPostCategory::findOrFail($id);
     
-        $this->dispatch('openEditCategoryModal');
+            // Jika ditemukan, set properti dan buka modal
+            $this->category_id = $id;
+            $this->categoryName = $category->name; // Mengambil nama kategori
+            $this->imageUpdate = $category->image; // Mengambil gambar lama
+    
+            $this->dispatch('openEditCategoryModal'); // Panggil event untuk membuka modal edit
+    
+        } catch (\Throwable $th) {
+            // Tangkap error lainnya
+            $this->dispatch('error');
+        }
     }
+    
     
 
     public function update()
@@ -135,9 +145,15 @@ class PostCategory extends Component
 
     public function confirmDelete($id, $name)
     {
-        $this->postCategoryId = $id;
-        $this->postCategoryName = $name;
-        $this->dispatch('show-delete-modal');
+       try {
+            ModelsPostCategory::findOrFail($id);
+            
+            $this->postCategoryId = $id;
+            $this->postCategoryName = $name;
+            $this->dispatch('show-delete-modal');
+       } catch (\Throwable $th) {
+            $this->dispatch('error');
+       }
     }
 
     public function delete()

@@ -231,15 +231,16 @@
                                 @if ($imageUpdate)
                                 <!-- Tampilkan gambar lama -->
                                 <div class="p-2 image-wrapper">
-                                    <img data-src="{{ asset('storage/' . $imageUpdate) }}" alt="Gambar Lama"
-                                        class="img-fluid img-thumbnail lazyload" width="100px">
+                                    <img style="width: 250px" data-src="{{ asset('storage/' . $imageUpdate) }}" alt="Gambar Lama"
+                                        class="img-fluid img-thumbnail lazyload">
                                 </div>
                                 @endif
                                 @if ($image)
-                                <p>Gambar baru👉</p>
+                                
                                 <div class="p-2">
-                                    <img src="{{ $image->temporaryUrl() }}" alt="Preview"
-                                        class="img-fluid img-thumbnail" width="100px">
+                                    <p>Gambar baru 👇</p>
+                                    <img style="width: 250px" src="{{ $image->temporaryUrl() }}" alt="Preview"
+                                        class="img-fluid img-thumbnail">
                                 </div>
                                 @endif
                             </div>
@@ -376,6 +377,7 @@
         })
 
     </script>
+    
     {{-- Sweet alert,categoryUpdated success --}}
     <script>
         $(document).ready(function () {
@@ -432,21 +434,22 @@
 
     </script>
 
-    {{-- Sweet alert,delete gagal --}}
-    <script>
-        $(document).ready(function () {
-            window.addEventListener('deleteError', function (event) {
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Kategori gagal dihapus!",
-                    icon: "error",
-                    timer: 1500,
-                    timerProgressBar: true,
-                });
+   {{-- Sweet alert,error --}}
+   <script>
+    $(document).ready(function () {
+        window.addEventListener('error', function (event) {
+            Swal.fire({
+                title: "Oops!",
+                text: "Data tidak valid/sudah terhapus.",
+                icon: "error",
+                timer: 3000,
+                timerProgressBar: true,
+                showCloseButton: true,
             });
-        })
+        });
+    })
 
-    </script>
+</script>
 
     @endpush
 </div>
