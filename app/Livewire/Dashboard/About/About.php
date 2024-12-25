@@ -94,13 +94,17 @@ class About extends Component
 
     public function openUpdateModal($id)
     {
-        $about = ModelsAbout::find($id);
-        $this->about_id = $id;
-        $this->aboutTitle = $about->title;
-        $this->aboutDescription = $about->description;
-  
+        try {
+            $about = ModelsAbout::find($id);
+            $this->about_id = $id;
+            $this->aboutTitle = $about->title;
+            $this->aboutDescription = $about->description;
+    
 
-        $this->dispatch('openEditAboutModal');
+            $this->dispatch('openEditAboutModal');
+        } catch (\Throwable $th) {
+            $this->dispatch('error');
+        }
     }
 
     public function update()
@@ -125,10 +129,22 @@ class About extends Component
 
     public function confirmDelete($id, $title)
     {
-        $this->aboutId = $id;
-        $this->aboutTitle = $title;
-        $this->dispatch('show-delete-modal');
+        try {
+            // Coba cari data terlebih dahulu
+             ModelsAbout::findOrFail($id);
+    
+            // Jika ditemukan, set properti untuk modal
+            $this->aboutId = $id;
+            $this->aboutTitle = $title;
+    
+            // Tampilkan modal konfirmasi
+            $this->dispatch('show-delete-modal');
+        } catch (\Throwable $th) {
+            // Jika data tidak ditemukan, kirimkan event error
+            $this->dispatch('error');
+        }
     }
+    
 
     public function delete()
     {

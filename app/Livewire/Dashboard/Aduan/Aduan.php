@@ -48,16 +48,22 @@ class Aduan extends Component
 
     public function showPostDetail($id,$name,$wa_number,$image,$description)
     {
-        $this->aduanId = $id;
-        $this->aduanName = $name;
-        $this->aduanWa = $wa_number;
-        $this->aduanImage = $image;
-        $this->aduanDescription = $description;
-
-        if ($this->aduanId) {
-            $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
-
-            $this->updateIsRead($id);
+        try {
+            $aduan = ModelsAduan::findOrFail($id);
+            $this->aduanId = $id;
+            $this->aduanName = $name;
+            $this->aduanWa = $wa_number;
+            $this->aduanImage = $image;
+            $this->aduanDescription = $description;
+    
+            if ($this->aduanId == $id) {
+                $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
+    
+                $this->updateIsRead($id);
+                $this->loadInitialAduans();
+            }
+        } catch (\Throwable $th) {
+            $this->dispatch('error');
         }
     }
 
@@ -73,9 +79,14 @@ class Aduan extends Component
 
     public function confirmDelete($id, $name)
     {
-        $this->aduanId = $id;
-        $this->aduanName = $name;
-        $this->dispatch('show-delete-modal');
+        try {
+            ModelsAduan::findOrFail($id);
+            $this->aduanId = $id;
+            $this->aduanName = $name;
+            $this->dispatch('show-delete-modal');
+        } catch (\Throwable $th) {
+            $this->dispatch('error');
+        }
     }
 
      // Method Delete

@@ -61,7 +61,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td wire:loading.remove wire:target="loadInitialAduans" colspan="7" class="text-center">Tidak ada aduan yang ditemukan.</td>
+                            <td wire:loading.remove wire:target="loadInitialAduans" colspan="8" class="text-center">Tidak ada aduan yang ditemukan.</td>
                         </tr>
                         @endforelse
 
@@ -231,16 +231,17 @@
 
     </script>
 
-    {{-- Sweet alert,delete gagal --}}
+    {{-- Sweet alert,error --}}
     <script>
         $(document).ready(function () {
-            window.addEventListener('deleteError', function (event) {
+            window.addEventListener('error', function (event) {
                 Swal.fire({
                     title: "Oops!",
-                    text: "Aduan gagal dihapus!",
+                    text: "Data tidak valid/sudah terhapus.",
                     icon: "error",
-                    timer: 1500,
+                    timer: 3000,
                     timerProgressBar: true,
+                    showCloseButton: true,
                 });
             });
         })

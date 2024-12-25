@@ -341,16 +341,17 @@
 
     </script>
 
-    {{-- Sweet alert,delete gagal --}}
+    {{-- Sweet alert,error --}}
     <script>
         $(document).ready(function () {
-            window.addEventListener('deleteError', function (event) {
+            window.addEventListener('error', function (event) {
                 Swal.fire({
                     title: "Oops!",
-                    text: "Gagal dihapus!",
+                    text: "Data tidak valid/sudah terhapus.",
                     icon: "error",
-                    timer: 1500,
+                    timer: 3000,
                     timerProgressBar: true,
+                    showCloseButton: true,
                 });
             });
         })
