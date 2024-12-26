@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Categories;
 
 use App\Models\ProductCategory as ModelsProductCategory;
+use Illuminate\Database\Events\ModelsPruned;
 use Livewire\Component;
 
 class ProductCategory extends Component
@@ -82,10 +83,19 @@ class ProductCategory extends Component
     // Tambahkan method untuk membuka modal update
     public function openUpdateModal($id)
     {
-        $this->category_id = $id;
-        $this->categoryName = ModelsProductCategory::find($id)->name;
         
-        $this->dispatch('openEditCategoryModal');
+       try {
+         // Cari kategori berdasarkan ID, gunakan findOrFail agar otomatis menangkap error jika ID tidak ditemukan
+         $category = ModelsProductCategory::findOrFail($id);
+    
+         // Jika ditemukan, set properti dan buka modal
+         $this->category_id = $id;
+         $this->categoryName = $category->name; // Mengambil nama kategori
+         
+         $this->dispatch('openEditCategoryModal');
+       } catch (\Throwable $th) {
+        $this->dispatch('error');
+       }
     }
 
 
@@ -107,33 +117,29 @@ class ProductCategory extends Component
     
     public function confirmDelete($id, $name)
     {
-        $this->categoryId = $id;
-        $this->categoryName = $name;
-        $this->dispatch('show-delete-modal');
+        try {
+            ModelsProductCategory::findOrFail($id);
+            
+            $this->categoryId = $id;
+            $this->categoryName = $name;
+            $this->dispatch('show-delete-modal');
+        } catch (\Throwable $th) {
+            $this->dispatch('error');
+        }
     }
 
     public function delete()
     {
-        // Cari category berdasarkan ID
-        $category = ModelsProductCategory::find($this->categoryId);
+         //category berdasarkan ID
+        $category = ModelsProductCategory::findOrFail($this->categoryId);
 
-        // Cek jika category ditemukan
-        if ($category) {
+        $category->delete();
+                
+        $this->categories = $this->categories->filter(fn($item) => $item->id !== $this->categoryId);
+        $this->totalCategories--;
 
-            
-            $category->delete();
-            
-            $this->categories = $this->categories->filter(fn($item) => $item->id !== $this->categoryId);
-            $this->totalCategories--;
-
-            $this->dispatch('hide-delete-modal'); 
-            $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
-           
-        } else {
-
-            toast('Oops..kategori tidak tersedia!','error');
-            return redirect('/dashboard/kategori-produk');
-        }
+        $this->dispatch('hide-delete-modal'); 
+        $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
     }
 
     public function render()

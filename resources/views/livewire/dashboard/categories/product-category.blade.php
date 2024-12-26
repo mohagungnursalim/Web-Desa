@@ -318,6 +318,22 @@
 
     </script>
 
+  {{-- Sweet alert,error --}}
+  <script>
+    $(document).ready(function () {
+        window.addEventListener('error', function (event) {
+            Swal.fire({
+                title: "Oops!",
+                text: "Data tidak valid/sudah terhapus.",
+                icon: "error",
+                timer: 3000,
+                timerProgressBar: true,
+                showCloseButton: true,
+            });
+        });
+    })
+
+</script>
 
     @endpush
 </div>
