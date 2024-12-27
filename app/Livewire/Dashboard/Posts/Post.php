@@ -40,6 +40,7 @@ class Post extends Component
 
     public function loadInitialPosts()
     {
+        // Query untuk mencari post berdasarkan judul, excerpt, kategori, atau tag
         $query = ModelsPost::where(function ($query) {
             $query->where('title', 'like', "%{$this->search}%")
                 ->orWhere('excerpt', 'like', "%{$this->search}%")
@@ -55,33 +56,47 @@ class Post extends Component
 
         $user = Auth::user();
 
+        // Jika user bukan Admin atau Editor, maka hanya menampilkan post yang dimilikinya
         if (!$user->roles->contains('name', 'Admin') && !$user->roles->contains('name', 'Editor')) {
             $query->where('user_id', $user->id);
         }
 
+        // Simpan hasil query ke dalam property posts
         $this->posts = $query->get();
     }
     
 
     public function loadMore()
     {
-        $this->limit += 5;
-        $this->loadInitialPosts();
+        $this->limit += 5;  // Tambahkan limit sebanyak 5
+        $this->loadInitialPosts(); // Load ulang post
     }
 
     public function showPostDetail($id)
     {
-        $this->selectedPost = ModelsPost::findOrFail($id); // Ambil objek Post berdasarkan ID, atau null jika tidak ditemukan
-        if ($this->selectedPost) {
-            $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
+        try {
+            $this->selectedPost = ModelsPost::findOrFail($id); // Ambil objek Post berdasarkan ID, atau null jika tidak ditemukan
+            if ($this->selectedPost) {
+                $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
+            }
+        } catch (\Throwable $th) {
+            $this->dispatch('error'); // Panggil event untuk menampilkan pesan error
         }
     }
 
     public function confirmDelete($id, $title)
     {
-        $this->postId = $id;
-        $this->postTitle = $title;
-        $this->dispatch('show-delete-modal');
+        try {
+
+            ModelsPost::findOrFail($id); // Cek apakah post dengan ID tersebut ada
+            
+            $this->postId = $id;
+            $this->postTitle = $title;
+            $this->dispatch('show-delete-modal'); // Panggil event untuk membuka modal konfirmasi
+        } catch (\Throwable $th) {
+            $this->dispatch('error'); // Panggil event untuk menampilkan pesan error
+        }
+    
     }
 
     // Method Delete
