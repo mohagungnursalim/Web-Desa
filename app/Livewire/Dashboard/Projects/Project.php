@@ -108,17 +108,18 @@ class Project extends Component
 
     public function openUpdateModal($id)
     {
-        $this->project_id = $id;
-        $project = ModelsProject::find($id);
-        $this->project_name = $project->project_name;
-        $this->project_description = $project->project_description;
-        $this->start_date = $project->start_date;
-        $this->end_date = $project->end_date;
-        //  data gambar yang sudah ada
-        $this->existingImages = json_decode($project->image, true);
-        // event untuk inisialisasi Summernote
-        $this->dispatch('initSummernote');
-        $this->dispatch('openEditProjectModal'); // Kirim event untuk membuka modal dengan jQuery
+        try {
+            $project = ModelsProject::findOrFail($id);
+            $this->project_id = $project->id;
+            $this->project_name = $project->project_name;
+            $this->project_description = $project->project_description;
+            $this->start_date = $project->start_date;
+            $this->end_date = $project->end_date;
+            $this->existingImages = json_decode($project->image, true);
+            $this->dispatch('showUpdateModal');
+        } catch (\Throwable $th) {
+            $this->dispatch('error'); // Event untuk menampilkan pesan gagal
+        }
     }
 
     public function closeUpdateModal()
@@ -127,6 +128,7 @@ class Project extends Component
     }
 
     public function update()
+
     {
         $this->validate($this->updateRules());
 
@@ -174,9 +176,14 @@ class Project extends Component
 
     public function confirmDelete($id, $project_name)
     {
-        $this->projectId = $id;
-        $this->projectName = $project_name;
-        $this->dispatch('show-delete-modal');
+        try {
+            ModelsProject::findOrFail($id);
+            $this->projectId = $id;
+            $this->projectName = $project_name;
+            $this->dispatch('show-delete-modal');
+        } catch (\Throwable $th) {
+            $this->dispatch('error'); // Event untuk menampilkan pesan gagal
+        }
     }
 
     public function delete()
@@ -184,9 +191,6 @@ class Project extends Component
        
         // Cari project berdasarkan ID
         $project = ModelsProject::find($this->projectId);
-
-        // Cek jika project ditemukan
-        if ($project) {
             
             // Lokasi gambar
             $imagePaths = json_decode($project->image, true);
@@ -212,11 +216,6 @@ class Project extends Component
              $this->dispatch('hide-delete-modal'); 
              $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
 
-        } else {
-            // Jika project tidak ditemukan, tampilkan pesan error
-            toast('Oops..proyek tidak tersedia!', 'error');
-            return redirect('/dashboard/projects');
-        }
     }
 
 
