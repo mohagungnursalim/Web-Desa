@@ -319,7 +319,7 @@
                                 <div class="d-flex flex-wrap">
                                     @foreach($existingImages as $img)
                                     <div class="p-2">
-                                        <div class="image-wrapper" style="width: 50%">
+                                        <div class="image-wrapper" style="width: 250px">
                                         <img src="{{ asset('storage/' . $img) }}" alt="Gambar Proyek"
                                             class="img-fluid lazyload img-thumbnail" >
                                     
@@ -339,7 +339,7 @@
                                         @foreach($image as $img)
                                         <div class="p-2">
                                             <img src="{{ $img->temporaryUrl() }}" alt="Preview Gambar"
-                                                class="img-fluid img-thumbnail" style="width: 50%">
+                                                class="img-fluid img-thumbnail" style="width: 250px">
                                         </div>
                                         @endforeach
                                     </div>

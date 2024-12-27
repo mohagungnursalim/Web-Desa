@@ -116,7 +116,9 @@ class Project extends Component
             $this->start_date = $project->start_date;
             $this->end_date = $project->end_date;
             $this->existingImages = json_decode($project->image, true);
-            $this->dispatch('showUpdateModal');
+            
+            $this->dispatch('initSummernote'); // Kirim event untuk inisialisasi summernote
+            $this->dispatch('openEditProjectModal'); // Kirim event untuk membuka modal dengan jQuery
         } catch (\Throwable $th) {
             $this->dispatch('error'); // Event untuk menampilkan pesan gagal
         }
