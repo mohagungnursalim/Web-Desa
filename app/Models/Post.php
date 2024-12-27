@@ -10,6 +10,7 @@ class Post extends Model
     use HasFactory;
     protected $guarded = ['id'];
     protected $table = 'posts';
+    protected $with = ['user','categories','tags'];
 
     // Relasi ke User
     public function user()

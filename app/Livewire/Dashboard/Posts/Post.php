@@ -40,8 +40,7 @@ class Post extends Component
 
     public function loadInitialPosts()
     {
-        $query = ModelsPost::with(['user:id,name','categories:id,name','tags:id,name'])
-        ->where(function ($query) {
+        $query = ModelsPost::where(function ($query) {
             $query->where('title', 'like', "%{$this->search}%")
                 ->orWhere('excerpt', 'like', "%{$this->search}%")
                 ->orWhereHas('categories', function ($q) {
@@ -72,7 +71,7 @@ class Post extends Component
 
     public function showPostDetail($id)
     {
-        $this->selectedPost = ModelsPost::find($id); // Ambil objek Post berdasarkan ID, atau null jika tidak ditemukan
+        $this->selectedPost = ModelsPost::findOrFail($id); // Ambil objek Post berdasarkan ID, atau null jika tidak ditemukan
         if ($this->selectedPost) {
             $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
         }
