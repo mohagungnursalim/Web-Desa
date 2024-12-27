@@ -40,8 +40,7 @@ class Product extends Component
 
     public function loadInitialProducts()
     {
-        $query = ModelProduct::with(['categories:id,name'])
-            ->where(function ($query) {
+        $query = ModelProduct::where(function ($query) {
                 $query->where('title', 'like', "%{$this->search}%")
                     ->orWhereHas('categories', function ($q) {
                         $q->where('name', 'like', "%{$this->search}%");
@@ -59,20 +58,21 @@ class Product extends Component
 
     public function confirmDelete($id, $title)
     {
-        $this->productId = $id;
-        $this->productTitle = $title;
-        $this->dispatch('show-delete-modal');
+        try {
+            ModelProduct::findOrFail($id);
+            $this->productId = $id;
+            $this->productTitle = $title;
+            $this->dispatch('show-delete-modal');
+        } catch (\Throwable $th) {
+            $this->dispatch('error'); // Event untuk menampilkan pesan gagal
+        }
     }
 
     public function delete()
     {
        
         // Cari produk berdasarkan ID
-        $product = ModelProduct::find($this->productId);
-
-        // Cek jika produk ditemukan
-        if ($product) {
-
+        $product = ModelProduct::findOrFail($this->productId);
             // Lokasi gambar
             $imagePaths = json_decode($product->image, true);
 
@@ -97,11 +97,6 @@ class Product extends Component
             $this->dispatch('hide-delete-modal'); 
             $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
            
-        } else {
-
-            toast('Oops..produk tidak tersedia!','error');
-            return redirect('/dashboard/produk');
-        }
     }
 
 

@@ -10,6 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $with = ['categories'];
 
     // Relasi many-to-many dengan Product_Category
     public function categories()
