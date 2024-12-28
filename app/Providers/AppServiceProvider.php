@@ -45,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('appName', $appName);
 
         // Ambil nilai footerText dari tabel settings, gunakan default jika tidak ada
-        $footerText = Setting::getSetting('footerText', 'Default Footer Text');
+        $footerText = Setting::getSetting('footer_text', 'Default Footer Text');
         // Bagikan footerText ke semua view
         View::share('footerText', $footerText);
         
