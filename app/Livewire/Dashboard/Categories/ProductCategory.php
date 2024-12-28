@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Categories;
 
 use App\Models\ProductCategory as ModelsProductCategory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Events\ModelsPruned;
 use Livewire\Component;
 
@@ -93,7 +94,7 @@ class ProductCategory extends Component
          $this->categoryName = $category->name; // Mengambil nama kategori
          
          $this->dispatch('openEditCategoryModal');
-       } catch (\Throwable $th) {
+       } catch (ModelNotFoundException $e) {
         $this->dispatch('error');
        }
     }
@@ -123,7 +124,7 @@ class ProductCategory extends Component
             $this->categoryId = $id;
             $this->categoryName = $name;
             $this->dispatch('show-delete-modal');
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error');
         }
     }

@@ -5,6 +5,7 @@ namespace App\Livewire\Dashboard\About;
 use App\Models\About as ModelsAbout;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class About extends Component
 {
@@ -102,7 +103,7 @@ class About extends Component
     
 
             $this->dispatch('openEditAboutModal');
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error');
         }
     }
@@ -139,7 +140,7 @@ class About extends Component
     
             // Tampilkan modal konfirmasi
             $this->dispatch('show-delete-modal');
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             // Jika data tidak ditemukan, kirimkan event error
             $this->dispatch('error');
         }

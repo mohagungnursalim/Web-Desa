@@ -3,9 +3,9 @@
 namespace App\Livewire\Dashboard\Aduan;
 
 use App\Models\Aduan as ModelsAduan;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 
-use function Livewire\Volt\updated;
 
 class Aduan extends Component
 {
@@ -62,7 +62,7 @@ class Aduan extends Component
                 $this->updateIsRead($id);
                 $this->loadInitialAduans();
             }
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error');
         }
     }
@@ -84,7 +84,7 @@ class Aduan extends Component
             $this->aduanId = $id;
             $this->aduanName = $name;
             $this->dispatch('show-delete-modal');
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error');
         }
     }

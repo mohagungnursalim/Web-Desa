@@ -223,7 +223,12 @@
                         alt="{{ $product->title }}">
                     @endif
         
-                    <div class="px-5 pb-3">
+                    <div class="px-5 pb-3 mt-3">
+                        <div class="flex-col justify-center">
+                            @foreach ($product->categories as $category)
+                            <span class="bg-gray-300 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">{{ $category->name }}</span>
+                            @endforeach
+                        </div>
                         <a href="/produk/{{ $product->id }}">
                             <h5 class="text-xl font-semibold tracking-tight text-gray-900">
                                 {{ $product->title }}

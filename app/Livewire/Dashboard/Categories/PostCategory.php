@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Categories;
 
 use App\Models\PostCategory as ModelsPostCategory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 
@@ -100,7 +101,7 @@ class PostCategory extends Component
     
             $this->dispatch('openEditCategoryModal'); // Panggil event untuk membuka modal edit
     
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             // Tangkap error lainnya
             $this->dispatch('error');
         }
@@ -151,7 +152,7 @@ class PostCategory extends Component
             $this->postCategoryId = $id;
             $this->postCategoryName = $name;
             $this->dispatch('show-delete-modal');
-       } catch (\Throwable $th) {
+       } catch (ModelNotFoundException $e) {
             $this->dispatch('error');
        }
     }

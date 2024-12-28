@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard\Users;
 
 use App\Models\User;
 use App\Models\Role;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Livewire\WithPagination;
@@ -62,14 +63,18 @@ class Users extends Component
     // Fungsi untuk menampilkan data pengguna di form edit
     public function openUpdateModal($id)
     {
-        $user = User::findOrFail($id);
+        try {
+            $user = User::findOrFail($id);
 
-        $this->userIdBeingUpdated = $user->id;
-        $this->name = $user->name;
-        $this->email = $user->email;
-        $this->role = $user->role;
+            $this->userIdBeingUpdated = $user->id;
+            $this->name = $user->name;
+            $this->email = $user->email;
+            $this->role = $user->role;
 
         $this->dispatch('openEditUserModal'); // Kirim event untuk membuka modal dengan jQuery
+        } catch (ModelNotFoundException $e) {
+            $this->dispatch('error');
+        }
     }
 
     // Fungsi untuk memperbarui data pengguna
@@ -97,9 +102,14 @@ class Users extends Component
     
     public function confirmDelete($id, $name)
     {
-        $this->userId = $id;
-        $this->userName = $name;
-        $this->dispatch('show-delete-modal');
+        try {
+            User::findOrFail($id);
+            $this->userId = $id;
+            $this->userName = $name;
+            $this->dispatch('show-delete-modal');
+        } catch (ModelNotFoundException $e) {
+            $this->dispatch('error');
+        }
     }
 
 

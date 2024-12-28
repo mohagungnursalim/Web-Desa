@@ -5,6 +5,7 @@ namespace App\Livewire\Dashboard\Products;
 
 use Livewire\Component;
 use App\Models\Product as ModelProduct;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Product extends Component
 {
@@ -47,7 +48,7 @@ class Product extends Component
                     });
             });
 
-            $this->products = $query->take($this->limit)->get();  // Ambil hasil query
+            $this->products = $query->take($this->limit)->latest()->get();  // Ambil hasil query
     }
 
     public function loadMore()
@@ -63,7 +64,7 @@ class Product extends Component
             $this->productId = $id;
             $this->productTitle = $title;
             $this->dispatch('show-delete-modal');
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error'); // Event untuk menampilkan pesan gagal
         }
     }

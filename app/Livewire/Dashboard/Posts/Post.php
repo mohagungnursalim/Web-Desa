@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard\Posts;
 
 use Livewire\Component;
 use App\Models\Post as ModelsPost;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 
 class Post extends Component
@@ -79,7 +80,7 @@ class Post extends Component
             if ($this->selectedPost) {
                 $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
             }
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error'); // Panggil event untuk menampilkan pesan error
         }
     }
@@ -93,7 +94,7 @@ class Post extends Component
             $this->postId = $id;
             $this->postTitle = $title;
             $this->dispatch('show-delete-modal'); // Panggil event untuk membuka modal konfirmasi
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error'); // Panggil event untuk menampilkan pesan error
         }
     
@@ -107,7 +108,7 @@ class Post extends Component
 
         // Hapus file gambar jika ada
         if (file_exists(public_path('storage/' . $imagePath))) {
-            unlink(public_path('storage/' . $imagePath));
+            unlink(public_path('storage/' . $imagePath)); // Hapus file gambar
         }
 
         // Hapus data 

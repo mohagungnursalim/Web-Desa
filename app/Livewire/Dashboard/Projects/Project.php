@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Projects;
 
 use App\Models\Project as ModelsProject;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 
@@ -119,7 +120,7 @@ class Project extends Component
             
             $this->dispatch('initSummernote'); // Kirim event untuk inisialisasi summernote
             $this->dispatch('openEditProjectModal'); // Kirim event untuk membuka modal dengan jQuery
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error'); // Event untuk menampilkan pesan gagal
         }
     }
@@ -183,7 +184,7 @@ class Project extends Component
             $this->projectId = $id;
             $this->projectName = $project_name;
             $this->dispatch('show-delete-modal');
-        } catch (\Throwable $th) {
+        } catch (ModelNotFoundException $e) {
             $this->dispatch('error'); // Event untuk menampilkan pesan gagal
         }
     }

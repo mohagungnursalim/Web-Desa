@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Tags;
 
 use App\Models\PostTag as ModelsPostTag;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 
@@ -84,10 +85,14 @@ class PostTag extends Component
 
     public function openUpdateModal($id)
     {
-        $tag = ModelsPostTag::find($id);
-        $this->tag_id = $id;
-        $this->tagUpdate = $tag->name; // Ambil data kategori untuk diedit
-        $this->dispatch('openEditTagModal'); // Buka modal edit
+       try {
+            $tag = ModelsPostTag::findOrFail($id);
+            $this->tag_id = $tag->id;
+            $this->tagUpdate = $tag->name;
+            $this->dispatch('openEditTagModal'); // Buka modal edit
+        } catch (ModelNotFoundException $e) {
+            $this->dispatch('error'); // Notifikasi error
+        }
     }
 
     public function update()
@@ -104,9 +109,15 @@ class PostTag extends Component
 
     public function confirmDelete($id, $name)
     {
-        $this->postTagId = $id;
-        $this->postTagName = $name;
-        $this->dispatch('show-delete-modal'); // Buka modal konfirmasi hapus
+        try {
+            ModelsPostTag::findOrFail($id); // Cek apakah data ada
+        
+            $this->postTagId = $id;
+            $this->postTagName = $name;
+            $this->dispatch('show-delete-modal'); // Buka modal konfirmasi hapus
+        } catch (ModelNotFoundException $e) {
+            $this->dispatch('error'); // Notifikasi error
+        }
     }
 
     public function delete()
