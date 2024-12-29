@@ -18,41 +18,41 @@
         }
     </style>
 
+    {{-- Style untuk gambar postingan index--}}
     <style>
-        .image-wrapper img {
-            width: 100%;
+        .lazy-img {
+            display: block;
+            width: 45px;
             height: auto;
-            transition: opacity 1s ease-in-out; /* Efek transisi */
-            opacity: 0; /* Gambar asli dimulai dengan opacity 0 */
+            opacity: 1; /* Pastikan gambar selalu terlihat */ 
         }
 
-        .image-wrapper img.lazyloaded {
-            opacity: 1; /* Gambar asli menjadi terlihat */
-        }
 
-        
+        .lazy-img[src*='storage'] {
+            opacity: 1;
+        }
     </style>
 
-    {{-- Img Style --}}
+    {{-- Img Style Konten --}}
     <style>
         .post-content img {
                 max-width: 100%;
                 height: auto;
             }
             .image_resized {
-            display: block; /* Agar gambar dapat diperlakukan sebagai blok */
+            display: block; 
             margin-left: auto;
-            margin-right: auto; /* Mengatur margin kiri dan kanan otomatis untuk sentralisasi */
+            margin-right: auto; 
         }
         .image-style-block-align-left{
             float: left;
         }
         .image-style-block-align-right {
-            float: right; /* Untuk gambar di sebelah kanan */
+            float: right; 
         }
-        /* Jika ingin menjaga gambar tetap di tengah hanya saat tidak ada kelas alignment */
+       
         figure.image {
-            text-align: center; /* Menempatkan gambar di tengah dalam figure */
+            text-align: center; 
         }
     </style>
     <style>
@@ -108,10 +108,16 @@
                             @forelse ($posts as $index => $post)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td class="image-wrapper">
-                                    <img data-src="{{ asset('storage/' . $post->image) }}" style="width: 45px"
-                                        alt="{{ $post->title }}" class="lazyload">
-                                </td>
+                                <td>
+                                    <img 
+                                        :src="imageSrc" 
+                                        data-src="{{ asset('storage/' . $post->image) }}" 
+                                        style="width: 45px" 
+                                        alt="{{ $post->title }}" 
+                                        class="lazy-img" 
+                                        x-data="{ imageSrc: '{{ asset('assets/img/placeholder.png') }}' }" 
+                                        x-init="setTimeout(() => { imageSrc = $el.dataset.src }, 700)">
+                                </td>                                
                                 <td>{{ $post->title }}</td>
                                 <td class="sm">
                                     @foreach ($post->categories as $category)
@@ -273,7 +279,6 @@
 
 
     @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
 
     {{-- Detail Modal --}}
     <script>
