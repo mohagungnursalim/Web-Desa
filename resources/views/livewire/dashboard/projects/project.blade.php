@@ -1,16 +1,18 @@
 <div class="py-4">
     @push('styles')
-    <style>
-        .image-wrapper img {
-            width: 100%;
+       {{-- Style untuk gambar project index--}}
+       <style>
+        .lazy-img {
+            display: block;
+            width: 45px;
             height: auto;
-            transition: opacity 1s ease-in-out; /* Efek transisi */
-            opacity: 0; /* Gambar asli dimulai dengan opacity 0 */
+            opacity: 1; /* Pastikan gambar selalu terlihat */ 
         }
-    
-        .image-wrapper img.lazyloaded {
-            opacity: 1; /* Gambar asli menjadi terlihat */
-        }    
+
+
+        .lazy-img[src*='storage'] {
+            opacity: 1;
+        }
     </style>
     <!-- CSS Summernote -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.css" rel="stylesheet">
@@ -54,48 +56,51 @@
                                             @endphp
 
                                             @if($images && is_array($images) && count($images) > 0)
-                                            <div id="projectCarousel{{ $project->id }}" class="carousel slide"
-                                                data-ride="carousel">
+                                            <div id="projectCarousel{{ $project->id }}" class="carousel slide" data-ride="carousel">
                                                 <ol class="carousel-indicators">
                                                     @foreach($images as $imageIndex => $img)
-                                                    <li data-target="#projectCarousel{{ $project->id }}"
-                                                        data-slide-to="{{ $imageIndex }}"
+                                                    <li data-target="#projectCarousel{{ $project->id }}" 
+                                                        data-slide-to="{{ $imageIndex }}" 
                                                         class="{{ $imageIndex == 0 ? 'active' : '' }}"></li>
                                                     @endforeach
                                                 </ol>
                                                 <div class="carousel-inner">
                                                     @foreach($images as $imageIndex => $img)
                                                     <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
-                                                        <div class="image-wrapper">
-                                                        <img style="border-top-left-radius: 20px; border-top-right-radius: 20px;"
-                                                            class="d-block w-100 lazyload" src="{{ asset('storage/' . $img) }}"
-                                                            alt="{{ $project->project_name }} - Image {{ $imageIndex + 1 }}">
-                                                    
+                                                        <div class="">
+                                                            <img 
+                                                                style="border-top-left-radius: 20px; border-top-right-radius: 20px;" 
+                                                                class="d-block w-100 lazy-img" 
+                                                                alt="{{ $project->project_name }} - Image {{ $imageIndex + 1 }}" 
+                                                                x-data="{ imageSrc: '{{ asset('assets/img/placeholder-bw.svg') }}' }" 
+                                                                x-init="setTimeout(() => imageSrc = '{{ asset('storage/' . $img) }}', 700)" 
+                                                                :src="imageSrc">
                                                         </div>
                                                     </div>
                                                     @endforeach
                                                 </div>
                                                 @if(count($images) > 1)
-                                                <a class="carousel-control-prev"
-                                                    href="#projectCarousel{{ $project->id }}" role="button"
-                                                    data-slide="prev">
+                                                <a class="carousel-control-prev" href="#projectCarousel{{ $project->id }}" role="button" data-slide="prev">
                                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                     <span class="sr-only">Previous</span>
                                                 </a>
-                                                <a class="carousel-control-next"
-                                                    href="#projectCarousel{{ $project->id }}" role="button"
-                                                    data-slide="next">
+                                                <a class="carousel-control-next" href="#projectCarousel{{ $project->id }}" role="button" data-slide="next">
                                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                                     <span class="sr-only">Next</span>
                                                 </a>
                                                 @endif
                                             </div>
                                             @elseif($project->image)
-                                            <div class="image-wrapper">
-                                            <img class="img-fluid lazyload" src="{{ asset('storage/' . $project->image) }}"
-                                                alt="{{ $project->project_name }}">
+                                            <div class="">
+                                                <img 
+                                                    class="img-fluid lazy-img" 
+                                                    alt="{{ $project->project_name }}" 
+                                                    x-data="{ imageSrc: '{{ asset('assets/img/placeholder-bw.svg') }}' }" 
+                                                    x-init="setTimeout(() => imageSrc = '{{ asset('storage/' . $project->image) }}', 700)" 
+                                                    :src="imageSrc">
                                             </div>
                                             @endif
+
 
                                             <div class="card-body">
                                                 <h4 class="card-title"><b>{{ $project->project_name }}</b></h4><br>
@@ -319,7 +324,7 @@
                                 <div class="d-flex flex-wrap">
                                     @foreach($existingImages as $img)
                                     <div class="p-2">
-                                        <div class="image-wrapper" style="width: 250px">
+                                        <div class="" style="width: 250px">
                                         <img src="{{ asset('storage/' . $img) }}" alt="Gambar Proyek"
                                             class="img-fluid lazyload img-thumbnail" >
                                     
@@ -440,7 +445,7 @@
 
         <!-- Summernote JS -->
         <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
         {{-- Modal Add --}}
         <script>
             $(document).ready(function () {
