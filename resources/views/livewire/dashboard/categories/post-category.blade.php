@@ -1,18 +1,18 @@
 <div class="py-4">
     @push('styles')
+    {{-- Style untuk gambar post kategori index--}}
     <style>
-        .image-wrapper img {
-            width: 100%;
+        .lazy-img {
+            display: block;
+            width: 45px;
             height: auto;
-            transition: opacity 1s ease-in-out; /* Efek transisi */
-            opacity: 0; /* Gambar asli dimulai dengan opacity 0 */
+            opacity: 1; /* Pastikan gambar selalu terlihat */ 
         }
 
-        .image-wrapper img.lazyloaded {
-            opacity: 1; /* Gambar asli menjadi terlihat */
-        }
 
-        
+        .lazy-img[src*='storage'] {
+            opacity: 1;
+        }
     </style>
     @endpush
     <div class="container-fluid col-md">
@@ -51,9 +51,15 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $category->name }}</td>
-                                <td class="image-wrapper">
-                                    <img data-src="{{ asset('storage/' . $category->image) }}" style="width: 45px"
-                                        alt="{{ $category->name }}" class="lazyload">
+                                <td>
+                                    <img 
+                                        :src="imageSrc" 
+                                        data-src="{{ asset('storage/' . $category->image) }}" 
+                                        style="width: 45px" 
+                                        alt="{{ $category->name }}" 
+                                        class="lazy-img" 
+                                        x-data="{ imageSrc: '{{ asset('assets/img/placeholder.png') }}' }" 
+                                        x-init="setTimeout(() => { imageSrc = $el.dataset.src }, 700)">
                                 </td>
                                 <td>{{ $category->created_at }}</td>
                                 <td>{{ $category->updated_at }}</td>
