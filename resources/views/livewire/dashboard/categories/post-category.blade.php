@@ -236,9 +236,9 @@
                             <div class="d-flex flex-wrap mt-2">
                                 @if ($imageUpdate)
                                 <!-- Tampilkan gambar lama -->
-                                <div class="p-2 image-wrapper">
-                                    <img style="width: 250px" data-src="{{ asset('storage/' . $imageUpdate) }}" alt="Gambar Lama"
-                                        class="img-fluid img-thumbnail lazyload">
+                                <div class="p-2">
+                                    <img style="width: 250px" src="{{ asset('storage/' . $imageUpdate) }}" alt="Gambar Lama"
+                                        class="img-fluid img-thumbnail">
                                 </div>
                                 @endif
                                 @if ($image)
@@ -313,7 +313,7 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
     {{-- Add Modal Form --}}
     <script>
         $(document).ready(function () {

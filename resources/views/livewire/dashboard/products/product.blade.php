@@ -1,22 +1,19 @@
 <div class="py-4">
     @push('styles')
-
+    {{-- Style untuk gambar product index--}}
     <style>
-    .image-wrapper img {
-        width: 100%;
-        height: auto;
-        transition: opacity 1s ease-in-out; /* Efek transisi */
-        opacity: 0; /* Gambar asli dimulai dengan opacity 0 */
-    }
+        .lazy-img {
+            display: block;
+            width: 45px;
+            height: auto;
+            opacity: 1; /* Pastikan gambar selalu terlihat */ 
+        }
 
-    .image-wrapper img.lazyloaded {
-        opacity: 1; /* Gambar asli menjadi terlihat */
-    }
 
-    
+        .lazy-img[src*='storage'] {
+            opacity: 1;
+        }
     </style>
-
-
     @endpush
     <div class="container">
 
@@ -52,12 +49,11 @@
                                             @endphp
 
                                             @if($images && is_array($images) && count($images) > 0)
-                                            <div id="productCarousel{{ $product->id }}" class="carousel slide"
-                                                data-ride="carousel">
+                                            <div id="productCarousel{{ $product->id }}" class="carousel slide" data-ride="carousel">
                                                 <ol class="carousel-indicators">
                                                     @foreach($images as $imageIndex => $img)
-                                                    <li data-target="#productCarousel{{ $product->id }}"
-                                                        data-slide-to="{{ $imageIndex }}"
+                                                    <li data-target="#productCarousel{{ $product->id }}" 
+                                                        data-slide-to="{{ $imageIndex }}" 
                                                         class="{{ $imageIndex == 0 ? 'active' : '' }}"></li>
                                                     @endforeach
                                                 </ol>
@@ -67,33 +63,37 @@
                                                         <div class="image-wrapper">
                                                             <img 
                                                                 style="border-top-left-radius: 20px; border-top-right-radius: 20px;" 
-                                                                class="d-block w-100 lazyload" 
-                                                                data-src="{{ asset('storage/' . $img) }}"  
-                                                                alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}">
+                                                                class="d-block w-100 lazy-img" 
+                                                                alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}"
+                                                                x-data="{ imageSrc: '{{ asset('assets/img/placeholder-cart.svg') }}' }" 
+                                                                x-init="setTimeout(() => imageSrc = '{{ asset('storage/' . $img) }}', 700)" 
+                                                                :src="imageSrc">
                                                         </div>
                                                     </div>
                                                     @endforeach
                                                 </div>
                                                 @if(count($images) > 1)
-                                                <a class="carousel-control-prev"
-                                                    href="#productCarousel{{ $product->id }}" role="button"
-                                                    data-slide="prev">
+                                                <a class="carousel-control-prev" href="#productCarousel{{ $product->id }}" role="button" data-slide="prev">
                                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                     <span class="sr-only">Previous</span>
                                                 </a>
-                                                <a class="carousel-control-next"
-                                                    href="#productCarousel{{ $product->id }}" role="button"
-                                                    data-slide="next">
+                                                <a class="carousel-control-next" href="#productCarousel{{ $product->id }}" role="button" data-slide="next">
                                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                                     <span class="sr-only">Next</span>
                                                 </a>
                                                 @endif
                                             </div>
                                             @elseif($product->image)
-                                            <div class="image-wrapper">
-                                                <img class="img-fluid lazyload" data-src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}">
-                                            </div>
+                            
+                                                <img 
+                                                    class="img-fluid lazy-img" 
+                                                    alt="{{ $product->title }}" 
+                                                    x-data="{ imageSrc: '{{ asset('assets/img/placeholder-cart.svg') }}' }" 
+                                                    x-init="setTimeout(() => imageSrc = '{{ asset('storage/' . $product->image) }}', 700)" 
+                                                    :src="imageSrc">
+                                            
                                             @endif
+
                                             <div class="card-body">
 
                                                 {{-- Loop kategori terkait --}}

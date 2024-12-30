@@ -115,7 +115,7 @@
                                         style="width: 45px" 
                                         alt="{{ $post->title }}" 
                                         class="lazy-img" 
-                                        x-data="{ imageSrc: '{{ asset('assets/img/placeholder.png') }}' }" 
+                                        x-data="{ imageSrc: '{{ asset('assets/img/placeholder-post.svg') }}' }" 
                                         x-init="setTimeout(() => { imageSrc = $el.dataset.src }, 700)">
                                 </td>                                
                                 <td>{{ $post->title }}</td>
