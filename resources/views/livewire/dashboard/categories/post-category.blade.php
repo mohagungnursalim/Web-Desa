@@ -58,7 +58,7 @@
                                         style="width: 45px" 
                                         alt="{{ $category->name }}" 
                                         class="lazy-img" 
-                                        x-data="{ imageSrc: '{{ asset('assets/img/placeholder.png') }}' }" 
+                                        x-data="{ imageSrc: '{{ asset('assets/img/placeholder-post-category.svg') }}' }" 
                                         x-init="setTimeout(() => { imageSrc = $el.dataset.src }, 700)">
                                 </td>
                                 <td>{{ $category->created_at }}</td>
