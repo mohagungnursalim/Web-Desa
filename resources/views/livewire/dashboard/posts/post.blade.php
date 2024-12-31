@@ -1,5 +1,6 @@
 <div class="py-4">
     @push('styles')
+  
     <style>
         /* Gaya untuk blok kode */
         pre {
@@ -15,21 +16,6 @@
             /* Font monospaced */
             font-size: 14px;
             position: relative;
-        }
-    </style>
-
-    {{-- Style untuk gambar postingan index--}}
-    <style>
-        .lazy-img {
-            display: block;
-            width: 45px;
-            height: auto;
-            opacity: 1; /* Pastikan gambar selalu terlihat */ 
-        }
-
-
-        .lazy-img[src*='storage'] {
-            opacity: 1;
         }
     </style>
 
@@ -109,15 +95,18 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>
+                                    <div 
+                                    class="lazy-placeholder" 
+                                    x-data="{ imageSrc: null }" 
+                                    x-init="setTimeout(() => { imageSrc = $el.querySelector('img').dataset.src }, 500)">
                                     <img 
                                         :src="imageSrc" 
                                         data-src="{{ asset('storage/' . $post->image) }}" 
-                                        style="width: 45px" 
                                         alt="{{ $post->title }}" 
-                                        class="lazy-img" 
-                                        x-data="{ imageSrc: '{{ asset('assets/img/placeholder-post.svg') }}' }" 
-                                        x-init="setTimeout(() => { imageSrc = $el.dataset.src }, 700)">
-                                </td>                                
+                                        class="lazy-img">
+                                </div>                           
+                                </td>     
+
                                 <td>{{ $post->title }}</td>
                                 <td class="sm">
                                     @foreach ($post->categories as $category)

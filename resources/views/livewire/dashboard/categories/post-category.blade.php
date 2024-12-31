@@ -1,19 +1,6 @@
 <div class="py-4">
     @push('styles')
-    {{-- Style untuk gambar post kategori index--}}
-    <style>
-        .lazy-img {
-            display: block;
-            width: 45px;
-            height: auto;
-            opacity: 1; /* Pastikan gambar selalu terlihat */ 
-        }
 
-
-        .lazy-img[src*='storage'] {
-            opacity: 1;
-        }
-    </style>
     @endpush
     <div class="container-fluid col-md">
         <div class="card" style="border-radius: 25px;">
@@ -52,27 +39,30 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td>
-                                    <img 
-                                        :src="imageSrc" 
-                                        data-src="{{ asset('storage/' . $category->image) }}" 
-                                        style="width: 45px" 
-                                        alt="{{ $category->name }}" 
-                                        class="lazy-img" 
-                                        x-data="{ imageSrc: '{{ asset('assets/img/placeholder-post-category.svg') }}' }" 
-                                        x-init="setTimeout(() => { imageSrc = $el.dataset.src }, 700)">
+                                    <div 
+                                        class="lazy-placeholder" 
+                                        x-data="{ imageSrc: null }" 
+                                        x-init="setTimeout(() => { imageSrc = $el.querySelector('img').dataset.src }, 500)">
+                                        <img 
+                                            :src="imageSrc" 
+                                            data-src="{{ asset('storage/' . $category->image) }}" 
+                                            alt="{{ $category->name }}" 
+                                            class="lazy-img">
+                                    </div>
                                 </td>
                                 <td>{{ $category->created_at }}</td>
                                 <td>{{ $category->updated_at }}</td>
                                 <td>
                                     <!-- Tombol untuk membuka modal update -->
-                                    <button style="border-radius: 10px;"
-                                        wire:click="openUpdateModal({{ $category->id }})" class="btn btn-primary">
+                                    <button style="border-radius: 10px;" 
+                                        wire:click="openUpdateModal({{ $category->id }})" 
+                                        class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-
+                            
                                     <!-- Tombol untuk membuka modal delete -->
-                                    <button style="border-radius: 10px;"
-                                        wire:click="confirmDelete({{ $category->id }}, '{{ $category->name }}' )"
+                                    <button style="border-radius: 10px;" 
+                                        wire:click="confirmDelete({{ $category->id }}, '{{ $category->name }}' )" 
                                         type="button" class="btn btn-danger text-white">
                                         <i class="bi bi-trash3"></i>
                                     </button>
@@ -83,6 +73,8 @@
                                 <td wire:loading.remove wire:target="loadInitialCategories" colspan="7" class="text-center">Tidak ada kategori yang ditemukan.</td>
                             </tr>
                             @endforelse
+                            
+                            
 
 
                         </tbody>
