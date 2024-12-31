@@ -39,7 +39,7 @@
         display: none !important;
     }
 </style>
-@vite(['resources/css/app.css','resources/css/placeholder-image.css'])
+@vite(['resources/css/placeholder-image.css'])
 
 
 <body class="hold-transition sidebar-mini layout-fixed">
