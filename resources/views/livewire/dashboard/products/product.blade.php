@@ -1,19 +1,6 @@
 <div class="py-4">
     @push('styles')
-    {{-- Style untuk gambar product index--}}
-    <style>
-        .lazy-img {
-            display: block;
-            width: 45px;
-            height: auto;
-            opacity: 1; /* Pastikan gambar selalu terlihat */ 
-        }
 
-
-        .lazy-img[src*='storage'] {
-            opacity: 1;
-        }
-    </style>
     @endpush
     <div class="container">
 
@@ -60,14 +47,14 @@
                                                 <div class="carousel-inner">
                                                     @foreach($images as $imageIndex => $img)
                                                     <div class="carousel-item {{ $imageIndex == 0 ? 'active' : '' }}">
-                                                        <div class="image-wrapper">
+                                                        <div class="lazy-placeholder-product" 
+                                                            x-data="{ imageSrc: null }" 
+                                                            x-init="setTimeout(() => { imageSrc = $el.querySelector('img').dataset.src }, 500)">
                                                             <img 
-                                                                style="border-top-left-radius: 20px; border-top-right-radius: 20px;" 
-                                                                class="d-block w-100 lazy-img" 
-                                                                alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}"
-                                                                x-data="{ imageSrc: '{{ asset('assets/img/placeholder-cart.svg') }}' }" 
-                                                                x-init="setTimeout(() => imageSrc = '{{ asset('storage/' . $img) }}', 700)" 
-                                                                :src="imageSrc">
+                                                                :src="imageSrc" 
+                                                                data-src="{{ asset('storage/' . $img) }}" 
+                                                                alt="{{ $product->title }} - Image {{ $imageIndex + 1 }}" 
+                                                                class="lazy-img">
                                                         </div>
                                                     </div>
                                                     @endforeach
@@ -84,15 +71,17 @@
                                                 @endif
                                             </div>
                                             @elseif($product->image)
-                            
+                                            <div class="lazy-placeholder-product" 
+                                                x-data="{ imageSrc: null }" 
+                                                x-init="setTimeout(() => { imageSrc = $el.querySelector('img').dataset.src }, 500)">
                                                 <img 
-                                                    class="img-fluid lazy-img" 
+                                                    :src="imageSrc" 
+                                                    data-src="{{ asset('storage/' . $product->image) }}" 
                                                     alt="{{ $product->title }}" 
-                                                    x-data="{ imageSrc: '{{ asset('assets/img/placeholder-cart.svg') }}' }" 
-                                                    x-init="setTimeout(() => imageSrc = '{{ asset('storage/' . $product->image) }}', 700)" 
-                                                    :src="imageSrc">
-                                            
+                                                    class="lazy-img">
+                                            </div>
                                             @endif
+
 
                                             <div class="card-body">
 
