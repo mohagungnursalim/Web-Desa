@@ -153,7 +153,7 @@
 
                                 <div class="p-2">
                                     <img src="{{ $image->temporaryUrl() }}" alt="Preview"
-                                        class="img-fluid img-thumbnail" width="100px">
+                                        class="img-fluid img-thumbnail" width="250px">
                                 </div>
 
                                 @endif
