@@ -47,6 +47,12 @@
                             <td>{{ $user->created_at }}</td>
                             <td>{{ $user->updated_at }}</td>
                             <td>
+                                <!-- Tombol untuk membuka modal reset password -->
+                                <button style="border-radius: 10px;" wire:click="openResetModal({{ $user->id }}, '{{ $user->name }}')"
+                                    class="btn btn-secondary">
+                                    <i class="bi bi-unlock-fill"></i>
+                                </button>
+
                                 <!-- Tombol untuk membuka modal update -->
                                 <button style="border-radius: 10px;" wire:click="openUpdateModal({{ $user->id }})"
                                     class="btn btn-primary">
@@ -192,6 +198,39 @@
         </div>
     </div>
 
+    {{-- Modal Reset Password --}}
+    <div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 20px;">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    <b>Reset Password</b>
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-body text-center">
+                Apakah anda yakin ingin mereset password akun <b>{{ $userName }}</b>?
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button style="border-radius: 10px;" wire:loading.remove wire:target='resetPassword'
+                    type="button" class="btn btn-secondary" data-dismiss="modal">Batal
+                </button>
+                <button style="border-radius: 10px;" wire:loading.remove wire:click="resetPassword"
+                    type="button" class="btn btn-danger">Reset
+                </button>
+
+                <button style="border-radius: 10px;" wire:loading wire:target='resetPassword'
+                    class="btn btn-danger" disabled>
+                    Mereset.. <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
 
 {{-- Modal Delete --}}
 <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
@@ -285,6 +324,54 @@
     });
 </script>
 
+{{-- Reset Password Modal --}}
+<script>
+    $(document).ready(function () {
+        
+        // Membuka modal 
+        window.addEventListener('openPasswordResetModal', function () {
+            $('#resetPasswordModal').modal('show');
+        });
+
+        // Mendengarkan event dari Livewire untuk menutup modal
+        window.addEventListener('resetSuccess', function () {
+            $('#resetPasswordModal').modal('hide'); // Menutup modal
+            
+            // Menghapus backdrop ketika modal ditutup
+            $('#resetPasswordModal').on('hidden.bs.modal', function () {
+                $('body').removeClass('modal-open'); // Hilangkan kelas modal-open pada body
+                $('.modal-backdrop').remove(); // Hapus modal-backdrop
+            });
+        });
+
+        // Reset form di backend setelah modal ditutup
+        $('#resetPasswordModal').on('hidden.bs.modal', function () {
+            @this.call('resetForm'); // Memanggil fungsi resetForm di Component
+        });
+    });
+</script>
+
+    {{-- Sweet alert,reset success --}}
+    <script>
+        $(document).ready(function () {
+            window.addEventListener('resetSuccess', function (event) {
+                Swal.fire({
+                    title: "Sukses!",
+                    text: "Password berhasil direset!",
+                    icon: "success",
+                    timer: 1000,
+                    timerProgressBar: true,
+                });
+            });
+        })
+
+    </script>
+
+
+
+
+
+
 {{-- Delete Modal --}}
 <script>
     $(document).ready(function () {
@@ -338,6 +425,10 @@
         })
 
     </script>
+
+
+
+
 
     {{-- Sweet alert,delete success --}}
     <script>

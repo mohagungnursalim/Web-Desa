@@ -59,6 +59,32 @@ class Users extends Component
    }
    
 
+   public function openResetModal($id,$name)
+   
+    {
+         try {
+              User::findOrFail($id);
+              $this->userId = $id;
+              $this->userName = $name;
+              $this->dispatch('openPasswordResetModal');
+         } catch (ModelNotFoundException $e) {
+              $this->dispatch('show-error');
+         }
+    }
+
+    public function resetPassword()
+    {
+
+        // Ambil user berdasarkan ID yang akan direset passwordnya
+        $user = User::findOrFail($this->userId);
+    
+        // Reset password
+        $user->update([
+            'password' => Hash::make("12345678"),
+        ]);
+    
+        $this->dispatch('resetSuccess');
+    }
 
     // Fungsi untuk menampilkan data pengguna di form edit
     public function openUpdateModal($id)
