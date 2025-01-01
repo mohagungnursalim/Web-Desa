@@ -85,7 +85,7 @@ class Aduan extends Component
             $this->aduanName = $name;
             $this->dispatch('show-delete-modal');
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error');
+            $this->dispatch('show-error');
         }
     }
 

@@ -81,7 +81,7 @@ class Post extends Component
                 $this->dispatch('show-detail-modal'); // Panggil event untuk membuka modal
             }
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error'); // Panggil event untuk menampilkan pesan error
+            $this->dispatch('show-error'); // Panggil event untuk menampilkan pesan error
         }
     }
 
@@ -95,7 +95,7 @@ class Post extends Component
             $this->postTitle = $title;
             $this->dispatch('show-delete-modal'); // Panggil event untuk membuka modal konfirmasi
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error'); // Panggil event untuk menampilkan pesan error
+            $this->dispatch('show-error'); // Panggil event untuk menampilkan pesan error
         }
     
     }

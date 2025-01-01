@@ -73,7 +73,7 @@ class Users extends Component
 
         $this->dispatch('openEditUserModal'); // Kirim event untuk membuka modal dengan jQuery
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error');
+            $this->dispatch('show-error');
         }
     }
 
@@ -108,7 +108,7 @@ class Users extends Component
             $this->userName = $name;
             $this->dispatch('show-delete-modal');
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error');
+            $this->dispatch('show-error');
         }
     }
 

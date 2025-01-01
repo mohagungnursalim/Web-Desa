@@ -103,7 +103,7 @@ class PostCategory extends Component
     
         } catch (ModelNotFoundException $e) {
             // Tangkap error lainnya
-            $this->dispatch('error');
+            $this->dispatch('show-error');
         }
     }
     
@@ -153,7 +153,7 @@ class PostCategory extends Component
             $this->postCategoryName = $name;
             $this->dispatch('show-delete-modal');
        } catch (ModelNotFoundException $e) {
-            $this->dispatch('error');
+            $this->dispatch('show-error');
        }
     }
 

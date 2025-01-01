@@ -91,7 +91,7 @@ class PostTag extends Component
             $this->tagUpdate = $tag->name;
             $this->dispatch('openEditTagModal'); // Buka modal edit
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error'); // Notifikasi error
+            $this->dispatch('show-error'); // Notifikasi error
         }
     }
 
@@ -116,7 +116,7 @@ class PostTag extends Component
             $this->postTagName = $name;
             $this->dispatch('show-delete-modal'); // Buka modal konfirmasi hapus
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error'); // Notifikasi error
+            $this->dispatch('show-error'); // Notifikasi error
         }
     }
 

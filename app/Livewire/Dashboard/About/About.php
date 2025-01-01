@@ -104,7 +104,7 @@ class About extends Component
 
             $this->dispatch('openEditAboutModal');
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error');
+            $this->dispatch('show-error');
         }
     }
 
@@ -142,7 +142,7 @@ class About extends Component
             $this->dispatch('show-delete-modal');
         } catch (ModelNotFoundException $e) {
             // Jika data tidak ditemukan, kirimkan event error
-            $this->dispatch('error');
+            $this->dispatch('show-error');
         }
     }
     

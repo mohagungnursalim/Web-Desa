@@ -95,7 +95,7 @@ class ProductCategory extends Component
          
          $this->dispatch('openEditCategoryModal');
        } catch (ModelNotFoundException $e) {
-        $this->dispatch('error');
+        $this->dispatch('show-error');
        }
     }
 
@@ -125,7 +125,7 @@ class ProductCategory extends Component
             $this->categoryName = $name;
             $this->dispatch('show-delete-modal');
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error');
+            $this->dispatch('show-error');
         }
     }
 

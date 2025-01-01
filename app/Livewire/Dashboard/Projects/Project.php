@@ -121,7 +121,7 @@ class Project extends Component
             $this->dispatch('initSummernote'); // Kirim event untuk inisialisasi summernote
             $this->dispatch('openEditProjectModal'); // Kirim event untuk membuka modal dengan jQuery
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error'); // Event untuk menampilkan pesan gagal
+            $this->dispatch('show-error'); // Event untuk menampilkan pesan gagal
         }
     }
 
@@ -185,7 +185,7 @@ class Project extends Component
             $this->projectName = $project_name;
             $this->dispatch('show-delete-modal');
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error'); // Event untuk menampilkan pesan gagal
+            $this->dispatch('show-error'); // Event untuk menampilkan pesan gagal
         }
     }
 

@@ -358,7 +358,7 @@
        {{-- Sweet alert,error --}}
        <script>
         $(document).ready(function () {
-            window.addEventListener('error', function (event) {
+            window.addEventListener('show-error', function (event) {
                 Swal.fire({
                     title: "Oops!",
                     text: "Data tidak valid/sudah terhapus.",

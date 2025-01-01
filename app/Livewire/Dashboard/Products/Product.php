@@ -65,7 +65,7 @@ class Product extends Component
             $this->productTitle = $title;
             $this->dispatch('show-delete-modal');
         } catch (ModelNotFoundException $e) {
-            $this->dispatch('error'); // Event untuk menampilkan pesan gagal
+            $this->dispatch('show-error'); // Event untuk menampilkan pesan gagal
         }
     }
 
