@@ -143,16 +143,6 @@
 
     @push('scripts')
 
-
-    <script type="importmap">
-        {
-                "imports": {
-                    "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",
-                    "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"
-                }
-            }
-    </script>
-
     <script type="module">
         import {
 			ClassicEditor,

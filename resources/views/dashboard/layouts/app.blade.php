@@ -39,6 +39,14 @@
         display: none !important;
     }
 </style>
+<script type="importmap">
+    {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"
+            }
+        }
+</script>
 @vite([
     'resources/css/placeholder-image.css',
     'resources/css/placeholder-image-product.css',
