@@ -1,5 +1,10 @@
 <div class="py-4">
     @push('styles')
+    <style>
+    .ck-editor__editable {
+        min-height: 300px;
+    }
+    </style>
     @endpush
     <div class="container-fluid col-md">
         <div class="card" style="border-radius: 25px;">
@@ -36,7 +41,9 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $about->title }}</td>
-                                <td>{!! $about->description !!}</td>
+                                <td>
+                                    {!! \Illuminate\Support\Str::limit(strip_tags($about->description), 30) !!}
+                                </td>
                                 <td>{{ $about->created_at }}</td>
                                 <td>{{ $about->updated_at }}</td>
                                 <td>
@@ -97,16 +104,16 @@
 
 
     <!-- Modal Tambah Data -->
-    <div id="addAboutModal" class="modal" tabindex="-1" role="dialog" wire:ignore.self>
+    <div id="addAboutModal" class="modal" tabindex="-1" role="dialog" wire:ignore>
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="border-radius: 20px;">
                 <div class="modal-header">
                     <h5 class="modal-title">Tambah Data</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span>&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
                     <form wire:submit.prevent="store">
                         <div class="form-group">
                             <label for="title">Judul</label>
@@ -116,9 +123,8 @@
                         </div>
 						<div class="form-group">
                             <label for="description">Deskripsi</label>
-                            <textarea placeholder="Masukan deskripsi.." class="form-control" id="description"
-                                wire:model="description"> 
-							</textarea>
+                            <textarea class="form-control" id="editor" wire:model="description"
+                            placeholder="Masukan konten disini"></textarea>
                             @error('description') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
 
@@ -140,27 +146,26 @@
 
 
     <!-- Modal Edit -->
-    <div class="modal fade" id="editAboutModal" tabindex="-1" role="dialog" wire:ignore.self>
+    <div class="modal fade" id="editAboutModal" tabindex="-1" role="dialog" wire:ignore>
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="border-radius: 20px;">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update Data</h5>
+                    <h5 class="modal-title">Edit Data</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span>&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
                     <form wire:submit.prevent="update">
                         <div class="form-group">
                             <label for="aboutTitle">Nama Kategori</label>
                             <input type="text" class="form-control" id="aboutTitle" wire:model="aboutTitle">
                             @error('aboutTitle') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
-						<div class="form-group">
+                        <div class="form-group">
                             <label for="aboutDescription">Deskripsi</label>
-                            <textarea placeholder="Masukan deskripsi.." class="form-control" id="aboutDescription"
-                                wire:model="aboutDescription"> 
-							</textarea>
+                            <textarea class="form-control" id="editorEdit" wire:model="aboutDescription"
+                            placeholder="Masukan konten disini"></textarea>
                             @error('aboutDescription') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         
@@ -215,6 +220,751 @@
     </div>
 
     @push('scripts')
+
+    {{-- Add Form Ckeditor5 --}}
+    <script type="module">
+        import {
+			ClassicEditor,
+			AccessibilityHelp,
+			Alignment,
+			Autoformat,
+			AutoImage,
+			AutoLink,
+			Autosave,
+			Base64UploadAdapter,
+			BlockQuote,
+			BlockToolbar,
+			Bold,
+			CloudServices,
+			Code,
+			CodeBlock,
+			Essentials,
+			FindAndReplace,
+			FontBackgroundColor,
+			FontColor,
+			FontFamily,
+			FontSize,
+			GeneralHtmlSupport,
+			Heading,
+			Highlight,
+			HorizontalLine,
+			ImageBlock,
+			ImageCaption,
+			ImageInline,
+			ImageInsert,
+			ImageInsertViaUrl,
+			ImageResize,
+			ImageStyle,
+			ImageTextAlternative,
+			ImageToolbar,
+			ImageUpload,
+			Indent,
+			IndentBlock,
+			Italic,
+			Link,
+			LinkImage,
+			List,
+			ListProperties,
+			MediaEmbed, // Tambahkan MediaEmbed di sini
+			Paragraph,
+			RemoveFormat,
+			SelectAll,
+			SourceEditing,
+			SpecialCharacters,
+			SpecialCharactersArrows,
+			SpecialCharactersCurrency,
+			SpecialCharactersEssentials,
+			SpecialCharactersLatin,
+			SpecialCharactersMathematical,
+			SpecialCharactersText,
+			Strikethrough,
+			Style,
+			Subscript,
+			Superscript,
+			Table,
+			TableCaption,
+			TableCellProperties,
+			TableColumnResize,
+			TableProperties,
+			TableToolbar,
+			TextTransformation,
+			TodoList,
+			Underline,
+			Undo
+		} from 'ckeditor5';
+		
+		const editorConfig = {
+			toolbar: {
+				items: [
+					'undo',
+					'redo',
+					'|',
+					'sourceEditing',
+					'|',
+					'heading',
+					'style',
+					'|',
+					'fontSize',
+					'fontFamily',
+					'fontColor',
+					'fontBackgroundColor',
+					'|',
+					'bold',
+					'italic',
+					'underline',
+					'|',
+					'link',
+					'insertImage',
+					'insertTable',
+					'highlight',
+					'blockQuote',
+					'codeBlock',
+					'|',
+					'alignment',
+					'|',
+					'bulletedList',
+					'numberedList',
+					'todoList',
+					'outdent',
+					'indent'
+				],
+				shouldNotGroupWhenFull: false
+			},
+			plugins: [
+				AccessibilityHelp,
+				Alignment,
+				Autoformat,
+				AutoImage,
+				AutoLink,
+				Autosave,
+				Base64UploadAdapter,
+				BlockQuote,
+				BlockToolbar,
+				Bold,
+				CloudServices,
+				Code,
+				CodeBlock,
+				Essentials,
+				FindAndReplace,
+				FontBackgroundColor,
+				FontColor,
+				FontFamily,
+				FontSize,
+				GeneralHtmlSupport,
+				Heading,
+				Highlight,
+				HorizontalLine,
+				ImageBlock,
+				ImageCaption,
+				ImageInline,
+				ImageInsert,
+				ImageInsertViaUrl,
+				ImageResize,
+				ImageStyle,
+				ImageTextAlternative,
+				ImageToolbar,
+				ImageUpload,
+				Indent,
+				IndentBlock,
+				Italic,
+				Link,
+				LinkImage,
+				List,
+				ListProperties,
+				MediaEmbed, // Pastikan MediaEmbed ada di sini
+				Paragraph,
+				RemoveFormat,
+				SelectAll,
+				SourceEditing,
+				SpecialCharacters,
+				SpecialCharactersArrows,
+				SpecialCharactersCurrency,
+				SpecialCharactersEssentials,
+				SpecialCharactersLatin,
+				SpecialCharactersMathematical,
+				SpecialCharactersText,
+				Strikethrough,
+				Style,
+				Subscript,
+				Superscript,
+				Table,
+				TableCaption,
+				TableCellProperties,
+				TableColumnResize,
+				TableProperties,
+				TableToolbar,
+				TextTransformation,
+				TodoList,
+				Underline,
+				Undo
+			],
+			blockToolbar: [
+				'fontSize',
+				'fontColor',
+				'fontBackgroundColor',
+				'|',
+				'bold',
+				'italic',
+				'|',
+				'link',
+				'insertImage',
+				'insertTable',
+				'|',
+				'bulletedList',
+				'numberedList',
+				'outdent',
+				'indent'
+			],
+			fontFamily: {
+				supportAllValues: true
+			},
+			fontSize: {
+				options: [10, 12, 14, 'default', 18, 20, 22],
+				supportAllValues: true
+			},
+			heading: {
+				options: [
+					{
+						model: 'paragraph',
+						title: 'Paragraph',
+						class: 'ck-heading_paragraph'
+					},
+					{
+						model: 'heading1',
+						view: 'h1',
+						title: 'Heading 1',
+						class: 'ck-heading_heading1'
+					},
+					{
+						model: 'heading2',
+						view: 'h2',
+						title: 'Heading 2',
+						class: 'ck-heading_heading2'
+					},
+					{
+						model: 'heading3',
+						view: 'h3',
+						title: 'Heading 3',
+						class: 'ck-heading_heading3'
+					},
+					{
+						model: 'heading4',
+						view: 'h4',
+						title: 'Heading 4',
+						class: 'ck-heading_heading4'
+					},
+					{
+						model: 'heading5',
+						view: 'h5',
+						title: 'Heading 5',
+						class: 'ck-heading_heading5'
+					},
+					{
+						model: 'heading6',
+						view: 'h6',
+						title: 'Heading 6',
+						class: 'ck-heading_heading6'
+					}
+				]
+			},
+			htmlSupport: {
+				allow: [
+					{
+						name: /^.*$/,
+						styles: true,
+						attributes: true,
+						classes: true
+					}
+				]
+			},
+			image: {
+				toolbar: [
+					'toggleImageCaption',
+					'imageTextAlternative',
+					'|',
+					'imageStyle:inline',
+					'imageStyle:wrapText',
+					'imageStyle:breakText',
+					'|',
+					'resizeImage'
+				]
+			},
+			link: {
+				addTargetToExternalLinks: true,
+				defaultProtocol: 'https://',
+				decorators: {
+					toggleDownloadable: {
+						mode: 'manual',
+						label: 'Dapat diunduh',
+						attributes: {
+							download: 'file'
+						}
+					}
+				}
+			},
+			list: {
+				properties: {
+					styles: true,
+					startIndex: true,
+					reversed: true
+				}
+			},
+			menuBar: {
+				isVisible: true
+			},
+			placeholder: 'Ketik atau paste konten Anda di sini!',
+			style: {
+				definitions: [
+					{
+						name: 'Article category',
+						element: 'h3',
+						classes: ['category']
+					},
+					{
+						name: 'Title',
+						element: 'h2',
+						classes: ['document-title']
+					},
+					{
+						name: 'Subtitle',
+						element: 'h3',
+						classes: ['document-subtitle']
+					},
+					{
+						name: 'Info box',
+						element: 'p',
+						classes: ['info-box']
+					},
+					{
+						name: 'Side quote',
+						element: 'blockquote',
+						classes: ['side-quote']
+					},
+					{
+						name: 'Marker',
+						element: 'span',
+						classes: ['marker']
+					},
+					{
+						name: 'Spoiler',
+						element: 'span',
+						classes: ['spoiler']
+					},
+					{
+						name: 'Code (dark)',
+						element: 'pre',
+						classes: ['fancy-code', 'fancy-code-dark']
+					},
+					{
+						name: 'Code (bright)',
+						element: 'pre',
+						classes: ['fancy-code', 'fancy-code-bright']
+					}
+				]
+			},
+			table: {
+				contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+			}
+		};
+	
+		let debounceTimer;
+	
+		ClassicEditor
+			.create(document.querySelector('#editor'), editorConfig)
+			.then(editor => {
+				// Debounce ketika ada perubahan pada editor
+				editor.model.document.on('change:data', () => {
+					clearTimeout(debounceTimer);
+					debounceTimer = setTimeout(() => {
+						@this.set('description', editor.getData()); // Update Livewire property
+					}, 800); // Debounce selama 800ms
+				});
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	
+	</script>
+
+    {{-- Edit Form Ckeditor5 --}}
+    <script type="module">
+        import {
+					ClassicEditor,
+					AccessibilityHelp,
+					Alignment,
+					Autoformat,
+					AutoImage,
+					AutoLink,
+					Autosave,
+					Base64UploadAdapter,
+					BlockQuote,
+					BlockToolbar,
+					Bold,
+					CloudServices,
+					Code,
+					CodeBlock,
+					Essentials,
+					FindAndReplace,
+					FontBackgroundColor,
+					FontColor,
+					FontFamily,
+					FontSize,
+					GeneralHtmlSupport,
+					Heading,
+					Highlight,
+					HorizontalLine,
+					ImageBlock,
+					ImageCaption,
+					ImageInline,
+					ImageInsert,
+					ImageInsertViaUrl,
+					ImageResize,
+					ImageStyle,
+					ImageTextAlternative,
+					ImageToolbar,
+					ImageUpload,
+					Indent,
+					IndentBlock,
+					Italic,
+					Link,
+					LinkImage,
+					List,
+					ListProperties,
+					MediaEmbed,
+					Paragraph,
+					RemoveFormat,
+					SelectAll,
+					SourceEditing,
+					SpecialCharacters,
+					SpecialCharactersArrows,
+					SpecialCharactersCurrency,
+					SpecialCharactersEssentials,
+					SpecialCharactersLatin,
+					SpecialCharactersMathematical,
+					SpecialCharactersText,
+					Strikethrough,
+					Style,
+					Subscript,
+					Superscript,
+					Table,
+					TableCaption,
+					TableCellProperties,
+					TableColumnResize,
+					TableProperties,
+					TableToolbar,
+					TextTransformation,
+					TodoList,
+					Underline,
+					Undo
+				} from 'ckeditor5';
+				const editorConfig = {
+					toolbar: {
+						items: [
+							'undo',
+							'redo',
+							'|',
+							'sourceEditing',
+							'|',
+							'heading',
+							'style',
+							'|',
+							'fontSize',
+							'fontFamily',
+							'fontColor',
+							'fontBackgroundColor',
+							'|',
+							'bold',
+							'italic',
+							'underline',
+							'|',
+							'link',
+							'insertImage',
+							'insertTable',
+							'highlight',
+							'blockQuote',
+							'codeBlock',
+							'|',
+							'alignment',
+							'|',
+							'bulletedList',
+							'numberedList',
+							'todoList',
+							'outdent',
+							'indent'
+						],
+						shouldNotGroupWhenFull: false
+					},
+					plugins: [
+						AccessibilityHelp,
+						Alignment,
+						Autoformat,
+						AutoImage,
+						AutoLink,
+						Autosave,
+						Base64UploadAdapter,
+						BlockQuote,
+						BlockToolbar,
+						Bold,
+						CloudServices,
+						Code,
+						CodeBlock,
+						Essentials,
+						FindAndReplace,
+						FontBackgroundColor,
+						FontColor,
+						FontFamily,
+						FontSize,
+						GeneralHtmlSupport,
+						Heading,
+						Highlight,
+						HorizontalLine,
+						ImageBlock,
+						ImageCaption,
+						ImageInline,
+						ImageInsert,
+						ImageInsertViaUrl,
+						ImageResize,
+						ImageStyle,
+						ImageTextAlternative,
+						ImageToolbar,
+						ImageUpload,
+						Indent,
+						IndentBlock,
+						Italic,
+						Link,
+						LinkImage,
+						List,
+						ListProperties,
+						MediaEmbed,
+						Paragraph,
+						RemoveFormat,
+						SelectAll,
+						SourceEditing,
+						SpecialCharacters,
+						SpecialCharactersArrows,
+						SpecialCharactersCurrency,
+						SpecialCharactersEssentials,
+						SpecialCharactersLatin,
+						SpecialCharactersMathematical,
+						SpecialCharactersText,
+						Strikethrough,
+						Style,
+						Subscript,
+						Superscript,
+						Table,
+						TableCaption,
+						TableCellProperties,
+						TableColumnResize,
+						TableProperties,
+						TableToolbar,
+						TextTransformation,
+						TodoList,
+						Underline,
+						Undo
+					],
+					blockToolbar: [
+						'fontSize',
+						'fontColor',
+						'fontBackgroundColor',
+						'|',
+						'bold',
+						'italic',
+						'|',
+						'link',
+						'insertImage',
+						'insertTable',
+						'|',
+						'bulletedList',
+						'numberedList',
+						'outdent',
+						'indent'
+					],
+					fontFamily: {
+						supportAllValues: true
+					},
+					fontSize: {
+						options: [10, 12, 14, 'default', 18, 20, 22],
+						supportAllValues: true
+					},
+					heading: {
+						options: [
+							{
+								model: 'paragraph',
+								title: 'Paragraph',
+								class: 'ck-heading_paragraph'
+							},
+							{
+								model: 'heading1',
+								view: 'h1',
+								title: 'Heading 1',
+								class: 'ck-heading_heading1'
+							},
+							{
+								model: 'heading2',
+								view: 'h2',
+								title: 'Heading 2',
+								class: 'ck-heading_heading2'
+							},
+							{
+								model: 'heading3',
+								view: 'h3',
+								title: 'Heading 3',
+								class: 'ck-heading_heading3'
+							},
+							{
+								model: 'heading4',
+								view: 'h4',
+								title: 'Heading 4',
+								class: 'ck-heading_heading4'
+							},
+							{
+								model: 'heading5',
+								view: 'h5',
+								title: 'Heading 5',
+								class: 'ck-heading_heading5'
+							},
+							{
+								model: 'heading6',
+								view: 'h6',
+								title: 'Heading 6',
+								class: 'ck-heading_heading6'
+							}
+						]
+					},
+					htmlSupport: {
+						allow: [
+							{
+								name: /^.*$/,
+								styles: true,
+								attributes: true,
+								classes: true
+							}
+						]
+					},
+					image: {
+						toolbar: [
+							'toggleImageCaption',
+							'imageTextAlternative',
+							'|',
+							'imageStyle:inline',
+							'imageStyle:wrapText',
+							'imageStyle:breakText',
+							'|',
+							'resizeImage'
+						]
+					},
+					
+					link: {
+						addTargetToExternalLinks: true,
+						defaultProtocol: 'https://',
+						decorators: {
+							toggleDownloadable: {
+								mode: 'manual',
+								label: 'Downloadable',
+								attributes: {
+									download: 'file'
+								}
+							}
+						}
+					},
+					list: {
+						properties: {
+							styles: true,
+							startIndex: true,
+							reversed: true
+						}
+					},
+					menuBar: {
+						isVisible: true
+					},
+					placeholder: 'Ketik atau paste konten Anda di sini!',
+					style: {
+						definitions: [
+							{
+								name: 'Article category',
+								element: 'h3',
+								classes: ['category']
+							},
+							{
+								name: 'Title',
+								element: 'h2',
+								classes: ['document-title']
+							},
+							{
+								name: 'Subtitle',
+								element: 'h3',
+								classes: ['document-subtitle']
+							},
+							{
+								name: 'Info box',
+								element: 'p',
+								classes: ['info-box']
+							},
+							{
+								name: 'Side quote',
+								element: 'blockquote',
+								classes: ['side-quote']
+							},
+							{
+								name: 'Marker',
+								element: 'span',
+								classes: ['marker']
+							},
+							{
+								name: 'Spoiler',
+								element: 'span',
+								classes: ['spoiler']
+							},
+							{
+								name: 'Code (dark)',
+								element: 'pre',
+								classes: ['fancy-code', 'fancy-code-dark']
+							},
+							{
+								name: 'Code (bright)',
+								element: 'pre',
+								classes: ['fancy-code', 'fancy-code-bright']
+							}
+						]
+					},
+					table: {
+						contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+					}
+				};
+				$(document).ready(function () {
+                let debounceTimer;
+
+                // Inisialisasi CKEditor
+                ClassicEditor
+                    .create(document.querySelector('#editorEdit'), editorConfig)
+                    .then(editor => {
+                        // Debounce ketika ada perubahan pada editor
+                        editor.model.document.on('change:data', () => {
+                            // Reset debounceTimer setiap kali ada perubahan
+                            clearTimeout(debounceTimer);
+                            
+                            debounceTimer = setTimeout(() => {
+                                const data = editor.getData();
+                                @this.set('aboutDescription', data); // Update Livewire property
+                            }, 600); // 600ms debounce
+                        });
+
+                        // Pastikan data awal dimuat saat modal dibuka
+                        $('#editAboutModal').on('show.bs.modal', function () {
+                            setTimeout(() => {
+                                if (editor) {
+                                    editor.setData(@this.aboutDescription); // Memuat data dari Livewire
+                                }
+                            }, 300); // Tunggu beberapa milidetik agar modal terbuka sepenuhnya
+                        });
+
+                    })
+                    .catch(error => {
+                        console.error('Error initializing CKEditor:', error);
+                    });
+        });
+
+    </script>
 
     {{-- Add Modal Form --}}
     <script>
@@ -285,6 +1035,7 @@
         })
 
     </script>
+
     {{-- Sweet alert,aboutUpdated success --}}
     <script>
         $(document).ready(function () {
