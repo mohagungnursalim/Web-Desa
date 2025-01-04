@@ -95,12 +95,16 @@ Route::get('/', function () {
     return view('frontend.home');
 });
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/layanan-kami', function () {
+    return view('frontend.layanan');
+});
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
+
+// Route::view('profile', 'profile')
+//     ->middleware(['auth'])
+//     ->name('profile');
 
 require __DIR__.'/auth.php';

@@ -1,61 +1,7 @@
 <div class="py-4">
     @push('styles')
   
-    <style>
-        /* Gaya untuk blok kode */
-        pre {
-            background-color: #353434;
-            /* Background gelap */
-            color: #f8f8f2;
-            /* Warna teks */
-            padding: 15px;
-            border-radius: 20px;
-            overflow-x: auto;
-            /* Scroll horizontal jika teks terlalu panjang */
-            font-family: 'Courier New', Courier, monospace;
-            /* Font monospaced */
-            font-size: 14px;
-            position: relative;
-        }
-    </style>
-
-    {{-- Img Style Konten --}}
-    <style>
-        .post-content img {
-                max-width: 100%;
-                height: auto;
-            }
-            .image_resized {
-            display: block; 
-            margin-left: auto;
-            margin-right: auto; 
-        }
-        .image-style-block-align-left{
-            float: left;
-        }
-        .image-style-block-align-right {
-            float: right; 
-        }
-       
-        figure.image {
-            text-align: center; 
-        }
-    </style>
-    <style>
-        /* CSS untuk highlight */
-        .marker-yellow {
-            background-color: #fdfd77;
-        }
-        .marker-green {
-            background-color: #63f963;
-        }
-        .marker-pink {
-            background-color: #fc92c4;
-        }
-        .marker-blue {
-            background-color: #9ecbff;
-        }
-    </style>
+  
     @endpush
     <div class="container-fluid col-md">
         <div class="card" style="border-radius: 25px;">

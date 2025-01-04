@@ -46,8 +46,8 @@
           </li>
      
           <li>
-            <a href="/layanan-kami"
-               class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Layanan</a>
+            <a wire:navigate href="/layanan-kami"
+               class="block py-2 px-3 {{ Request::is('layanan-kami*') ? 'text-gray-700' : 'text-white' }} rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Layanan</a>
           </li>
           <li>
             <a href="/berita"

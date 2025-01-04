@@ -5,7 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Welcome Page')</title>
-    @vite(['resources/css/app.css', 'resources/js/app2.js'])
+    <script type="importmap">
+        {
+                "imports": {
+                    "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",
+                    "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"
+                }
+            }
+    </script>
+    @vite([
+    'resources/css/app2.css', 
+    'resources/js/app2.js',
+    'resources/css/style2.css',
+    ])
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />

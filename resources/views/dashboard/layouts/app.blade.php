@@ -48,6 +48,7 @@
         }
 </script>
 @vite([
+    'resources/css/style.css',
     'resources/css/placeholder-image.css',
     'resources/css/placeholder-image-product.css',
     'resources/css/placeholder-image-project.css',

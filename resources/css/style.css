@@ -1,29 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
-@media print {
-	body {
-		margin: 0 !important;
-	}
+/* Gaya untuk blok kode */
+pre {
+    background-color: #353434;
+    /* Background gelap */
+    color: #f8f8f2;
+    /* Warna teks */
+    padding: 15px;
+    border-radius: 20px;
+    overflow-x: auto;
+    /* Scroll horizontal jika teks terlalu panjang */
+    font-family: 'Courier New', Courier, monospace;
+    /* Font monospaced */
+    font-size: 14px;
+    position: relative;
 }
 
-.main-container {
-	font-family: 'Lato';
-	width: fit-content;
-	margin-left: auto;
-	margin-right: auto;
+
+
+
+.post-content img {
+        max-width: 100%;
+        height: auto;
+    }
+    .image_resized {
+    display: block; 
+    margin-left: auto;
+    margin-right: auto; 
+}
+.image-style-block-align-left{
+    float: left;
+}
+.image-style-block-align-right {
+    float: right; 
 }
 
-.ck-content {
-	font-family: 'Lato';
-	line-height: 1.6;
-	word-break: break-word;
+figure.image {
+    text-align: center; 
 }
 
-.editor-container_classic-editor .editor-container__editor {
-	min-width: 795px;
-	max-width: 795px;
-}
 
-.editor-container_include-block-toolbar {
-	margin-left: 42px;
+/* CSS untuk highlight */
+.marker-yellow {
+    background-color: #fdfd77;
+}
+.marker-green {
+    background-color: #63f963;
+}
+.marker-pink {
+    background-color: #fc92c4;
+}
+.marker-blue {
+    background-color: #9ecbff;
 }
