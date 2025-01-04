@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Livewire\Dashboard\Products\ProductEdit;
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
 use function Pest\Laravel\json;
@@ -21,17 +22,20 @@ Route::get('/dashboard/aduan-masyarakat', function () {
     return view('dashboard.aduans.index');
 })->middleware('auth')->name('dashboard.aduan');
 
-Route::get('/dashboard/pengaturan', function () {
-    return view('dashboard.settings.index');
-})->middleware('auth')->name('dashboard.pengaturan');
 
-Route::get('/dashboard/profil-kami', function () {
-    return view('dashboard.about.index');
-})->middleware('auth')->name('dashboard.profil-kami');
-
-Route::get('/dashboard/kelola-akun', function () {
-    return view('dashboard.users.index');
-})->middleware('auth')->name('dashboard.kelola-akun');
+Route::middleware(RoleMiddleware::class . ':admin')->group(function () {
+    Route::get('/dashboard/pengaturan', function () {
+        return view('dashboard.settings.index');
+    })->middleware('auth')->name('dashboard.pengaturan');
+    
+    Route::get('/dashboard/profil-kami', function () {
+        return view('dashboard.about.index');
+    })->middleware('auth')->name('dashboard.profil-kami');
+    
+    Route::get('/dashboard/kelola-akun', function () {
+        return view('dashboard.users.index');
+    })->middleware('auth')->name('dashboard.kelola-akun');
+});
 
 Route::get('/dashboard/proyek', function () {
     return view('dashboard.projects.index');

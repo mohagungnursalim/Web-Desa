@@ -6,9 +6,9 @@
             <div class="card-body">
                 <!-- Tombol untuk membuka modal -->
                 <button style="border-radius: 10px;" id="openModalBtn"
-                    class="btn btn-primary mb-4 d-block d-md-inline-block">Tambah Akun</button>
-
-
+                    class="btn btn-primary mb-4 d-block d-md-inline-block">Tambah Akun
+                </button>
+               
                 <!-- Input untuk mencari tag -->
                 <div class="mb-2">
                     <input style="border-radius: 10px;" type="text" wire:model.live.debounce.500ms="search"
@@ -31,8 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-
-
+                        
                         @forelse ($users as $index => $user)
                         <tr>
                             <td>{{ $index + 1 }}</td>

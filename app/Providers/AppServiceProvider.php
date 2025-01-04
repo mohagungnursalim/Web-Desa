@@ -6,6 +6,7 @@ use App\Models\About;
 use App\Models\Link;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -64,7 +65,15 @@ class AppServiceProvider extends ServiceProvider
         // Bagikan instagram ke semua view
         View::share('instagram', $instagram);
         
-
+        
+        Gate::define('role', function ($user, $role) { // $role = 'role user'
+            return $user->hasRole($role); 
+        });
+    
+        // izin tambahan
+        // Gate::define('manage-users', function ($user) { // $role = 'admin'
+        //     return $user->hasRole('admin'); 
+        // });
    
     }
 }

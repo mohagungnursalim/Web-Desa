@@ -136,16 +136,19 @@
                                 <p class="{{ Request::is('dashboard/profil') ? 'text-warning' : '' }}">Ubah Profil</p>
                             </a>
                         </li>
-
+                        @can('role','admin')
                         <li class="nav-item">
                             <a wire:navigate href="/dashboard/kelola-akun" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i> <i class="bi bi-people-fill"></i>
                                 <p class="{{ Request::is('dashboard/kelola-akun') ? 'text-warning' : '' }}">Kelola Akun</p>
                             </a>
                         </li>
+                        @endcan
+                        
                     </ul>
                 </li>
-
+                
+                @can('role','admin')
                 <li class="nav-item {{ Request::is('dashboard/pengaturan') || Request::is('dashboard/profil-kami') || Request::is('dashboard/profil-kami') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ Request::is('dashboard/pengaturan') || Request::is('dashboard/profil-kami') ? 'active' : '' }}">
                         <i class="bi bi-gear"></i>
@@ -167,6 +170,7 @@
                         </li>
                     </ul>
                 </li>
+                @endcan
                 
 
 
