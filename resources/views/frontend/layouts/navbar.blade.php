@@ -46,8 +46,20 @@
           </li>
      
           <li>
-            <a href="#"
+            <a href="/layanan-kami"
                class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Layanan</a>
+          </li>
+          <li>
+            <a href="/berita"
+               class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Berita</a>
+          </li>
+          <li>
+            <a href="/produk"
+               class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Produk</a>
+          </li>
+          <li>
+            <a href="/proyek"
+               class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Proyek</a>
           </li>
           <li>
             <a href="#"
