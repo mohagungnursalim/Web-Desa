@@ -149,8 +149,8 @@
                 </li>
                 
                 @can('role','admin')
-                <li class="nav-item {{ Request::is('dashboard/pengaturan') || Request::is('dashboard/profil-kami') || Request::is('dashboard/profil-kami') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Request::is('dashboard/pengaturan') || Request::is('dashboard/profil-kami') ? 'active' : '' }}">
+                <li class="nav-item {{ Request::is('dashboard/pengaturan') || Request::is('dashboard/profil-kami') || Request::is('dashboard/layanan-kami') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('dashboard/pengaturan') || Request::is('dashboard/profil-kami') || Request::is('dashboard/layanan-kami') ? 'active' : '' }}">
                         <i class="bi bi-gear"></i>
                         <p>
                             Aplikasi
@@ -166,6 +166,10 @@
                             <a wire:navigate href="/dashboard/profil-kami" class="nav-link">
                                 <i class="bi bi-arrow-return-right"></i> <i class="bi bi-window-stack"></i>
                                 <p class="{{ Request::is('dashboard/profil-kami') ? 'text-warning' : '' }}">Profil Kami</p>
+                            </a>
+                            <a wire:navigate href="/dashboard/layanan-kami" class="nav-link">
+                                <i class="bi bi-arrow-return-right"></i> <i class="bi bi-window-stack"></i>
+                                <p class="{{ Request::is('dashboard/layanan-kami') ? 'text-warning' : '' }}">Layanan Kami</p>
                             </a>
                         </li>
                     </ul>

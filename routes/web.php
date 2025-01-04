@@ -32,6 +32,10 @@ Route::middleware(RoleMiddleware::class . ':admin')->group(function () {
         return view('dashboard.about.index');
     })->middleware('auth')->name('dashboard.profil-kami');
     
+    Route::get('/dashboard/layanan-kami', function () {
+        return view('dashboard.layanan.index');
+    })->middleware('auth')->name('dashboard.layanan-kami');
+
     Route::get('/dashboard/kelola-akun', function () {
         return view('dashboard.users.index');
     })->middleware('auth')->name('dashboard.kelola-akun');
