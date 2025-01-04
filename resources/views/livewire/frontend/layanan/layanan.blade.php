@@ -16,7 +16,7 @@
                                         role="tab" 
                                         aria-controls="content-{{ $index }}" 
                                         aria-selected="{{ $loop->first ? 'true' : 'false' }}" 
-                                        class="inline-block p-4 {{ $loop->first ? 'text-blue-600 bg-white' : 'text-gray-500' }} rounded-ss-lg hover:bg-gray-100">
+                                        class="inline-block p-4 {{ $loop->first ? 'text-blue-600' : 'text-gray-500' }} rounded-ss-lg hover:bg-gray-700">
                                     {{ $layanan->title }}
                                 </button>
                             </li>
@@ -24,7 +24,7 @@
                     </ul>
                     <div id="defaultTabContent">
                         @foreach ($layanans as $index => $layanan)
-                            <div class="{{ $loop->first ? '' : 'hidden' }} p-4 bg-white rounded-lg md:p-8" 
+                            <div class="{{ $loop->first ? '' : 'hidden' }} p-4 rounded-lg md:p-8" 
                                  id="content-{{ $index }}" 
                                  role="tabpanel" 
                                  aria-labelledby="tab-{{ $index }}">
