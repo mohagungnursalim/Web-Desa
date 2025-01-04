@@ -158,7 +158,7 @@
                 <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
                     <form wire:submit.prevent="update">
                         <div class="form-group">
-                            <label for="aboutTitle">Nama Kategori</label>
+                            <label for="aboutTitle">Judul</label>
                             <input type="text" class="form-control" id="aboutTitle" wire:model="aboutTitle">
                             @error('aboutTitle') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
