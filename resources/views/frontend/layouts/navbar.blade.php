@@ -28,7 +28,7 @@
           <!-- Dropdown Profil -->
           <li class="relative">
             <button id="dropdownButton" type="button"
-               class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 flex items-center focus:outline-none">
+               class="block py-2 px-3 {{ Request::is('profil*') ? 'text-gray-700' : 'text-white' }} rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 flex items-center focus:outline-none">
               Profil
               <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
@@ -37,7 +37,7 @@
             <!-- Dropdown -->
             <div id="dropdownMenu" class="absolute hidden mt-2 bg-gray-500 border border-gray-200 rounded-lg shadow-lg">
                   @foreach ($globalAbouts as $about)
-                  <a href="/profil/{{ $about->slug }}" class="block px-8 text-white py-1 text-gray-700 bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
+                  <a wire:navigate href="/profil/{{ $about->slug }}" class="block px-8 {{ Request::is('profil/' . $about->slug) ? 'text-gray-700' : 'text-white' }} py-1 md:hover:text-white bg-gray-500 hover:bg-gray-700 rounded-lg whitespace-nowrap min-w-[10rem]">
                   {{ $about->title }}
                   </a>    
                   @endforeach

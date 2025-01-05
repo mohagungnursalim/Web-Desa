@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\PostController;
@@ -98,6 +99,9 @@ Route::get('/', function () {
 Route::get('/layanan-kami', function () {
     return view('frontend.layanan');
 });
+
+// Route detail
+Route::get('/profil/{slug}', [AboutController::class, 'show'])->name('frontend.profil.show');
 
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
