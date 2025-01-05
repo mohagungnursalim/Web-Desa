@@ -1,41 +1,33 @@
-<div> 
+<div>
     <main class="pt-24 pb-16 lg:pb-24 bg-white antialiased min-h-screen">
         <div class="flex justify-center px-4 mx-auto max-w-screen-xl">
             <div class="w-full max-w-4xl p-6 bg-white border border-gray-200 rounded-lg shadow-md">
                 <h5 class="text-xl font-bold leading-none text-gray-900 mb-3">
                     Layanan Kami
                 </h5>
-                <div class="w-full bg-white border border-gray-200 rounded-lg shadow">
-                    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50" 
-                        id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">
-                        @foreach ($layanans as $index => $layanan)
-                            <li class="me-2">
-                                <button id="tab-{{ $index }}" 
-                                        data-tabs-target="#content-{{ $index }}" 
-                                        type="button" 
-                                        role="tab" 
-                                        aria-controls="content-{{ $index }}" 
-                                        aria-selected="{{ $loop->first ? 'true' : 'false' }}" 
-                                        class="inline-block p-4 {{ $loop->first ? 'text-blue-600' : 'text-gray-500' }} rounded-ss-lg hover:bg-gray-700">
-                                    {{ $layanan->title }}
-                                </button>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <div id="defaultTabContent" style="max-height: 75vh; overflow-y: auto;">
-                        @foreach ($layanans as $index => $layanan)
-                            <div class="{{ $loop->first ? '' : 'hidden' }} p-4 rounded-lg md:p-8" 
-                                 id="content-{{ $index }}" 
-                                 role="tabpanel" 
-                                 aria-labelledby="tab-{{ $index }}">
-                                <p class="text-gray-700">
-                                    <div class="ck-content">
-                                        {!! $layanan->description !!}
-                                    </div>
-                                </p>
-                            </div>
-                        @endforeach
+
+                <div id="accordion-collapse" data-accordion="collapse">
+                    @foreach ($layanans as $index => $layanan)
+                    <h2 id="accordion-collapse-heading-{{ $index + 1 }}">
+                        <button type="button"
+                            class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 gap-3"
+                            data-accordion-target="#accordion-collapse-body-{{ $index + 1 }}" aria-expanded="false"
+                            aria-controls="accordion-collapse-body-{{ $index + 1 }}">
+                            <span>{{ $layanan->title }}</span>
+                            <svg data-accordion-icon class="w-3 h-3 transition-transform rotate-0 shrink-0"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M9 5 5 1 1 5" />
+                            </svg>
+                        </button>
+                    </h2>
+                    <div style="max-height: 75vh; overflow-y: auto;" id="accordion-collapse-body-{{ $index + 1 }}" class="hidden"
+                        aria-labelledby="accordion-collapse-heading-{{ $index + 1 }}">
+                        <div class="p-5 border border-b-0 border-gray-200 ck-content bg-white text-gray-700">
+                            {!! $layanan->description !!}
+                        </div>
                     </div>
+                    @endforeach
                 </div>
             </div>
         </div>
