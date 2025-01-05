@@ -22,7 +22,7 @@
                             </li>
                         @endforeach
                     </ul>
-                    <div id="defaultTabContent">
+                    <div id="defaultTabContent" style="max-height: 75vh; overflow-y: auto;">
                         @foreach ($layanans as $index => $layanan)
                             <div class="{{ $loop->first ? '' : 'hidden' }} p-4 rounded-lg md:p-8" 
                                  id="content-{{ $index }}" 
