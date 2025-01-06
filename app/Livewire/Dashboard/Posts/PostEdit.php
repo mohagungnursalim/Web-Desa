@@ -59,6 +59,7 @@ class PostEdit extends Component
 
     // validation
     protected $rules = [
+        'image' => 'required|image|max:5120',
         'title' => 'required|max:150',
         'selectedCategory' => 'required|array',
         'selectedTag' => 'required|array',

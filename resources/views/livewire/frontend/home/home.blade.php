@@ -28,11 +28,11 @@
                     {{ \App\Models\Setting::getSetting('jumbotronDescription', 'Jumbotron Description') }}
                 </p>
                 <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-                    <a href="/layanan"
+                    <a wire:navigate href="/layanan-kami"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
                         Layanan <i class="bi bi-cart3 ml-1"></i>
                     </a>
-                    <a href="/postingan"
+                    <a href="/berita"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
                         Berita <i class="bi bi-newspaper ml-1"></i>
                     </a>
@@ -40,11 +40,11 @@
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
                         Produk <i class="bi bi-cart3 ml-1"></i>
                     </a>
-                    <a href="/produk"
+                    <a href="/proyek"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
                         Proyek <i class="bi bi-cart3 ml-1"></i>
                     </a>
-                    <a href="/aduan-masyarakat"
+                    <a href="/aduan"
                         class="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
                         Aduan Masyarakat <i class="bi bi-envelope-arrow-up-fill ml-1"></i>
                     </a>
