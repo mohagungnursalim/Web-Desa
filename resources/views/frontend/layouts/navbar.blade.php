@@ -50,15 +50,15 @@
                class="block py-2 px-3 {{ Request::is('layanan-kami*') ? 'text-gray-700' : 'text-white' }} rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Layanan</a>
           </li>
           <li>
-            <a href="/berita"
-               class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Berita</a>
+            <a wire:navigate href="/berita"
+               class="block py-2 px-3 {{ Request::is('berita*') ? 'text-gray-700' : 'text-white' }} rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Berita</a>
           </li>
           <li>
-            <a href="/produk"
+            <a wire:navigate href="/produk"
                class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Produk</a>
           </li>
           <li>
-            <a href="/proyek"
+            <a wire:navigate href="/proyek"
                class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Proyek</a>
           </li>
           <li>

@@ -103,6 +103,10 @@ Route::get('/layanan-kami', function () {
 // Route detail
 Route::get('/profil/{slug}', [AboutController::class, 'show'])->name('frontend.profil.show');
 
+// Route untuk menampilkan postingan berita
+Route::get('/berita', function () {
+    return view('frontend.berita');
+});
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
 //     ->name('dashboard');

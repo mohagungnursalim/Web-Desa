@@ -59,8 +59,8 @@ class PostEdit extends Component
 
     // validation
     protected $rules = [
-        'image' => 'required|image|max:5120',
-        'title' => 'required|max:150',
+        'image' => 'nullable|image|max:5120',
+        'title' => 'required|max:180',
         'selectedCategory' => 'required|array',
         'selectedTag' => 'required|array',
         'description' => 'required',
@@ -106,7 +106,7 @@ class PostEdit extends Component
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
-            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'excerpt' => Str::limit(strip_tags($this->description), 80, '...'),
             'published_at' => null,
             'status' => 'draft' // Tetapkan sebagai draft saat disimpan
         ]);
@@ -159,7 +159,7 @@ class PostEdit extends Component
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
-            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'excerpt' => Str::limit(strip_tags($this->description), 80, '...'),
             'published_at' => now(), // Set published_at ke waktu saat ini
             'status' => 'published' // Ubah status menjadi published
         ]);
@@ -205,7 +205,7 @@ class PostEdit extends Component
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
-            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'excerpt' => Str::limit(strip_tags($this->description), 80, '...'),
             'published_at' => $this->published_at, // Tampilkan tanggal publish sebelumnya
             'status' => 'archived' // Ubah status menjadi archived
         ]);

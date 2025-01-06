@@ -31,7 +31,7 @@ class FormPost extends Component
     // validation
     protected $rules = [
         'image' => 'required|image|max:5120',
-        'title' => 'required|max:150',
+        'title' => 'required|max:180',
         'post_category' => 'required|array',
         'post_tag' => 'required|array',
         'description' => 'required',
@@ -73,7 +73,7 @@ class FormPost extends Component
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
-            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'excerpt' => Str::limit(strip_tags($this->description), 80, '...'),
             'status' => 'draft', // Set status sebagai draft
             'published_at' => null // Tidak ada tanggal publikasi
         ]);
@@ -109,7 +109,7 @@ class FormPost extends Component
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
-            'excerpt' => Str::limit(strip_tags($this->description), 50, '...'),
+            'excerpt' => Str::limit(strip_tags($this->description), 80, '...'),
             'status' => 'published', // Set status sebagai published
             'published_at' => now() // Tanggal publikasi saat ini
         ]);
