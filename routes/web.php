@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\PostController;
@@ -103,10 +104,16 @@ Route::get('/layanan-kami', function () {
 // Route detail
 Route::get('/profil/{slug}', [AboutController::class, 'show'])->name('frontend.profil.show');
 
+
 // Route untuk menampilkan postingan berita
 Route::get('/berita', function () {
     return view('frontend.berita');
 });
+
+// Route detail
+Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('frontend.berita.show');
+
+
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
 //     ->name('dashboard');

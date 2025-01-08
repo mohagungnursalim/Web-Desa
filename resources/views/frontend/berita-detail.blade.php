@@ -9,14 +9,14 @@
 @endpush
 
 @section('title')
-Layanan | {{ $appName }}
+Berita | {{ $post->title }}
 @endsection
 
 @section('content')
 <section class="content pt-10 lg:pt-10">
     <div>
         {{-- Livewire Component --}}
-        @livewire('frontend.layanan.layanan')
+        @livewire('frontend.berita.berita-detail', ['slug' => $post->slug])
     </div>
 </section>
 @endsection

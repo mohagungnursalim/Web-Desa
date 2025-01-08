@@ -79,8 +79,8 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ url('blog/' . $post->slug) }}">
-                                        {{ url('blog/' . $post->slug) }}
+                                    <a href="{{ url('berita/' . $post->slug) }}">
+                                        {{ url('berita/' . $post->slug) }}
                                     </a>
                                 </td>
                                 <td>

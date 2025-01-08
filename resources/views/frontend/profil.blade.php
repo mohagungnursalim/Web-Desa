@@ -9,7 +9,7 @@
 @endpush
 
 @section('title')
-Profil |
+Profil |  {{ $profil->title }}
 @endsection
 
 @section('content')

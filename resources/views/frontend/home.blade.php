@@ -7,7 +7,7 @@
 @endpush
 
 @section('title')
-Home |
+Home | {{ $appName }}
 @endsection
 
 @section('content')
