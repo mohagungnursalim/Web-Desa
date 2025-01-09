@@ -28,7 +28,7 @@
     <!-- Content Posts -->
     <div wire:init="loadInitialPosts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
         @forelse ($posts as $index => $post)
-        <div class="bg-white border border-gray-200 rounded-lg shadow">
+        <div class="bg-white border border-gray-200 rounded-lg shadow transition-transform transform hover:scale-105">
             <a href="/berita/{{ $post->slug }}">
                 <div class="lazy-placeholder-posts rounded-lg " x-data="{ imageSrc: null }"
                     x-init="setTimeout(() => { imageSrc = $el.querySelector('img').dataset.src }, 500)">
