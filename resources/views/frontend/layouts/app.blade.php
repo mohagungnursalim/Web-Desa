@@ -83,20 +83,19 @@
 
     {{-- Scroll to Top Button --}}
     <script>
-        // Show or hide the scroll-to-top button based on scroll position
-        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-        window.addEventListener('scroll', () => {
+        // Declare the scroll logic function globally
+        function handleScrollToTopVisibility() {
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
             if (window.scrollY > 200) {
                 scrollToTopBtn.style.display = 'block';
                 scrollToTopBtn.style.opacity = '1';
             } else {
                 scrollToTopBtn.style.opacity = '0';
-
                 scrollToTopBtn.style.display = 'none';
 
             }
-        });
-
+        }
+    
         // Scroll to top function
         function scrollToTop() {
             window.scrollTo({
@@ -104,7 +103,17 @@
                 behavior: 'smooth'
             });
         }
-
+    
+        // Attach scroll event and Livewire navigated event
+        document.addEventListener('DOMContentLoaded', () => {
+            // Attach the scroll listener on page load
+            window.addEventListener('scroll', handleScrollToTopVisibility);
+    
+            // Reattach the scroll listener after Livewire navigates
+            document.addEventListener('livewire:navigated', () => {
+                window.addEventListener('scroll', handleScrollToTopVisibility);
+            });
+        });
     </script>
 
     @stack('scripts')
