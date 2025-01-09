@@ -12,7 +12,7 @@ class BeritaDetail extends Component
 
     public function mount($slug)
     {
-        $post = Post::without(['user', 'categories', 'tags'])->where('slug', $slug)->first();
+        $post = Post::without(['user', 'categories', 'tags'])->where('status', 'published')->where('slug', $slug)->first();
 
         if (!$post) {
             abort(404);

@@ -34,7 +34,7 @@ class Berita extends Component
     public function loadInitialPosts()
     {
         // Query untuk mencari post berdasarkan judul, excerpt, kategori, atau tag
-        $query = Post::where(function ($query) {
+        $query = Post::where('status', 'published')->where(function ($query) {
             $query->where('title', 'like', "%{$this->search}%")
                 ->orWhere('excerpt', 'like', "%{$this->search}%")
                 ->orWhereHas('categories', function ($q) {
