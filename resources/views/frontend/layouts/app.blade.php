@@ -14,7 +14,7 @@
             }
     </script>
     @vite([
-    'resources/css/app2.css', 
+    'resources/css/app2.css',
     'resources/js/app2.js',
     'resources/css/style2.css',
     'resources/css/frontend/placeholder-image-posts.css',
@@ -24,11 +24,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
     <style>
         .progress-bar {
-            height: 5px !important; /* Sesuaikan dengan nilai yang diinginkan */
+            height: 5px !important;
+            /* Sesuaikan dengan nilai yang diinginkan */
         }
+
         .spinner {
             display: none !important;
         }
+
     </style>
     @stack('styles')
 </head>
@@ -38,9 +41,20 @@
     @include('frontend.layouts.navbar')
 
     <!-- Main Content -->
-    
-        @yield('content')
 
+    @yield('content')
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" type="button"
+        class="flex mb-2 items-center justify-center text-white bg-gray-700 rounded-full w-14 h-14 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 focus:outline-none transition-opacity opacity-0 fixed bottom-20 right-6"
+        style="display: none; z-index: 9999;" onclick="scrollToTop()" data-tooltip-target="tooltip-scroll">
+        <i class="bi bi-arrow-up-circle text-4xl"></i>
+        <span class="sr-only">Scroll to top</span>
+    </button>
+    <div id="tooltip-scroll" role="tooltip"
+        class="absolute z-50 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+        Scroll to Top
+        <div class="tooltip-arrow" data-popper-arrow></div>
+    </div>
 
     <!-- Footer -->
     @include('frontend.layouts.footer')
@@ -66,6 +80,33 @@
         });
 
     </script>
+
+    {{-- Scroll to Top Button --}}
+    <script>
+        // Show or hide the scroll-to-top button based on scroll position
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                scrollToTopBtn.style.display = 'block';
+                scrollToTopBtn.style.opacity = '1';
+            } else {
+                scrollToTopBtn.style.opacity = '0';
+
+                scrollToTopBtn.style.display = 'none';
+
+            }
+        });
+
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+    </script>
+
     @stack('scripts')
 </body>
 
