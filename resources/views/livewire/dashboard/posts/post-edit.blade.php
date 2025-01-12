@@ -63,7 +63,16 @@
 						<div class="d-flex flex-wrap">
 							<div class="p-2">
 								<img src="{{ asset('storage/' . $existingImage) }}" alt="Gambar Postingan"
-									class="img-fluid img-thumbnail" width="100px">
+									class="img-fluid img-thumbnail" width="450px">
+									@if ($image && $image->temporaryUrl())
+										
+									@else							
+									<div class="form-group input-group-sm">
+										<textarea class="form-control" id="source" wire:model.defer="source" 
+											placeholder="Masukan sumber gambar/keterangan (Opsional)"></textarea>
+										@error('source') <span class="text-danger error">{{ $message }}</span> @enderror
+									</div>
+									@endif
 							</div>
 						</div>
 						@else
@@ -76,7 +85,12 @@
 							<p>Preview Gambar Baru:</p>
 							<div class="p-2">
 								<img src="{{ $image->temporaryUrl() }}" alt="Preview Gambar"
-									class="img-fluid img-thumbnail" width="100px">
+									class="img-fluid img-thumbnail" width="450px">
+									<div class="form-group input-group-sm">
+										<textarea class="form-control" id="source" wire:model.defer="source" 
+											placeholder="Masukan sumber gambar/keterangan (Opsional)"></textarea>
+										@error('source') <span class="text-danger error">{{ $message }}</span> @enderror
+									</div>
 							</div>
 						</div>
 						@endif

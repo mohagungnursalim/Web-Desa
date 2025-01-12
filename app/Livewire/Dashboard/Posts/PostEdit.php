@@ -14,7 +14,7 @@ class PostEdit extends Component
 {
     use WithFileUploads;
 
-    public $title, $categories = [], $post_category = [], $tags = [], $post_tag = [], $slug, $description, $excerpt, $user_id, $image, $status, $published_at;
+    public $title, $categories = [], $post_category = [], $tags = [], $post_tag = [], $slug, $description, $excerpt, $user_id, $image, $source , $status, $published_at;
     public $selectedCategory = [], $selectedTag = [];
     public $existingImage; //image lama
 
@@ -27,6 +27,7 @@ class PostEdit extends Component
 
         $this->existingImage = $post->image;
         $this->title = $post->title;
+        $this->source = $post->source;
 
         // Memastikan categories adalah koleksi Eloquent sebelum pluck
         if (is_array($post['categories'])) {
@@ -60,6 +61,7 @@ class PostEdit extends Component
     // validation
     protected $rules = [
         'image' => 'nullable|image|max:5120',
+        'source' => 'nullable|max:250',
         'title' => 'required|max:180',
         'selectedCategory' => 'required|array',
         'selectedTag' => 'required|array',
@@ -103,6 +105,7 @@ class PostEdit extends Component
         // Update data post
         $post->update([
             'title' => $this->title,
+            'source' => $this->source,
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
@@ -156,6 +159,7 @@ class PostEdit extends Component
         // Update data post dan tetapkan sebagai published
         $post->update([
             'title' => $this->title,
+            'source' => $this->source,
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,
@@ -202,6 +206,7 @@ class PostEdit extends Component
         // Update data post dan tetapkan sebagai archived
         $post->update([
             'title' => $this->title,
+            'source' => $this->source,
             'slug' => $this->slug,
             'user_id' => $this->user_id,
             'description' => $this->description,

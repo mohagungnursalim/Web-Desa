@@ -164,6 +164,7 @@
                         @if ($selectedPost && $selectedPost->image)
                             <img class="img-thumbnail lazyload" src="{{ asset('storage/' . $selectedPost->image) }}" alt="{{ $selectedPost->title }}"
                                 style="width: 520px">
+                                <p><small>{{ $selectedPost->source }}</small></p>
                         @endif
                     </div>
                     <div class="post-content">

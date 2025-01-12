@@ -61,7 +61,13 @@
 
                             <div class="p-2">
                                 <img src="{{ $image->temporaryUrl() }}" alt="Preview" class="img-fluid img-thumbnail"
-                                    width="100px">
+                                    width="450px">
+									<div class="form-group input-group-sm">
+										<textarea class="form-control" id="source" wire:model.defer="source" 
+											placeholder="Masukan sumber gambar/keterangan (Opsional)"></textarea>
+										@error('source') <span class="text-danger error">{{ $message }}</span> @enderror
+									</div>
+									
                             </div>
 
                             @endif

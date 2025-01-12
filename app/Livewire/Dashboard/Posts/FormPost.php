@@ -16,7 +16,7 @@ class FormPost extends Component
     use WithFileUploads;
 
     // Store
-    public $title,$post_category = [], $post_tag = [],$slug,$description,$excerpt,$user_id,$image,$status,$published_at;
+    public $title,$post_category = [], $post_tag = [],$slug,$description,$excerpt,$user_id,$image,$source,$status,$published_at;
 
     public $tags = [], $categories = [];
 
@@ -31,6 +31,7 @@ class FormPost extends Component
     // validation
     protected $rules = [
         'image' => 'required|image|max:5120',
+        'source' => 'nullable|max:250',
         'title' => 'required|max:180',
         'post_category' => 'required|array',
         'post_tag' => 'required|array',
@@ -43,6 +44,7 @@ class FormPost extends Component
     {
         $this->reset([
             'image',
+            'source',
             'title',
             'post_category',
             'description',
@@ -69,6 +71,7 @@ class FormPost extends Component
         // Buat instance Post dan simpan ke database sebagai Draft
         $post = ModelsPost::create([
             'image' => $imagePath,
+            'source' => $this->source,
             'title' => $this->title,
             'slug' => $this->slug,
             'user_id' => $this->user_id,
@@ -105,6 +108,7 @@ class FormPost extends Component
         // Buat instance Post dan simpan ke database sebagai Published
         $post = ModelsPost::create([
             'image' => $imagePath,
+            'source' => $this->source,
             'title' => $this->title,
             'slug' => $this->slug,
             'user_id' => $this->user_id,

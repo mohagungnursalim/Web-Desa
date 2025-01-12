@@ -116,7 +116,7 @@ class Post extends Component
 
         $this->posts = $this->posts->filter(fn($item) => $item->id !== $this->postId);
         $this->totalPosts--;
-        $this->dispatch('hide-delete-modal'); 
+        $this->dispatch('hide-delete-modal'); // Event untuk menutup modal
         $this->dispatch('deleteSuccess'); // Event untuk menampilkan pesan sukses
     }
 

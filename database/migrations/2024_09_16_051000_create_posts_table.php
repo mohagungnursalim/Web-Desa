@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('excerpt');
             $table->foreignId('user_id');
             $table->string('image');
+            $table->string('source')->nullable();
             $table->unsignedBigInteger('views')->default(0);
             $table->json('unique_views')->nullable(); 
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
