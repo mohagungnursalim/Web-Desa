@@ -18,6 +18,7 @@
     'resources/js/app2.js',
     'resources/css/style2.css',
     'resources/css/frontend/placeholder-image-posts.css',
+    'resources/css/frontend/placeholder-image-products.css',
     ])
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">

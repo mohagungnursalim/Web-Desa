@@ -6,6 +6,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductFeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Livewire\Dashboard\Products\ProductEdit;
 use App\Http\Middleware\RoleMiddleware;
@@ -112,6 +113,15 @@ Route::get('/berita', function () {
 
 // Route detail
 Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('frontend.berita.show');
+
+
+// Route untuk menampilkan produk
+Route::get('/produk', function () {
+    return view('frontend.produk');
+});
+
+// Route detail
+Route::get('/produk/{id}/detail', [ProductFeController::class, 'show'])->name('frontend.produk.show');
 
 
 // Route::view('dashboard', 'dashboard')

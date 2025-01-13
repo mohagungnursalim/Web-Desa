@@ -55,7 +55,7 @@
           </li>
           <li>
             <a wire:navigate href="/produk"
-               class="block py-2 px-3 text-white rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Produk</a>
+               class="block py-2 px-3 {{ Request::is('produk*') ? 'text-gray-700' : 'text-white' }} rounded hover:bg-gray-500 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">Produk</a>
           </li>
           <li>
             <a wire:navigate href="/proyek"

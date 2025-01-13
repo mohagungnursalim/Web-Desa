@@ -100,7 +100,7 @@
                     <div class="{{ $index === 0 ? 'block' : 'hidden' }} flex justify-center items-center duration-700 ease-in-out"
                         data-carousel-item="{{ $index === 0 ? 'active' : '' }}">
 
-                        <a href="/postingan/{{ $post->slug }}">
+                        <a wire:navigate href="/berita/{{ $post->slug }}">
                             <img src="{{ asset('storage/' . $post->image) }}"
                                 class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                 alt="{{ $post->title }}">
@@ -159,7 +159,7 @@
 
             </div>
             <div class="text-center mt-5">
-                <a href="/postingan" class="text-amber-700 underline font-semibold underline decoration-gray-500">Lihat
+                <a wire:navigate href="/berita" class="text-amber-700 underline font-semibold underline decoration-gray-500">Lihat
                     lebih banyak postingan..</a>
             </div>
         </div>
@@ -228,34 +228,25 @@
                     @endif
         
                     <div class="px-5 pb-3 mt-3">
-                        <div class="flex-col justify-center">
-                            @foreach ($product->categories as $category)
-                            <span class="bg-gray-300 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">{{ $category->name }}</span>
-                            @endforeach
-                        </div>
-                        <a href="/produk/{{ $product->id }}">
+                        <a wire:navigate href="/produk/{{ $product->id }}/detail">
                             <h5 class="text-xl font-semibold tracking-tight text-gray-900">
                                 {{ $product->title }}
                             </h5>
+                            <p class="mt-2 text-gray-500">
+                                {!! Str::limit(strip_tags($product->description), 150, '...') !!}
+                            </p>
+                            <div class="flex items-center justify-between mt-5">
+                                <span class="text-2xl font-semibold text-green-500">
+                                    Rp{{ number_format($product->price, 0, ',', '.') }}
+                                </span>
+                            </div>
                         </a>
-                        <p class="mt-2 text-gray-500">
-                            {!! Str::limit(strip_tags($product->description), 150, '...') !!}
-                        </p>
-                        <div class="flex items-center justify-between mt-5">
-                            <span class="text-3xl font-bold text-gray-900">
-                                Rp{{ number_format($product->price, 0, ',', '.') }}
-                            </span>
-                            <a href="https://wa.me/{{ $product->wa_number }}" target="_blank"
-                                class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Order via WA
-                            </a>
-                        </div>
                     </div>
                 </div>
                 @endforeach
             </div>
             <div class="text-center mt-5">
-                <a href="/produk" class="text-amber-700 underline font-semibold underline decoration-gray-500">Lihat
+                <a wire:navigate href="/produk" class="text-amber-700 underline font-semibold underline decoration-gray-500">Lihat
                     lebih banyak produk..</a>
             </div>
         </div>
